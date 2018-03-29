@@ -25,9 +25,6 @@ exports.createArchive = (req, res, next) => {
         let hostname = new URL(url).hostname;
         let downloadUrl = process.env.SERVER_DOMAIN + `/archives/${hostname}_${timeStamp}.zip`;
 
-        console.log(downloadUrl);
-
-
         let settings = {
             email: email,
             subject: 'Your archive is ready ✔',
