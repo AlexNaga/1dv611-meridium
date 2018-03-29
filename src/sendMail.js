@@ -18,12 +18,12 @@ function sendMail(settings, callback) {
     });
 
     let mailOptions = {
-        from: 'kurs1dv611@gmail.com', 
+        from: 'kurs1dv611@gmail.com',
         to: email,
         subject: subject,
         html: message
     };
-    
+
     transporter.sendMail(mailOptions, (error, info) => {
         callback(error, info);
     });
