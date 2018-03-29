@@ -7,7 +7,7 @@ A live demo of this application can be found at [https://](https://)
 2. Extract folder to preferred location.
 
   ### Starting the server
-  1. Open up the terminal in the server folder.
+  1. Open up the terminal in the folder.
   2. Install the required dependencies by typing `npm install`
   3. Create the environment variables by typing the following
   ```bash
