@@ -17,5 +17,5 @@ A live demo of this application can be found at [https://](https://)
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
   }' > .env
   ```
-  4. Start the application by typing `npm start`
+  4. Start the application by typing `node server.js`
   5. The application is now running at [http://localhost:3000](http://localhost:3000)
