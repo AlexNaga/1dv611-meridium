@@ -12,7 +12,7 @@ A live demo of this application can be found at [https://](https://)
   3. Create the environment variables by typing the following
   ```bash
   echo '{
-    SERVER_DOMAIN="localhost:3000"
+    SERVER_DOMAIN="http://localhost:3000"
     EMAIL_USER="YOUR_EMAIL"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
   }' > .env
