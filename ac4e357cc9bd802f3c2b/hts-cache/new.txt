@@ -1,0 +1,3 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+14:28:06	178/178	---M--	301	error ('Moved%20Permanently')	text/html	date:Thu,%2029%20Mar%202018%2012:28:00%20GMT	http://fridamelin.github.io/robots.txt		(from )
+14:28:07	178/178	---M--	301	error ('Moved%20Permanently')	text/html	date:Thu,%2029%20Mar%202018%2012:28:00%20GMT	http://fridamelin.github.io/	ac4e357cc9bd802f3c2b/fridamelin.github.io/index.html	(from )
