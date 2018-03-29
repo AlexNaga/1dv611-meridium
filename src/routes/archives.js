@@ -3,6 +3,10 @@ var router = express.Router();
 
 const ArchivesController = require('../controllers/archives');
 
-router.get('/:id', ArchivesController.sendFile);
+// Create an archive
+router.post('/', ArchivesController.createArchive);
+
+// Get a specific archive
+router.get('/:id', ArchivesController.getArchive);
 
 module.exports = router;

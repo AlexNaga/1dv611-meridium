@@ -1,5 +1,4 @@
 var nodemailer = require('nodemailer');
-require('dotenv').config();
 
 function sendMail(settings, callback) {
     let email = settings.email;

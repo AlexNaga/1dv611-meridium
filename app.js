@@ -5,20 +5,16 @@ const logger = require('morgan');
 const path = require('path');
 const request = require('request');
 
-const archivesRouter = require('./routes/archives');
-const indexRouter = require('./routes/index');
-const urlRouter = require('./routes/url');
+const archivesRouter = require('./src/routes/archives');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
+app.use('/archives', express.static('archives')); // Make archives folder accessible
 
 // Routes
-app.use('/', indexRouter);
 app.use('/archives', archivesRouter);
-app.use('/url', urlRouter);
-
 
 // Error handling
 app.use((req, res, next) => {

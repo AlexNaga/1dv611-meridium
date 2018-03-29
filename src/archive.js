@@ -10,24 +10,25 @@ const fs = require('fs-extra');
  * @param {function} callback Function to be called when archive is done.
  */
 function archive(id, url, callback) {
+    let hostname = new URL(url).hostname;
+    let baseFolder = `./${hostname}_${id}/`;
+    let folderToZip = baseFolder + hostname;
+
+    let zipFilename = `${hostname}_${id}.zip`;
+    let zipFilePath = baseFolder + zipFilename;
+
+    let archiveZipFilename = './archives/' + zipFilename;
+
+    // Uncomment this for Windows
     // const child = execFile('./httrack/httrack.exe', [
+
     const child = execFile('httrack', [
         url,
-        '-O', // output
-        id, // output directory name
-        '-q', // no questions - quiet mode
+        '-O', // Output
+        `${hostname}_${id}`,   // Output directory name
+        '-q', // Quiet mode
     ], (err, stdout, stderr) => {
         if (err) throw new Error(stderr.trim() + '. Command: ' + err.cmd);
-
-        let hostname = new URL(url).hostname;
-        let baseFolder = `./${id}/`;
-        let folderToZip = baseFolder + hostname;
-
-        let zipFilename = `${id}.zip`;
-        let zipFilePath = baseFolder + zipFilename;
-
-        let archiveFolder = './archives/';
-        let archiveZipFilename = archiveFolder + zipFilename;
 
         zipFolder(folderToZip, zipFilePath, (err) => {
             if (err) throw err;
@@ -39,7 +40,7 @@ function archive(id, url, callback) {
                 fs.remove(baseFolder, err => {
                     if (err) throw err;
 
-                    console.log('folder deleted');
+                    console.log('Folder deleted.');
                 });
             });
         });
