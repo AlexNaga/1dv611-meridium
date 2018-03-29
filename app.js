@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const favicon = require('serve-favicon');
 const logger = require('morgan');
 const path = require('path');
 const request = require('request');
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use('/archives', express.static('archives')); // Make archives folder accessible
+app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 // Routes
 app.use('/archives', archivesRouter);
@@ -25,7 +27,6 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.log(err);
-
     res.status(err.status || 500);
     res.json({
         error: {

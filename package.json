@@ -19,6 +19,7 @@
     "nodemailer": "^4.6.3",
     "path": "^0.12.7",
     "request": "^2.85.0",
+    "serve-favicon": "^2.5.0",
     "valid-url": "^1.0.9",
     "zip-folder": "^1.0.0"
   }
