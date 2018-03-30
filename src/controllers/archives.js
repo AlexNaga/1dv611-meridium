@@ -38,7 +38,7 @@ exports.createArchive = (req, res, next) => {
         });
     });
 
-    res.status(200).send('Thank you!<br>We are now downloading ' + url + "<br>When complete we'll send an email to " + email + '<br><a href="/">Go back</a>');
+    res.status(200).sendFile(path.join(__dirname + '/../../public/success.html'));
 };
 
 exports.getArchive = (req, res, next) => {
