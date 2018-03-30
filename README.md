@@ -3,6 +3,8 @@
 A live demo of this application can be found at [https://](https://)
 
 ## Running the Application
+This application depends on [httrack](http://www.httrack.com), that must be installed before you can actually use this application.  
+
 1. Clone this repository or download the [.zip](https://github.com/1dv611-meridium/1dv611-meridium/archive/master.zip) file.
 2. Extract folder to preferred location.
 

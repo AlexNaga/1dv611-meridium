@@ -6,6 +6,9 @@ const ArchivesController = require('../controllers/archives');
 // Create an archive
 router.post('/', ArchivesController.createArchive);
 
+// Lists all archives
+router.get('/', ArchivesController.listArchives);
+
 // Get a specific archive
 router.get('/:id', ArchivesController.getArchive);
 

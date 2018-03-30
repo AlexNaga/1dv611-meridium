@@ -1,10 +1,12 @@
 const download = require('../archive');
 const moment = require('moment');
 const path = require('path');
+const readdir = require('readdir-enhanced');
 const sendMail = require('../sendMail');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
 const { URL } = require('url');
+
 
 exports.createArchive = (req, res, next) => {
     let url = req.body.url;
@@ -43,5 +45,22 @@ exports.createArchive = (req, res, next) => {
 
 exports.getArchive = (req, res, next) => {
     let id = req.params.id;
-    res.status(200).sendFile(path.join(__dirname + '/../archives/' + id));
+    res.status(200).sendFile(path.join(__dirname + '/../../archives/' + id));
+};
+
+exports.listArchives = (req, res, next) => {
+    readdir.async('archives')
+        .then(function (files) {
+            res.status(200).json({
+                archives: files.map(archive => {
+                    return archive;
+                })
+            });
+        })
+        .catch(function (err) {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 };
