@@ -15,7 +15,7 @@ exports.createArchive = (req, res, next) => {
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
-    let randomInt = Math.floor(Math.random() * 99);
+    let randomInt = Math.floor(Math.random() * (99 - 10 + 1) + 10); // Get a random integer between 10 and 99
     let timeStamp = moment().format('YYYY-MM-DD_HH:mm:ss_') + randomInt; // 2018-03-29_22:29:21_42
 
     download(timeStamp, url, (error) => {
