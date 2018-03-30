@@ -19,10 +19,12 @@ function archive(id, url, callback) {
 
     let archiveZipFilename = './archives/' + zipFilename;
 
-    // Uncomment this for Windows
-    // const child = execFile('./httrack/httrack.exe', [
+    let os = './httrack/httrack.exe'; // For Windows OS
+    if (process.env.OS === 'linux') {
+        os = 'httrack';  // For Linux OS
+    }
 
-    const child = execFile('httrack', [
+    const child = execFile(os, [
         url,
         '-O', // Output
         `${hostname}_${id}`,   // Output directory name
