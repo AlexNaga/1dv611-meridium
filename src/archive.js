@@ -20,7 +20,7 @@ function archive(id, url, callback) {
     let archiveZipFilename = './archives/' + zipFilename;
 
     let os = './httrack/httrack.exe'; // For Windows OS
-    if (process.env.OS === 'linux') {
+    if (process.env.IS_RUNNING_LINUX_OS) {
         os = 'httrack';  // For Linux OS
     }
 

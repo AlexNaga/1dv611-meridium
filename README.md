@@ -15,7 +15,7 @@ A live demo of this application can be found at [https://](https://)
     SERVER_DOMAIN="http://localhost:3000"
     EMAIL_USER="YOUR_EMAIL"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
-    OS="linux / windows"    
+    IS_RUNNING_LINUX_OS="true"
   }' > .env
   ```
   4. Start the application by typing `node server.js`
