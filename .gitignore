@@ -1,5 +1,6 @@
 httrack
 archives/
+.DS_Store
 
 # Logs
 logs

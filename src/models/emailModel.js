@@ -28,4 +28,4 @@ function sendMail(settings, callback) {
     });
 }
 
-module.exports = sendMail;
+module.exports = { sendMail };

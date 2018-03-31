@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const ArchivesController = require('../controllers/archives');
+const ArchivesController = require('../controllers/archivesController');
 
 // Create an archive
 router.post('/', ArchivesController.createArchive);
