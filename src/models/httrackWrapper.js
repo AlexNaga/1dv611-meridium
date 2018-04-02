@@ -22,22 +22,23 @@ function archive(url, callback) {
     let zipArchivePath = `./archives/${id}.zip`;
 
     let httrack = './httrack/httrack.exe'; // For Windows OS
-    if (process.env.IS_RUNNING_LINUX_OS) {
+
+    if (process.env.IS_RUNNING_LINUX_OS === 'true') {
         httrack = 'httrack';  // For Linux OS
     }
 
     execFile(httrack, [
         url,
-        '-O',       // Output
-        `${id}`,    // Output directory name
-        '-q',       // Quiet mode
+        '-O',    // Output
+        `${id}`, // Output directory name
+        '-q',    // Quiet mode
     ], (error, stdout, stderr) => {
         if (error) return callback(new Error(stderr.trim() + '. Command: ' + err.cmd));
 
         zipFolder(folderToZip, zipPath, (err) => {
             if (err) return callback(err);
 
-            // Move the zipfile and overwrite existing file or directory
+            // Move the .zip file and overwrite existing file or directory
             fs.move(zipPath, zipArchivePath, { overwrite: true }, (err) => {
                 if (err) return callback(err);
 
@@ -45,7 +46,7 @@ function archive(url, callback) {
                     if (err) return callback(err);
 
                     console.log('Folder deleted.');
-                    callback(null, {zipArchivePath: zipArchivePath});
+                    callback(null, { zipArchivePath: zipArchivePath });
                 });
             });
         });
