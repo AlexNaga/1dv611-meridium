@@ -49,7 +49,6 @@ exports.listArchives = (req, res, next) => {
             });
         })
         .catch((err) => {
-            console.log(err);
             res.status(500).json({
                 error: err
             });
@@ -57,9 +56,23 @@ exports.listArchives = (req, res, next) => {
 };
 
 exports.deleteArchive = (req, res, next) => {
-    del.promise(['archives/*.js'])
-        .then(function (deleted) {
-            // deleted files
-            console.log(deleted)
+    let id = req.params.id;
+
+    del.promise(['archives/' + id])
+        .then((deleted) => {
+            // If file really deleted
+            if (deleted.length > 0) {
+                deleted = deleted[0].split('archives/')[1]; // Only get file name and not the file path
+                console.log('Deleted file:', deleted);
+            }
+
+            res.status(200).json({
+                deleted: deleted
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: err
+            });
         });
 };
