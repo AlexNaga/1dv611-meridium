@@ -1,7 +1,8 @@
-const validEmail = require('email-validator');
-const validUrl = require('valid-url');
+const del = require('delete');
 const path = require('path');
 const readdir = require('readdir-enhanced');
+const validEmail = require('email-validator');
+const validUrl = require('valid-url');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const emailModel = require('../models/emailModel');
@@ -40,17 +41,25 @@ exports.getArchive = (req, res, next) => {
 
 exports.listArchives = (req, res, next) => {
     readdir.async('archives')
-    .then(function (files) {
-        res.status(200).json({
-            archives: files.map(archive => {
-                return archive;
-            })
+        .then((files) => {
+            res.status(200).json({
+                archives: files.map(archive => {
+                    return archive;
+                })
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
         });
-    })
-    .catch(function (err) {
-        console.log(err);
-        res.status(500).json({
-            error: err
+};
+
+exports.deleteArchive = (req, res, next) => {
+    del.promise(['archives/*.js'])
+        .then(function (deleted) {
+            // deleted files
+            console.log(deleted)
         });
-    });
 };

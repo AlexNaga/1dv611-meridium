@@ -12,4 +12,7 @@ router.get('/', ArchivesController.listArchives);
 // Get a specific archive
 router.get('/:id', ArchivesController.getArchive);
 
+// Delete a specific archive
+router.delete('/:id', ArchivesController.deleteArchive);
+
 module.exports = router;

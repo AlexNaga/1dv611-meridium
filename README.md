@@ -20,5 +20,5 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
     IS_RUNNING_LINUX_OS="true"
   }' > .env
   ```
-  4. Start the application by typing `npm start`
+  4. Start the application by typing `npm start` (or `npm run dev` for development)
   5. The application is now running at [http://localhost:3000](http://localhost:3000)
