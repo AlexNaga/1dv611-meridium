@@ -7,6 +7,7 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "commander": "^2.15.1",
     "debug": "~2.6.9",
@@ -15,7 +16,10 @@
     "email-validator": "^1.1.1",
     "express": "^4.16.3",
     "fs-extra": "^5.0.0",
+    "jsonwebtoken": "^8.2.0",
     "moment": "^2.21.0",
+    "mongoose": "^5.0.12",
+    "mongoose-timestamp": "^0.6.0",
     "morgan": "~1.9.0",
     "nodemailer": "^4.6.3",
     "path": "^0.12.7",

@@ -3,8 +3,16 @@ const app = express();
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 
 const archivesRouter = require('./src/routes/archives');
+const accountRouter = require('./src/routes/account');
+
+mongoose.connect(
+    'mongodb://admin:' + process.env.MONGODB_ATLAS_PASSWORD +
+    '@meridium-shard-00-00-na4xb.mongodb.net:27017,meridium-shard-00-01-na4xb.mongodb.net:27017,meridium-shard-00-02-na4xb.mongodb.net:27017/test?ssl=true&replicaSet=meridium-shard-0&authSource=admin'
+);
+mongoose.Promise = global.Promise;
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -15,6 +23,7 @@ app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 // Routes
 app.use('/archives', archivesRouter);
+app.use('/account', accountRouter);
 
 // Error handling
 app.use((req, res, next) => {

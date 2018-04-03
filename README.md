@@ -14,10 +14,12 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   3. Create the environment variables by typing the following
   ```bash
   echo '{
-    SERVER_DOMAIN="http://localhost:3000"
     EMAIL_USER="YOUR_EMAIL"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
     IS_RUNNING_LINUX_OS="true"
+    JWT_SECRET="A_RANDOM_SECRET"
+    MONGODB_ATLAS_PASSWORD="YOUR_MONGODB_PASSWORD"
+    SERVER_DOMAIN="http://localhost:3000"
   }' > .env
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
