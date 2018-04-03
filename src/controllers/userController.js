@@ -6,6 +6,7 @@ const User = require('../models/user');
 
 exports.createUser = (req, res, next) => {
     const email = req.body.email;
+    const password = req.body.password;
 
     User.find({ email: email })
         .then(user => {
@@ -16,7 +17,7 @@ exports.createUser = (req, res, next) => {
                     id: user[0]._id
                 });
             } else {
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                bcrypt.hash(password, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
                             error: err
@@ -41,6 +42,56 @@ exports.createUser = (req, res, next) => {
                     }
                 });
             }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+};
+
+
+exports.loginUser = (req, res, next) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.findOne({ email: email })
+        .then(user => {
+            if (!user) {
+                return res.status(401).json({
+                    message: 'Authentication failed.'
+                });
+            }
+
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (err) {
+                    return res.status(401).json({
+                        message: 'Authentication failed.'
+                    });
+                }
+
+                if (result) {
+                    const token = jwt.sign(
+                        {
+                            email: email,
+                            userId: user._id
+                        },
+                        process.env.JWT_KEY,
+                        {
+                            expiresIn: '1h'
+                        }
+                    );
+
+                    return res.status(200).json({
+                        message: 'Authentication is successful.',
+                        token: token
+                    });
+                }
+
+                res.status(401).json({
+                    message: 'Authentication failed.'
+                });
+            });
         })
         .catch(err => {
             res.status(500).json({

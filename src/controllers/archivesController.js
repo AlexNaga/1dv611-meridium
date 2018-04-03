@@ -34,10 +34,12 @@ exports.createArchive = (req, res, next) => {
     });
 };
 
+
 exports.getArchive = (req, res, next) => {
     let id = req.params.id;
     res.status(200).sendFile(path.join(__dirname + '/../../archives/' + id));
 };
+
 
 exports.listArchives = (req, res, next) => {
     let page = req.query.page || 0;
@@ -62,6 +64,7 @@ exports.listArchives = (req, res, next) => {
             });
         });
 };
+
 
 exports.deleteArchive = (req, res, next) => {
     let id = req.params.id;

@@ -7,7 +7,7 @@ const UserController = require('../controllers/userController');
 router.post('/register', UserController.createUser);
 
 // Authenticate a user
-// router.post('/login', UserController.loginUser);
+router.post('/login', UserController.loginUser);
 
 // Get a specific user
 // router.get('/:id', UserController.getUser);
