@@ -9,8 +9,8 @@ const request = require('request');
 const archivesRouter = require('./src/routes/archives');
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use('/archives', express.static('archives')); // Make archives folder accessible
 app.use(favicon(__dirname + '/public/images/favicon.png'));

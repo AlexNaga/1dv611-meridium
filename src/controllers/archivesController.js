@@ -40,12 +40,20 @@ exports.getArchive = (req, res, next) => {
 };
 
 exports.listArchives = (req, res, next) => {
-    readdir.async('archives')
+    let page = req.query.page || 0;
+    let itemsPerPage = 10;
+
+    readdir.async.stat('archives')
+        // readdir.async('archives')
         .then((files) => {
             res.status(200).json({
-                archives: files.map(archive => {
+                // Varför returnerar vi ett objekt med en array i och inte bara en array direkt?
+                archives: files.sort((a, b) => {
+                    // Sort by modification date descending order
+                    return b.mtime - a.mtime;
+                }).map(archive => {
                     return archive;
-                })
+                }).slice(page * itemsPerPage, (page + 1) * itemsPerPage) // Take 10
             });
         })
         .catch((err) => {
