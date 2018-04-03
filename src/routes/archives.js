@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const checkAuth = require('../auth/checkAuth');
 
 const ArchivesController = require('../controllers/archivesController');
 
@@ -7,7 +8,7 @@ const ArchivesController = require('../controllers/archivesController');
 router.post('/', ArchivesController.createArchive);
 
 // Lists all archives
-router.get('/', ArchivesController.listArchives);
+router.get('/', checkAuth, ArchivesController.listArchives);
 
 // Get a specific archive
 router.get('/:id', ArchivesController.getArchive);
