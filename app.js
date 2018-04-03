@@ -3,8 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
-const path = require('path');
-const request = require('request');
 
 const archivesRouter = require('./src/routes/archives');
 
@@ -23,7 +21,7 @@ app.use((req, res, next) => {
     const err = new Error('The resource could not be found.');
     err.status = 404;
     next(err);
-})
+});
 
 app.use((err, req, res, next) => {
     console.log(err);
