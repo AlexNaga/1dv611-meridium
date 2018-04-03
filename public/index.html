@@ -31,7 +31,7 @@
                 <div class="column">
                     <form action="/archives" method="post">
                         <div class="field">
-                            <label class="label">Url to download</label>
+                            <label class="label">Adress att ladda ner</label>
                             <p class="control has-icons-left">
                                 <input class="input" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
                                 <span class="icon is-small is-left">
@@ -40,38 +40,38 @@
                             </p>
                         </div>
                         <div class="field">
-                            <label class="label">Sub-url to include</label>
+                            <label class="label">Underadress att ladda ner</label>
                             <p class="control has-icons-left">
-                                <input class="input" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
+                                <input class="input" type="url" required name="subUrl" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-link"></i>
                                 </span>
                             </p>
                         </div>
                         <div class="field">
-                            <label class="label">Path to exclude</label>
+                            <label class="label">Sidor att exkludera</label>
                             <p class="control has-icons-left">
-                                <input class="input" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
+                                <input class="input" type="text" required name="path" placeholder="Ange en sida" value="/fredag">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-link"></i>
                                 </span>
                             </p>
                         </div>
                         <div class="control">
-                            <label class="label">Follow robots.txt and meta-tags rules</label>
+                            <label class="label">Följ robots.txt och meta-taggar</label>
 
                             <label class="radio">
-                                <input type="radio" name="robots" value="2" checked> Yes
+                                <input type="radio" name="robots" value="2" checked> Ja
                             </label>
                             <label class="radio">
-                                <input type="radio" name="robots" value="1"> Yes, but filters overrides
+                                <input type="radio" name="robots" value="1"> Ja, men filter överskrider
                             </label>
                             <label class="radio">
-                                <input type="radio" name="robots" value="0"> No
+                                <input type="radio" name="robots" value="0"> Nej
                             </label>
                         </div>
                         <div class="field">
-                            <label class="label">Site-structure</label>
+                            <label class="label">Sidstruktur</label>
                             <div class="control has-icons-left">
                                 <div class="select">
                                     <select>
@@ -91,7 +91,7 @@
                         <br>
                         <div class="field">
                             <p class="control has-icons-left">
-                                <input class="input" type="email" required name="email" placeholder="Email">
+                                <input class="input" type="email" required name="email" placeholder="E-post">
                                 <span class="icon is-small is-left">
                                     <i class="fas fa-envelope"></i>
                                 </span>
@@ -116,8 +116,8 @@
                         <p id="recent-list" class="control">
                         </p>
                         <nav class="pagination" role="navigation" aria-label="pagination">
-                            <a id="list-previous" class="pagination-previous">Previous</a>
-                            <a id="list-next" class="pagination-next">Next page</a>
+                            <a id="list-previous" class="pagination-previous">Föregående</a>
+                            <a id="list-next" class="pagination-next">Nästa</a>
                             <!-- <ul class="pagination-list">
                                 <li>
                                     <a class="pagination-link" aria-label="Goto page 1">1</a>

@@ -12,11 +12,13 @@ exports.createArchive = (req, res, next) => {
     let email = req.body.email;
 
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
+    if (validUrl.isUri(req.body.subUrl) === false) return res.send('Invalid sub-url!');
+    if (req.body.robots > 2 && req.body.robots < 0) res.send('Invalid robots-settings!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
     res.status(200).sendFile(path.join(__dirname + '/../../public/success.html'));
 
-    httrackWrapper.archive(url, (error, response) => {
+    httrackWrapper.archive(req.body, (error, response) => {
         if (error) return console.log(error);
 
         let downloadUrl = process.env.SERVER_DOMAIN + '/' + response.zipArchivePath;
@@ -33,7 +35,6 @@ exports.createArchive = (req, res, next) => {
         });
     });
 };
-
 
 exports.getArchive = (req, res, next) => {
     let id = req.params.id;
