@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 const UserController = require('../controllers/userController');
 
@@ -8,6 +8,9 @@ router.post('/register', UserController.createUser);
 
 // Authenticate a user
 router.post('/login', UserController.loginUser);
+
+// Send login view
+router.get('/login', UserController.getLoginPage);
 
 // Get a specific user
 // router.get('/:id', UserController.getUser);

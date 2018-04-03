@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const path = require('path');
 
 const User = require('../models/user');
 
@@ -98,4 +99,8 @@ exports.loginUser = (req, res, next) => {
                 error: err
             });
         });
+};
+
+exports.getLoginPage = (req, res, next) => {
+    res.status(200).sendFile(path.join(__dirname + '/../../public/login.html'));
 };
