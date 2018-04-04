@@ -103,10 +103,10 @@ exports.loginUser = (req, res, next) => {
 
 
 exports.getRegisterPage = (req, res, next) => {
-    res.status(200).sendFile(path.join(__dirname + '/../../public/register.html'));
+    res.render('account/register');
 };
 
 
 exports.getLoginPage = (req, res, next) => {
-    res.status(200).sendFile(path.join(__dirname + '/../../public/login.html'));
+    res.render('account/login');
 };

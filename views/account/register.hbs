@@ -37,9 +37,10 @@
         <div class="columns">
             <div class="column"></div>
             <div class="column">
-                <h1 class="title">Logga in</h1>
+                <h1 class="title">Registrera användare</h1>
                 <h2 class="subtitle">Ange din email och lösenord</h2>
-                <form action="/account/login" method="post">
+
+                <form action="/account/register" method="post">
                     <div class="field">
                         <p class="control has-icons-left">
                             <input class="input" type="email" required name="email" placeholder="Email">
@@ -50,26 +51,38 @@
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="password" required name="password" placeholder="Lösenord">
+                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
                             </span>
                         </p>
                     </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
+                                onkeyup="checkPass(); return false;">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <span id="confirmMessage" class="confirmMessage"></span>
+                    <br>
                     <br>
                     <div class="field">
                         <p class="control">
-                            <button type="submit" class="button is-info">
+                            <button type="submit" class="button is-info" disabled id="registerBtn">
                                 <span class="icon is-small">
                                     <i class="fas fa-sign-in-alt"></i>
                                 </span>
-                                <span>Logga in</span>
+                                <span>Registrera</span>
                             </button>
                         </p>
                     </div>
                 </form>
             </div>
             <div class="column"></div>
+
         </div>
     </div>
 </section>
