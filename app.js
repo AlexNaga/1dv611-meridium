@@ -28,12 +28,7 @@ app.engine('.hbs', exphbs({
     defaultLayout: 'main',
     extname: '.hbs',
     partialsDir: path.resolve(__dirname, 'views/partials'),
-    layoutsDir: path.resolve(__dirname, 'views/layout'),
-    helpers: {
-        copyrightYear: function () {
-            return new Date().getFullYear();
-        },
-    }
+    layoutsDir: path.resolve(__dirname, 'views/layout')
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));
