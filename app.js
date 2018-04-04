@@ -1,7 +1,7 @@
-var cookieSession = require('cookie-session')
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const cookieSession = require('cookie-session');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
@@ -27,7 +27,7 @@ app.use(favicon(__dirname + '/public/images/favicon.png'));
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
     extname: '.hbs',
-    partialsDir: path.resolve(__dirname, 'views/partial'),
+    partialsDir: path.resolve(__dirname, 'views/partials'),
     layoutsDir: path.resolve(__dirname, 'views/layout')
 }));
 app.set('view engine', 'hbs');
