@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 exports.createUser = (req, res, next) => {
     const email = req.body.email;
-    const password = req.body.password;
+    const password = req.body.password[0];
 
     User.find({ email: email })
         .then(user => {
