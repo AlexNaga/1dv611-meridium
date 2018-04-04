@@ -11,8 +11,10 @@ function checkPass() {
     if (password.value === passwordConfirm.value) {
         passwordConfirm.style.backgroundColor = passwordsMatch;
         message.style.color = passwordsMatch;
+        document.getElementById('registerBtn').disabled = false;
     } else {
         passwordConfirm.style.backgroundColor = passwordDontMatch;
         message.style.color = passwordDontMatch;
+        document.getElementById('registerBtn').disabled = true;        
     }
 }
