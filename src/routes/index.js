@@ -1,9 +1,7 @@
 module.exports = (app) => {
-
-
-    // combine routes
-    // Second parameter is the base route.
+    // Combine routes
+    // Second parameter is the base route
     require('./home')(app, '/');
     require('./account')(app, '/account');
-    require('./archive')(app, '/archive');
+    require('./archives')(app, '/archives');
 };

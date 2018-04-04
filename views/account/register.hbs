@@ -1,3 +1,5 @@
+<script defer src="/js/validate.js"></script>
+
 <section class="section">
     <div class="container">
         <div class="columns">
@@ -18,7 +20,8 @@
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord">
+                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord"
+                                onkeyup="validatePass(); return false;">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
                             </span>
@@ -27,7 +30,7 @@
                     <div class="field">
                         <p class="control has-icons-left">
                             <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
-                                onkeyup="checkPass(); return false;">
+                                onkeyup="validatePass(); return false;">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
                             </span>

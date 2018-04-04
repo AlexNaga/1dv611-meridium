@@ -28,7 +28,12 @@ app.engine('.hbs', exphbs({
     defaultLayout: 'main',
     extname: '.hbs',
     partialsDir: path.resolve(__dirname, 'views/partials'),
-    layoutsDir: path.resolve(__dirname, 'views/layout')
+    layoutsDir: path.resolve(__dirname, 'views/layout'),
+    helpers: {
+        copyrightYear: function () {
+            return new Date().getFullYear();
+        },
+    }
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));
@@ -40,7 +45,7 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
     res.locals.user = req.session.user;
     next();
 });

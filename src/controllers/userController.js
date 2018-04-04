@@ -113,7 +113,7 @@ exports.loginUser = (req, res, next) => {
 
 exports.logoutUser = (req, res, next) => {
     req.session = null;
-    res.render('home');    
+    res.redirect('/');
 };
 
 exports.getRegisterPage = (req, res, next) => {

@@ -16,7 +16,7 @@ exports.createArchive = (req, res, next) => {
     if (req.body.robots > 2 && req.body.robots < 0) res.send('Invalid robots-settings!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
-    res.status(200).sendFile(path.join(__dirname + '/../../public/success.html'));
+    res.render('archives/success');
 
     let excludeUrls = req.body.path.replace(/\s+/g, '').split(',');
     let httrackSettings = {
@@ -38,7 +38,6 @@ exports.createArchive = (req, res, next) => {
         }
         emailModel.sendMail(emailSettings, (error, response) => {
             if (error) return console.log(error);
-
             console.log('Message sent: %s', response.messageId);
         });
     });
@@ -55,10 +54,8 @@ exports.listArchives = (req, res, next) => {
     let itemsPerPage = 10;
 
     readdir.async.stat('archives')
-        // readdir.async('archives')
         .then((files) => {
             res.status(200).json({
-                // Varför returnerar vi ett objekt med en array i och inte bara en array direkt?
                 archives: files.sort((a, b) => {
                     // Sort by modification date descending order
                     return b.mtime - a.mtime;

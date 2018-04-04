@@ -1,76 +1,12 @@
-{{!--
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column"></div>
-            <div class="column">
-                <h1 class="title">Logga in</h1>
-                <h2 class="subtitle">Ange din email och lösenord</h2>
-                <form action="/account/login" method="post">
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input class="input" type="email" required name="email" placeholder="Email">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <input class="input" type="password" required name="password" placeholder="Lösenord">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-key"></i>
-                            </span>
-                        </p>
-                    </div>
-                    <br>
-                    <div class="field">
-                        <p class="control">
-                            <button type="submit" class="button is-info">
-                                <span class="icon is-small">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </span>
-                                <span>Logga in</span>
-                            </button>
-                        </p>
-                    </div>
-                </form>
-            </div>
-            <div class="column"></div>
-        </div>
-    </div>
-</section>
-<section>
-    <nav class="navbar is-transparent">
-        <div class="navbar-brand"> </div>
-        <div class="navbar-menu">
-            <div class="navbar-start"></div>
-            <div class="navbar-end">
-                <p class="navbar-item">Hello, username </p>
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-info" href="/account/login">
-                                <span class="icon">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </span>
-                                <span>Logga in</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-</section> --}}
 
-<section class="section">
-    <div class="container">
-        <div class="columns">
+            {{#if user}}
             <div class="column">
                 <form action="/archives" method="post">
                     <div class="field">
-                        <label class="label">Adress att ladda ner</label>
+                        <label class="label">Huvuddomän att arkivera</label>
                         <p class="control has-icons-left">
                             <input class="input" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
                             <span class="icon is-small is-left">
@@ -79,7 +15,7 @@
                         </p>
                     </div>
                     <div class="field">
-                        <label class="label">Underadress att ladda ner</label>
+                        <label class="label">Subdomän att arkivera</label>
                         <p class="control has-icons-left">
                             <input class="input" type="url" required name="subUrl" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
                             <span class="icon is-small is-left">
@@ -92,7 +28,7 @@
                         <p class="control has-icons-left">
                             <input class="input" type="text" required name="path" placeholder="Ange en sida" value="/fredag">
                             <span class="icon is-small is-left">
-                                <i class="fas fa-link"></i>
+                                <i class="fas fa-unlink"></i>
                             </span>
                         </p>
                     </div>
@@ -129,7 +65,7 @@
                     <br>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="email" required name="email" placeholder="E-post">
+                            <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                             </span>
@@ -167,6 +103,16 @@
                     </nav>
                 </div>
             </div>
+
+            {{else}}
+            <div class="column"></div>
+            <div class="column">
+                <h1 class="title">Hem</h1>
+                <h2 class="subtitle">Ej inloggad</h2>
+            </div>
+            <div class="column"></div>
+            {{/if}}
+
         </div>
     </div>
 </section>
