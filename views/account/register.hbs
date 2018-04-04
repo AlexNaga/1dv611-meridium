@@ -1,0 +1,88 @@
+<section class="hero is-dark is-bold has-text-centered">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title is-2 is-spaced"> Arkivdium
+                <i class="far fa-file-archive"></i>
+            </h1>
+            <h2 class="subtitle is-4">En arkiveringstjänst för webbplatser</h2>
+        </div>
+    </div>
+</section>
+
+<section>
+    <nav class="navbar is-transparent">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <div class="field is-grouped">
+                    <p class="control">
+                        <a class="button is-link" href="/">
+                            <span class="icon">
+                                <i class="fas fa-home"></i>
+                            </span>
+                            <span>Tillbaka</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start"></div>
+            <div class="navbar-end"></div>
+        </div>
+    </nav>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+                <h1 class="title">Registrera användare</h1>
+                <h2 class="subtitle">Ange din email och lösenord</h2>
+
+                <form action="/account/register" method="post">
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" type="email" required name="email" placeholder="Email">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
+                                onkeyup="checkPass(); return false;">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <span id="confirmMessage" class="confirmMessage"></span>
+                    <br>
+                    <br>
+                    <div class="field">
+                        <p class="control">
+                            <button type="submit" class="button is-info" disabled id="registerBtn">
+                                <span class="icon is-small">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </span>
+                                <span>Registrera</span>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+            <div class="column"></div>
+
+        </div>
+    </div>
+</section>

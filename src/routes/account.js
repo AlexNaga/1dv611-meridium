@@ -1,24 +1,23 @@
-const express = require('express');
-const router = express.Router();
-
 const UserController = require('../controllers/userController');
 
-// Send register view
-router.get('/register', UserController.getRegisterPage);
+module.exports = (app, baseRoute) => {
 
-// Create a user
-router.post('/register', UserController.createUser);
+    // Send register view
+    app.get(baseRoute + '/register', UserController.getRegisterPage);
 
-// Send login view
-router.get('/login', UserController.getLoginPage);
+    // Create a user
+    app.post(baseRoute + '/register', UserController.createUser);
 
-// Authenticate a user
-router.post('/login', UserController.loginUser);
+    // Send login view
+    app.get(baseRoute + '/login', UserController.getLoginPage);
 
-// Get a specific user
-// router.get('/:id', UserController.getUser);
+    // Authenticate a user
+    app.post(baseRoute + '/login', UserController.loginUser);
 
-// Delete a specific user
-// router.delete('/:id', UserController.deleteUser);
+    // Get a specific user
+    // app.get('/:id', UserController.getUser);
 
-module.exports = router;
+    // Delete a specific user
+    // app.delete('/:id', UserController.deleteUser);
+
+};

@@ -7,9 +7,6 @@ const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const path = require('path');
 
-const archivesRouter = require('./src/routes/archives');
-const accountRouter = require('./src/routes/account');
-
 mongoose.connect(
     'mongodb://admin:' + process.env.MONGODB_ATLAS_PASSWORD +
     '@meridium-shard-00-00-na4xb.mongodb.net:27017,meridium-shard-00-01-na4xb.mongodb.net:27017,meridium-shard-00-02-na4xb.mongodb.net:27017/test?ssl=true&replicaSet=meridium-shard-0&authSource=admin'
@@ -32,10 +29,9 @@ app.engine('.hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));
+
 // Routes
 require('./src/routes')(app);
-app.use('/archives', archivesRouter);
-app.use('/account', accountRouter);
 
 // Error handling
 app.use((req, res, next) => {
