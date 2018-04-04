@@ -11,7 +11,7 @@ function getArchiveList(number) {
         })
         .then(function (data) {
             console.log(data);
-            var myNode = document.getElementById('recent-list');
+            let myNode = document.getElementById('recent-list');
             while (myNode.firstChild) {
                 myNode.removeChild(myNode.firstChild);
             }
@@ -52,7 +52,7 @@ function deleteLink(name) {
                     console.log('something went wrong');
                 }
             });
-    })
+    });
     return a;
 }
 
@@ -67,7 +67,7 @@ function createLink(name) {
 
 function getQueryString(key) {
     if (location.search) {
-        var search = location.search.substring(1);
+        let search = location.search.substring(1);
         let obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
         return obj[key];
     }
