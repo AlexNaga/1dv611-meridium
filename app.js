@@ -1,3 +1,4 @@
+var cookieSession = require('cookie-session')
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -29,6 +30,13 @@ app.engine('.hbs', exphbs({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));
+
+app.use(cookieSession({
+    name: 'arkivdiumSession',
+    keys: [process.env.SESSION_SECRET],
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }));
 
 // Routes
 require('./src/routes')(app);
