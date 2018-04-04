@@ -32,13 +32,18 @@ exports.createUser = (req, res, next) => {
 
                         user.save()
                             .then(result => {
-                                res.status(201).json({
-                                    message: 'Account successfully created.',
-                                    createdAccount: {
-                                        _id: result._id,
-                                        account: result.user
-                                    }
-                                });
+                                req.session.user = {
+                                    email: email
+                                }
+                                
+                                res.redirect('/account/login');
+                                // res.status(201).json({
+                                //     message: 'Account successfully created.',
+                                //     createdAccount: {
+                                //         _id: result._id,
+                                //         account: result.user
+                                //     }
+                                // });
                             });
                     }
                 });
@@ -82,11 +87,15 @@ exports.loginUser = (req, res, next) => {
                             expiresIn: '1h'
                         }
                     );
+                    req.session.user = {
+                        email: email
+                    }
+                    return res.redirect('/');
 
-                    return res.status(200).json({
-                        message: 'Authentication is successful.',
-                        token: token
-                    });
+                    // return res.status(200).json({
+                    //     message: 'Authentication is successful.',
+                    //     token: token
+                    // });
                 }
 
                 res.status(401).json({

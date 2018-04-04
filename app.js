@@ -16,7 +16,9 @@ mongoose.Promise = global.Promise;
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(express.static(__dirname + '/public'));
 app.use('/archives', express.static('archives')); // Make archives folder accessible
 app.use(favicon(__dirname + '/public/images/favicon.png'));
@@ -36,17 +38,15 @@ app.use(cookieSession({
     keys: [process.env.SESSION_SECRET],
     // Cookie Options
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }));
+}));
+
+app.use(function (req, res, next) {
+    res.locals.user = req.session.user;
+    next();
+});
 
 // Routes
 require('./src/routes')(app);
-
-// Error handling
-app.use((req, res, next) => {
-    const err = new Error('The resource could not be found.');
-    err.status = 404;
-    next(err);
-});
 
 app.use((err, req, res, next) => {
     console.log(err);
