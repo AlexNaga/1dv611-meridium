@@ -5,19 +5,14 @@ function checkPass() {
     let message = document.getElementById('confirmMessage');
 
     //Set the colors we'll be using
-    let goodColor = '#66cc66';
-    let badColor = '#ff6666';
+    let passwordsMatch = '#66cc66';
+    let passwordDontMatch = '#ff6666';
 
     if (password.value === passwordConfirm.value) {
-        passwordConfirm.style.backgroundColor = goodColor;
-        message.style.color = goodColor;
-        let p = document.createTextNode('Passwords match');
-        message.replaceChild(p);
-        message.innerText = 'asdas';
+        passwordConfirm.style.backgroundColor = passwordsMatch;
+        message.style.color = passwordsMatch;
     } else {
-        passwordConfirm.style.backgroundColor = badColor;
-        message.style.color = badColor;
-        let p = document.createTextNode('Passwords don\'t match');
-        message.replaceChild(p);
+        passwordConfirm.style.backgroundColor = passwordDontMatch;
+        message.style.color = passwordDontMatch;
     }
 }
