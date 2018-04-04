@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const exphbs = require('express-handlebars');
+const path = require('path');
 
 const archivesRouter = require('./src/routes/archives');
 const accountRouter = require('./src/routes/account');
@@ -21,7 +23,17 @@ app.use(express.static(__dirname + '/public'));
 app.use('/archives', express.static('archives')); // Make archives folder accessible
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
+// View engine
+app.engine('.hbs', exphbs({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    partialsDir: path.resolve(__dirname, 'views/partial'),
+    layoutsDir: path.resolve(__dirname, 'views/layout')
+}));
+app.set('view engine', 'hbs');
+app.set('views', path.resolve(__dirname, 'views'));
 // Routes
+require('./src/routes')(app);
 app.use('/archives', archivesRouter);
 app.use('/account', accountRouter);
 
