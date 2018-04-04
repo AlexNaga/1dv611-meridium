@@ -3,14 +3,17 @@ const router = express.Router();
 
 const UserController = require('../controllers/userController');
 
+// Send register view
+router.get('/register', UserController.getRegisterPage);
+
 // Create a user
 router.post('/register', UserController.createUser);
 
-// Authenticate a user
-router.post('/login', UserController.loginUser);
-
 // Send login view
 router.get('/login', UserController.getLoginPage);
+
+// Authenticate a user
+router.post('/login', UserController.loginUser);
 
 // Get a specific user
 // router.get('/:id', UserController.getUser);
