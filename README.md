@@ -20,6 +20,7 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
     JWT_SECRET="A_RANDOM_SECRET"
     MONGODB_ATLAS_PASSWORD="YOUR_MONGODB_PASSWORD"
     SERVER_DOMAIN="http://localhost:3000"
+    SESSION_SECRET="A_RANDOM_SECRET"
   }' > .env
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
