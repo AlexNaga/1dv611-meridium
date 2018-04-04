@@ -18,7 +18,15 @@ exports.createArchive = (req, res, next) => {
 
     res.status(200).sendFile(path.join(__dirname + '/../../public/success.html'));
 
-    httrackWrapper.archive(req.body, (error, response) => {
+    let excludeUrls = req.body.path.replace(/\s+/g, '').split(',');
+    let httrackSettings = {
+        url: req.body.url, // USER. url to crawl
+        siteStructure: 0, // USER. 0 = default site structure.
+        robots: req.body.robots, // USER. 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        excludeUrls: excludeUrls, // USER. excluding url 
+        includeUrls: req.body.subUrl // USER. including url
+    }
+    httrackWrapper.archive(httrackSettings, (error, response) => {
         if (error) return console.log(error);
 
         let downloadUrl = process.env.SERVER_DOMAIN + '/' + response.zipArchivePath;
