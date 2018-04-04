@@ -35,7 +35,7 @@ exports.createUser = (req, res, next) => {
                                 req.session.user = {
                                     email: email
                                 }
-                                
+
                                 res.redirect('/account/login');
                                 // res.status(201).json({
                                 //     message: 'Account successfully created.',
@@ -110,6 +110,11 @@ exports.loginUser = (req, res, next) => {
         });
 };
 
+
+exports.logoutUser = (req, res, next) => {
+    req.session = null;
+    res.render('home');    
+};
 
 exports.getRegisterPage = (req, res, next) => {
     res.render('account/register');
