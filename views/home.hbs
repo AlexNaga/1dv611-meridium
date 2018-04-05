@@ -17,7 +17,7 @@
                     <div class="field">
                         <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="url" required name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
+                            <input class="input" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-link"></i>
                             </span>
@@ -26,7 +26,7 @@
                     <div class="field">
                         <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="text" required name="excludePaths" placeholder="Ange en sida" value="/fredag">
+                            <input class="input" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-unlink"></i>
                             </span>
@@ -48,7 +48,7 @@
                         <label class="label">Sidstruktur</label>
                         <div class="control has-icons-left">
                             <div class="select">
-                                <select>
+                                <select name="structure">
                                     <option name="structure" value="0">Site-structure (default)</option>
                                     <option name="structure" value="1">HTML in web/, images/other files in web/images/</option>
                                     <option name="structure" value="2">HTML in web/HTML, images/other in web/images</option>

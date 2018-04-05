@@ -3,6 +3,7 @@ const { URL } = require('url');
 const { execFile } = require('child_process');
 const fs = require('fs-extra');
 const moment = require('moment');
+const path = require('path');
 
 /**
  *
@@ -16,78 +17,56 @@ function archive(settings, callback) {
 
     let id = `${hostname}_${timestamp}_${randomInt}`;
 
-    let baseFolder = `./${id}/`;
-    let folderToZip = `./${id}/${hostname}`;
-    let zipPath = `./${id}/${hostname}.zip`;
-    let zipArchivePath = `./archives/${id}.zip`;
+    let archivesPath = path.join(__dirname + '/../../archives');
 
-    let httrack = './httrack/httrack.exe'; // For Windows OS
-    if (process.env.IS_RUNNING_LINUX_OS === 'true') {
-        httrack = 'httrack';  // For Linux OS
+    let crawlSettings = {
+        isLinux: process.env.IS_RUNNING_LINUX_OS,
+        url: settings.url,
+        outputPath: `${archivesPath}/${id}`,
+        includeDomains: settings.includeDomains.map(domain => `+*${domain}*`),
+        excludePaths: settings.excludePaths.map(path => `-*${path}*`),
+        robots: settings.robots,
+        structure: settings.structure
     }
+    crawl(crawlSettings, (error, response) => {
+        if (error) return callback(error);
 
-    // let httrackSettings = {
-    //     'url': settings.url, // USER. url to crawl
-    //     '-N': settings.siteStructure, // USER. 0 = default site structure.
-    //     '-O': '/archives', // output dir
-    //     '-q': true, // no questions
-    //     '-A': 100000000000, // maximum transfer rate in bytes/seconds
-    //     '-%c': 10, // maximum number of connections
-    //     // '-%!': false, // crawl without limit. DO NOT USE
-    //     '-C': 0, // cache. 0 = no cache. 1 = cache. 2 = see what works best.
-    //     '-s': settings.metaData, // USER. 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-    //     '-%F': 'Arkivdium', //footer content
-    //     '-f': 2, // 2 = put all logs in a single log file.
-    //     '-*': settings.excludeUrls, // USER. excluding url 
-    //     '+*': settings.includeUrls // USER. including url
-    // }
-    url,            // url to crawl
-    includeDomains, // including urls
-    excludePaths,   // excluding paths
-    robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-    structure       // 0 = default site structure.
+        let folderToZip = `${archivesPath}/${id}`;
+        let zipDest = `${archivesPath}/${id}.zip`;
+        zipFolder(folderToZip, zipDest, (error) => {
+            if (error) return callback(error);
 
-    let includeDomains = settings.includeDomains.map(url => );
-    let excludePaths = settings.excludeUrls.map(url => `-*${url}*`);
+            fs.remove(folderToZip, error => {
+                if (error) return callback(error);
 
-    console.log('Crawling...');
-    execFile(httrack, [
-        settings.url,
-        '-O', id,
-        '-N0',
-        // `-N${settings.siteStructure}`,
-        // `-s${settings.robots}`,
-        // ...excludePaths,
-        '+*https://help.github.com/*',
-        // '-*/Om*',
-        // '-*/jekyll/update/2016/11/17/klar.html*',
-        '-q'
-    ], (error, stdout, stderr) => {
-    // execFile(httrack, [
-    //     url,
-    //     '-O',    // Output
-    //     `${id}`, // Output directory name
-    //     '-q',    // Quiet mode
-    // ], (error, stdout, stderr) => {
-        if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
-
-        console.log('Zipping...');
-        zipFolder(folderToZip, zipPath, (err) => {
-            if (err) return callback(err);
-
-            console.log('Moving zipped folder to archive...');
-            // Move the .zip file and overwrite existing file or directory
-            fs.move(zipPath, zipArchivePath, { overwrite: true }, (err) => {
-                if (err) return callback(err);
-
-                console.log('Deleting original folder...');
-                fs.remove(baseFolder, err => {
-                    if (err) return callback(err);
-
-                    callback(null, { zipArchivePath: zipArchivePath });
-                });
+                callback(null, { zipFile: `${id}.zip` });
             });
         });
+    });
+}
+
+function crawl(settings, callback) {
+    let httrack = './httrack/httrack.exe'; // For Windows OS
+    if (settings.isLinux === 'true') httrack = 'httrack';  // For Linux/Mac OS
+
+    execFile(httrack, [
+        settings.url,               // Url to crawl.
+        '-O', settings.outputPath,  // Output path.
+        ...settings.includeDomains, // Domains to include.
+        ...settings.excludePaths,   // Paths to exclude.
+        `-N${settings.structure}`,  // Site structure. 0 = default site structure.
+        `-s${settings.robots}`,     // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        `-A${100000000000}` ,       // Maximum transfer rate in bytes/seconds.
+        `-%c${10}`,                 // Maximum number of connections/seconds.
+        // '-%!',                   // Crawl without limit. DO NOT USE.
+        `-C${0}`,                   // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
+        '-%F', '<!-- Arkivdium -->',// Footer content.
+        `-f${2}`,                   // 2 = put all logs in a single log file.
+        '-q'                        // Quiet mode. No questions. No log.
+    ], (error, stdout, stderr) => {
+        if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
+
+        callback(null, {});
     });
 }
 
