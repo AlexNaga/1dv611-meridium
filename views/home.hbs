@@ -15,18 +15,18 @@
                         </p>
                     </div>
                     <div class="field">
-                        <label class="label">Subdomän att arkivera</label>
+                        <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="url" required name="subUrl" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
+                            <input class="input" type="url" required name="includingDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-link"></i>
                             </span>
                         </p>
                     </div>
                     <div class="field">
-                        <label class="label">Sidor att exkludera</label>
+                        <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="text" required name="path" placeholder="Ange en sida" value="/fredag">
+                            <input class="input" type="text" required name="excludingPaths" placeholder="Ange en sida" value="/fredag">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-unlink"></i>
                             </span>
@@ -35,13 +35,13 @@
                     <div class="control">
                         <label class="label">Följ robots.txt och meta-taggar</label>
                         <label class="radio">
-                            <input type="radio" name="robots" value="2" checked> Ja
+                            <input type="radio" name="robots" value="0" checked> Ja
                         </label>
                         <label class="radio">
                             <input type="radio" name="robots" value="1"> Ja, men filter överskrider
                         </label>
                         <label class="radio">
-                            <input type="radio" name="robots" value="0"> Nej
+                            <input type="radio" name="robots" value="2"> Nej
                         </label>
                     </div>
                     <div class="field">
@@ -49,12 +49,12 @@
                         <div class="control has-icons-left">
                             <div class="select">
                                 <select>
-                                    <option value="0">Site-structure (default)</option>
-                                    <option value="1">HTML in web/, images/other files in web/images/</option>
-                                    <option value="2">HTML in web/HTML, images/other in web/images</option>
-                                    <option value="3">HTML in web/, images/other in web/</option>
-                                    <option value="4">HTML in web/, images/other in web/xxx, where xxx is the file extension</option>
-                                    <option value="5">Images/other in web/xxx and HTML in web/HTML</option>
+                                    <option name="structure" value="0">Site-structure (default)</option>
+                                    <option name="structure" value="1">HTML in web/, images/other files in web/images/</option>
+                                    <option name="structure" value="2">HTML in web/HTML, images/other in web/images</option>
+                                    <option name="structure" value="3">HTML in web/, images/other in web/</option>
+                                    <option name="structure" value="4">HTML in web/, images/other in web/xxx, where xxx is the file extension</option>
+                                    <option name="structure" value="5">Images/other in web/xxx and HTML in web/HTML</option>
                                 </select>
                                 <div class="icon is-small is-left">
                                     <i class="fas fa-folder"></i>

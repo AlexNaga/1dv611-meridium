@@ -10,15 +10,15 @@ const emailModel = require('../models/emailModel');
 exports.createArchive = (req, res, next) => {
     let url = req.body.url;
     let email = req.body.email;
+    let excludeUrls = req.body.path.replace(/\s+/g, '').split(',');
 
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
     if (validUrl.isUri(req.body.subUrl) === false) return res.send('Invalid sub-url!');
     if (req.body.robots > 2 && req.body.robots < 0) res.send('Invalid robots-settings!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
-    res.render('archives/success');
+    res.render('home');
 
-    let excludeUrls = req.body.path.replace(/\s+/g, '').split(',');
     let httrackSettings = {
         url: req.body.url, // USER. url to crawl
         siteStructure: 0, // USER. 0 = default site structure.

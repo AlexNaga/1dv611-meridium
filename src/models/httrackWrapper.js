@@ -42,14 +42,18 @@ function archive(settings, callback) {
     //     '+*': settings.includeUrls // USER. including url
     // }
     console.log(settings);
+    console.log('asd');
     let excludeUrls = settings.excludeUrls.map(url => `-*${url}*`);
+    console.log('dsa');
+    console.log(excludeUrls);
     execFile(httrack, [
         settings.url,
         '-O', id,
-        `-N${settings.siteStructure}`,
-        `-s${settings.robots}`,
-        ...excludeUrls,
-        // '+https://www2.meridium.se*',
+        '-N0',
+        // `-N${settings.siteStructure}`,
+        // `-s${settings.robots}`,
+        // ...excludeUrls,
+        '+*https://help.github.com/*',
         // '-*/Om*',
         // '-*/jekyll/update/2016/11/17/klar.html*',
         '-q'
@@ -60,6 +64,7 @@ function archive(settings, callback) {
     //     `${id}`, // Output directory name
     //     '-q',    // Quiet mode
     // ], (error, stdout, stderr) => {
+        console.log(error);
         if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
         zipFolder(folderToZip, zipPath, (err) => {
             if (err) return callback(err);
@@ -71,7 +76,6 @@ function archive(settings, callback) {
                 fs.remove(baseFolder, err => {
                     if (err) return callback(err);
 
-                    console.log('Folder deleted.');
                     callback(null, { zipArchivePath: zipArchivePath });
                 });
             });
