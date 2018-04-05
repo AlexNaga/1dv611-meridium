@@ -41,18 +41,23 @@ function archive(settings, callback) {
     //     '-*': settings.excludeUrls, // USER. excluding url 
     //     '+*': settings.includeUrls // USER. including url
     // }
-    console.log(settings);
-    console.log('asd');
-    let excludeUrls = settings.excludeUrls.map(url => `-*${url}*`);
-    console.log('dsa');
-    console.log(excludeUrls);
+    url,            // url to crawl
+    includeDomains, // including urls
+    excludePaths,   // excluding paths
+    robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+    structure       // 0 = default site structure.
+
+    let includeDomains = settings.includeDomains.map(url => );
+    let excludePaths = settings.excludeUrls.map(url => `-*${url}*`);
+
+    console.log('Crawling...');
     execFile(httrack, [
         settings.url,
         '-O', id,
         '-N0',
         // `-N${settings.siteStructure}`,
         // `-s${settings.robots}`,
-        // ...excludeUrls,
+        // ...excludePaths,
         '+*https://help.github.com/*',
         // '-*/Om*',
         // '-*/jekyll/update/2016/11/17/klar.html*',
@@ -64,15 +69,18 @@ function archive(settings, callback) {
     //     `${id}`, // Output directory name
     //     '-q',    // Quiet mode
     // ], (error, stdout, stderr) => {
-        console.log(error);
         if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
+
+        console.log('Zipping...');
         zipFolder(folderToZip, zipPath, (err) => {
             if (err) return callback(err);
 
+            console.log('Moving zipped folder to archive...');
             // Move the .zip file and overwrite existing file or directory
             fs.move(zipPath, zipArchivePath, { overwrite: true }, (err) => {
                 if (err) return callback(err);
 
+                console.log('Deleting original folder...');
                 fs.remove(baseFolder, err => {
                     if (err) return callback(err);
 

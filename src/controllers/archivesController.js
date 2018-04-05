@@ -9,8 +9,11 @@ const emailModel = require('../models/emailModel');
 
 exports.createArchive = (req, res, next) => {
     let url = req.body.url;
+    let includeDomains = req.body.includeDomains.replace(/\s+/g, '').split(',');
+    let excludePaths = req.body.excludePaths.replace(/\s+/g, '').split(',');
+    let robots = req.body.robots;
+    let structure = req.body.structure;
     let email = req.body.email;
-    let excludeUrls = req.body.path.replace(/\s+/g, '').split(',');
 
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
     if (validUrl.isUri(req.body.subUrl) === false) return res.send('Invalid sub-url!');
@@ -20,14 +23,17 @@ exports.createArchive = (req, res, next) => {
     res.render('home');
 
     let httrackSettings = {
-        url: req.body.url, // USER. url to crawl
-        siteStructure: 0, // USER. 0 = default site structure.
-        robots: req.body.robots, // USER. 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        excludeUrls: excludeUrls, // USER. excluding url 
-        includeUrls: req.body.subUrl // USER. including url
+        url,            // url to crawl
+        includeDomains, // including urls
+        excludePaths,   // excluding paths
+        robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        structure       // 0 = default site structure.
     }
+    console.log('Starting archive...');
     httrackWrapper.archive(httrackSettings, (error, response) => {
         if (error) return console.log(error);
+
+        console.log('Archive successful!');
 
         let downloadUrl = process.env.SERVER_DOMAIN + '/' + response.zipArchivePath;
 
@@ -36,6 +42,7 @@ exports.createArchive = (req, res, next) => {
             subject: 'Your archive is ready ✔',
             message: `<p><b>Your archive of ${url} is complete!</b></p><p><a href="${downloadUrl}">Download .zip</a></p>`
         }
+        console.log('Sending mail...');
         emailModel.sendMail(emailSettings, (error, response) => {
             if (error) return console.log(error);
             console.log('Message sent: %s', response.messageId);
