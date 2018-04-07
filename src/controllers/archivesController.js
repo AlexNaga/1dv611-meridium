@@ -20,7 +20,7 @@ exports.createArchive = (req, res, next) => {
     if (req.body.robots > 2 && req.body.robots < 0) return res.send('Invalid robots-settings!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
-    res.render('home');
+    res.status(200).render('home', { flash: 'Archive started. You will recieve an email notification when complete.' });
 
     let httrackSettings = {
         url,            // url to crawl
