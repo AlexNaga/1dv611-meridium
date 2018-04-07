@@ -1,61 +1,69 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const path = require('path');
+// const path = require('path');
 
 const User = require('../models/user');
 
-exports.createUser = (req, res, next) => {
+function throwError(status, message) {
+    let error = new Error(message);
+    error.status = status;
+    throw error;
+}
+
+exports.createUser = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password[0];
 
-    User.find({ email: email })
-        .then(user => {
-            if (user.length >= 1) {
-                return res.status(409).json({
-                    message: 'Account already exists.',
-                    account: email,
-                    id: user[0]._id
-                });
-            } else {
-                bcrypt.hash(password, 10, (err, hash) => {
-                    if (err) {
-                        return res.status(500).json({
-                            error: err
-                        });
-                    } else {
-                        const user = new User({
-                            _id: new mongoose.Types.ObjectId(),
-                            email: email,
-                            password: hash
-                        });
+    try {
+        let user = await User.findOne({ email: email });
+        if (user) throwError(409, 'Account already exists.');
 
-                        user.save()
-                            .then(result => {
-                                req.session.user = {
-                                    email: email
-                                }
+        let hashedPassword = await bcrypt.hash(password, 10);
+        let newUser = new User({ email: email, password: hashedPassword });
+        await newUser.save();
 
-                                res.redirect('/account/login');
-                                // res.status(201).json({
-                                //     message: 'Account successfully created.',
-                                //     createdAccount: {
-                                //         _id: result._id,
-                                //         account: result.user
-                                //     }
-                                // });
-                            });
-                    }
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
+        req.session.user = { email: email };
+
+        // return res.status(200).render('account/login', { flash: 'Account successfully created.' });
+        return res.redirect('/');
+    }
+    catch (error) {
+        return res.status(error.status || 500).render('account/register', { flash: error.message });
+    }
+
+    // User.findOne({ email: email })
+    //     .then(user => {
+    //         if (user) {
+    //             let error = new Error('Account already exists.');
+    //             error.status = 409;
+    //             throw error;
+    //         }
+
+    //         return bcrypt.hash(password, 10);
+    //     })
+    //     .then(hashedPassword => {
+    //         const user = new User({
+    //             _id: new mongoose.Types.ObjectId(),
+    //             email: email,
+    //             password: hashedPassword
+    //         });
+
+    //         return user.save();
+    //     })
+    //     .then(result => {
+    //         req.session.user = {
+    //             email: email
+    //         }
+
+    //         return res.render('account/login', { flash: 'Account successfully created.' });
+    //     })
+    //     .catch(error => {
+    //         return res
+    //         .status(error.status || 500)
+    //         .render('account/register', { flash: error.message });
+    //     });
 };
-
 
 exports.loginUser = (req, res, next) => {
     const email = req.body.email;
@@ -63,53 +71,43 @@ exports.loginUser = (req, res, next) => {
 
     User.findOne({ email: email })
         .then(user => {
-            if (!user) {
-                return res.status(401).json({
-                    message: 'Authentication failed.'
-                });
+            if (user === null) {
+                let error = new Error('Authentication failed.');
+                error.status = 401;
+                throw error;
             }
 
-            bcrypt.compare(password, user.password, (err, result) => {
-                if (err) {
-                    return res.status(401).json({
-                        message: 'Authentication failed.'
-                    });
-                }
-
-                if (result) {
-                    const token = jwt.sign(
-                        {
-                            email: email,
-                            userId: user._id
-                        },
-                        process.env.JWT_KEY,
-                        {
-                            expiresIn: '1h'
-                        }
-                    );
-                    req.session.user = {
-                        email: email
-                    }
-                    return res.redirect('/');
-
-                    // return res.status(200).json({
-                    //     message: 'Authentication is successful.',
-                    //     token: token
-                    // });
-                }
-
-                res.status(401).json({
-                    message: 'Authentication failed.'
-                });
-            });
+            return bcrypt.compare(password, user.password);
         })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
+        .then(result => {
+            if (result === false) {
+                let error = new Error('Authentication failed.');
+                error.status = 401;
+                throw error;
+            }
+
+            // const token = jwt.sign(
+            //     {
+            //         email: email,
+            //         userId: user._id
+            //     },
+            //     process.env.JWT_KEY,
+            //     {
+            //         expiresIn: '1h'
+            //     }
+            // );
+            req.session.user = {
+                email: email
+            }
+
+            return res.redirect('/');
+        })
+        .catch(error => {
+            return res
+            .status(error.status || 500)
+            .render('account/login', { flash: error.message });
         });
 };
-
 
 exports.logoutUser = (req, res, next) => {
     req.session = null;
@@ -119,7 +117,6 @@ exports.logoutUser = (req, res, next) => {
 exports.getRegisterPage = (req, res, next) => {
     res.render('account/register');
 };
-
 
 exports.getLoginPage = (req, res, next) => {
     res.render('account/login');

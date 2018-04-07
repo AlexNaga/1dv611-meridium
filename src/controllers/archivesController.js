@@ -16,7 +16,7 @@ exports.createArchive = (req, res, next) => {
     let email = req.body.email;
 
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
-    if (validUrl.isUri(req.body.subUrl) === false) return res.send('Invalid sub-url!');
+    if (includeDomains.every(domain => validUrl.isUri(domain)) === false) return res.send('Invalid sub-url!');
     if (req.body.robots > 2 && req.body.robots < 0) return res.send('Invalid robots-settings!');
     if (validEmail.validate(email) === false) return res.send('Invalid email!');
 
@@ -27,7 +27,7 @@ exports.createArchive = (req, res, next) => {
         includeDomains, // including urls
         excludePaths,   // excluding paths
         robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        structure: structure       // 0 = default site structure.
+        structure       // 0 = default site structure.
     }
     console.log('Starting archive...');
     httrackWrapper.archive(httrackSettings, (error, response) => {

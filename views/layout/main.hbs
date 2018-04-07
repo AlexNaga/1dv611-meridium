@@ -12,6 +12,9 @@
 
 <body>
     {{> hero }}
+    {{#if flash}}
+        {{> flash }}
+    {{/if}}
     {{> navbar }}
     {{{ body }}}
 </body>
