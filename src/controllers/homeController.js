@@ -1,4 +1,4 @@
 
 exports.home = (req, res, next) => {
-    res.render('home', { username: 'testuser' });
+    res.render('home');
 };

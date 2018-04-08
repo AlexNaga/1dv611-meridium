@@ -1,4 +1,6 @@
-<div class="notification is-info has-text-centered">
+{{#if flash}}
+<div class="notification {{#if flash.success}}is-success{{/if}} {{#if flash.danger}}is-danger{{/if}} {{#if flash.info}}is-info{{/if}} has-text-centered">
     <button class="delete"></button>
-    {{ flash }}
+    {{ flash.message }}
 </div>
+{{/if}}

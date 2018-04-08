@@ -42,6 +42,8 @@ app.use(cookieSession({
 
 app.use((req, res, next) => {
     res.locals.user = req.session.user;
+    res.locals.flash = req.session.flash;
+    req.session.flash = null;
     next();
 });
 

@@ -22,12 +22,14 @@ exports.createUser = async (req, res, next) => {
         await newUser.save();
 
         req.session.user = { email: email };
+        req.session.flash = { message: 'Account successfully created.', success: true };
 
-        // return res.status(200).render('account/login', { flash: 'Account successfully created.' });
         return res.redirect('/');
     }
     catch (error) {
-        return res.status(error.status || 500).render('account/register', { flash: error.message });
+        req.session.flash = { message: error.message, danger: true };
+
+        return res.redirect('/');
     }
 };
 
@@ -43,21 +45,21 @@ exports.loginUser = async (req, res, next) => {
         if (result === false) throwError(401, 'Wrong password.');
 
         req.session.user = { email: email };
-        res.locals.user = req.session.user;
+        req.session.flash = { message: 'Welcome!', success: true };
 
-        // return res.status(200).render('home', { flash: 'Welcome!' });
         return res.redirect('/');
     }
     catch (error) {
-        return res.status(error.status || 500).render('account/login', { flash: error.message });
+        req.session.flash = { message: error.message, danger: true };
+
+        return res.redirect('/');
     }
 };
 
 exports.logoutUser = (req, res, next) => {
-    req.session = null;
-    res.locals.user = null;
-    res.status(200).render('home', { flash: 'You have logged out.' });
-    // res.redirect('/');
+    req.session.user = null;
+    req.session.flash = { message: 'You have logged out.', info: true };
+    res.redirect('/');
 };
 
 exports.getRegisterPage = (req, res, next) => {
