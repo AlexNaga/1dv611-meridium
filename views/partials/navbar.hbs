@@ -23,6 +23,7 @@
 
             {{else}}
             <div class="navbar-start">
+            {{#unless isStartPage}}
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
@@ -35,6 +36,7 @@
                         </p>
                     </div>
                 </div>
+            {{/unless}}
             </div>
 
             <div class="navbar-end">

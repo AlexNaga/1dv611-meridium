@@ -39,10 +39,10 @@ exports.loginUser = async (req, res, next) => {
 
     try {
         let user = await User.findOne({ email: email });
-        if (user === null) throwError(401, 'Could not find a user with that email.');
+        if (user === false) throwError(401, 'Wrong email or password.');
 
         let result = await bcrypt.compare(password, user.password);
-        if (result === false) throwError(401, 'Wrong password.');
+        if (result === false) throwError(401, 'Wrong email or password.');
 
         req.session.user = { email: email };
         req.session.flash = { message: 'Welcome!', success: true };
