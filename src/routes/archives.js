@@ -7,7 +7,7 @@ module.exports = (app, baseRoute) => {
     app.post(baseRoute + '/', ArchivesController.createArchive);
 
     // Lists all archives
-    app.get(baseRoute + '/', checkAuth, ArchivesController.listArchives);
+    app.get(baseRoute + '/', ArchivesController.listArchives);
 
     // Get a specific archive
     app.get(baseRoute + '/:id', ArchivesController.getArchive);
