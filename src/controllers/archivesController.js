@@ -5,7 +5,7 @@ const validEmail = require('email-validator');
 const validUrl = require('valid-url');
 
 const httrackWrapper = require('../models/httrackWrapper');
-const emailModel = require('../models/emailModel');
+const EmailModel = require('../models/emailModel');
 
 exports.createArchive = (req, res, next) => {
     let url = req.body.url;
@@ -44,7 +44,7 @@ exports.createArchive = (req, res, next) => {
             message: `<p><b>Your archive of ${url} is complete!</b></p><p><a href="${downloadUrl}">Download .zip</a></p>`
         }
         console.log('Sending mail...');
-        emailModel.sendMail(emailSettings, (error, response) => {
+        EmailModel.sendMail(emailSettings, (error, response) => {
             if (error) return console.log(error);
             console.log('Mail sent: %s', response.messageId);
         });

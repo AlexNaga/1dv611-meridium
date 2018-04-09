@@ -6,21 +6,21 @@
             <div class="column"></div>
 
             <div class="column">
-                <h1 class="title">Registrera användare</h1>
-                <h2 class="subtitle">Ange din email och lösenord</h2>
+                <h1 class="title">Min profil</h1>
+                <h2 class="subtitle">Uppdatera lösenord</h2>
 
-                <form action="/account/register" method="post">
+                <form action="/account/edit" method="post">
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="email" required name="email" placeholder="Email">
+                            <input class="input" type="password" required name="oldPassword" placeholder="Ange ditt gamla lösenord">
                             <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
+                                <i class="fas fa-key"></i>
                             </span>
                         </p>
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord"
+                            <input class="input" type="password" id="password" required placeholder="Ange ditt nya lösenord"
                                 onkeyup="validatePass(); return false;">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
+                            <input class="input" type="password" id="passwordConfirm" required name="newPassword" placeholder="Ange ditt nya lösenord igen"
                                 onkeyup="validatePass(); return false;">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
@@ -43,9 +43,9 @@
                         <p class="control">
                             <button type="submit" class="button is-info" disabled id="submitBtn">
                                 <span class="icon is-small">
-                                    <i class="fas fa-sign-in-alt"></i>
+                                    <i class="fas fa-wrench"></i>
                                 </span>
-                                <span>Registrera</span>
+                                <span>Uppdatera</span>
                             </button>
                         </p>
                     </div>

@@ -4,9 +4,36 @@
         <div class="navbar-menu">
 
             {{#if user}}
-            <div class="navbar-start"></div>
+            <div class="navbar-start">
+                {{#unless isStartPage}}
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-link" href="/">
+                                <span class="icon">
+                                    <i class="fas fa-home"></i>
+                                </span>
+                                <span>Hem</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                {{/unless}}
+                <p class='navbar-item'>Inloggad som, {{user.email}}</p>
+            </div>
             <div class="navbar-end">
-                <p class='navbar-item'>Välkommen, {{user.email}}</p>
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-info" href="/account/edit">
+                                <span class="icon">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <span>Min profil</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
@@ -23,7 +50,7 @@
 
             {{else}}
             <div class="navbar-start">
-            {{#unless isStartPage}}
+                {{#unless isStartPage}}
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
@@ -36,7 +63,7 @@
                         </p>
                     </div>
                 </div>
-            {{/unless}}
+                {{/unless}}
             </div>
 
             <div class="navbar-end">
@@ -52,7 +79,7 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">

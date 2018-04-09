@@ -2,20 +2,24 @@ const UserController = require('../controllers/userController');
 
 module.exports = (app, baseRoute) => {
 
-    // Send register view
+    // Views
+    app.get(baseRoute + '/edit', UserController.getEditPage);
+    app.get(baseRoute + '/login', UserController.getLoginPage);
     app.get(baseRoute + '/register', UserController.getRegisterPage);
+    app.get(baseRoute + '/password_reset', UserController.getPasswordResetPage);
+
 
     // Create a user
     app.post(baseRoute + '/register', UserController.createUser);
-
-    // Send login view
-    app.get(baseRoute + '/login', UserController.getLoginPage);
 
     // Authenticate a user
     app.post(baseRoute + '/login', UserController.loginUser);
 
     // Edit a user
     app.post(baseRoute + '/edit', UserController.editUser);
+
+    // Reset user password
+    app.post(baseRoute + '/password_reset', UserController.resetPassword);
 
     // Destroy a user session
     app.get(baseRoute + '/logout', UserController.logoutUser);
