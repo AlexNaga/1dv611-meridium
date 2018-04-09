@@ -104,7 +104,7 @@ exports.resetPassword = (req, res, next) => {
 
     req.session.flash = { message: 'Återställningslänk skickad.', info: true };
     res.redirect('/');
-};
+}; 
 
 exports.logoutUser = (req, res, next) => {
     req.session.user = null;
