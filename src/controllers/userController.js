@@ -63,7 +63,7 @@ exports.logoutUser = (req, res, next) => {
 };
 
 exports.getRegisterPage = (req, res, next) => {
-    res.render('account/register');
+    res.render('account/register', { isRegisterPage: true });
 };
 
 exports.getLoginPage = (req, res, next) => {
