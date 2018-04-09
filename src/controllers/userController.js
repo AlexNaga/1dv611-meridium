@@ -58,16 +58,21 @@ exports.loginUser = async (req, res, next) => {
 
 exports.editUser = async (req, res, next) => {
     const email = req.body.email;
-    const password = req.body.password;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const updateParams = {
         password: hashedPassword
     };
 
     try {
-        let user = await User.findOneAndUpdate({ email: email }, { $set: updateParams }, { new: true });
-        await user.save();
+        let user = await User.findOne({ email: email });        
+        let result = await bcrypt.compare(oldPassword, user.password);
+        if (result === false) throwError(401, 'Wrong password.');
+
+        let updateUser = await User.findOneAndUpdate({ email: email }, { $set: updateParams }, { new: true });
+        await updateUser.save();
 
         req.session.flash = { message: 'Password updated successfully!', success: true };
 
