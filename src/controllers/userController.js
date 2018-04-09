@@ -52,6 +52,35 @@ exports.loginUser = async (req, res, next) => {
     catch (error) {
         req.session.flash = { message: error.message, danger: true };
 
+        return res.redirect('/account/login');
+    }
+};
+
+exports.editUser = async (req, res, next) => {
+    const email = req.body.email;
+    const oldPassword = req.body.oldPassword;
+    const newPassword = req.body.newPassword;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const updateParams = {
+        password: hashedPassword
+    };
+
+    try {
+        let user = await User.findOne({ email: email });        
+        let result = await bcrypt.compare(oldPassword, user.password);
+        if (result === false) throwError(401, 'Wrong password.');
+
+        let updateUser = await User.findOneAndUpdate({ email: email }, { $set: updateParams }, { new: true });
+        await updateUser.save();
+
+        req.session.flash = { message: 'Password updated successfully!', success: true };
+
+        return res.redirect('/');
+    }
+    catch (error) {
+        req.session.flash = { message: error.message, danger: true };
+
         return res.redirect('/');
     }
 };

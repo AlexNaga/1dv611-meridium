@@ -14,6 +14,9 @@ module.exports = (app, baseRoute) => {
     // Authenticate a user
     app.post(baseRoute + '/login', UserController.loginUser);
 
+    // Edit a user
+    app.post(baseRoute + '/edit', UserController.editUser);
+
     // Destroy a user session
     app.get(baseRoute + '/logout', UserController.logoutUser);
 
