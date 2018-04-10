@@ -1,6 +1,12 @@
 {{#if flash}}
-<div class="notification {{#if flash.success}}is-success{{/if}} {{#if flash.danger}}is-danger{{/if}} {{#if flash.info}}is-info{{/if}} has-text-centered">
-    <button class="delete"></button>
-    {{ flash.message }}
+<div class="columns">
+    <div class="column"> </div>
+    <div class="column">
+        <div class="notification {{#if flash.success}}is-success{{/if}} {{#if flash.danger}}is-danger{{/if}} {{#if flash.info}}is-info{{/if}} has-text-centered">
+            <button class="delete"></button>
+            {{ flash.message }}
+        </div>
+    </div>
+    <div class="column"> </div>
 </div>
 {{/if}}
