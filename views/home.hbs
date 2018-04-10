@@ -84,26 +84,9 @@
                     </div>
                 </form>
             </div>
-            <div class="column">
-                <div class="field">
-                    <h3 class="subtitle is-3">Senaste 10 arkiveringar</h3>
-                    <p id="recent-list" class="control">
-                    </p>
-                    <nav class="pagination" role="navigation" aria-label="pagination">
-                        <a id="list-previous" class="pagination-previous">Föregående</a>
-                        <a id="list-next" class="pagination-next">Nästa</a>
-                        <!-- <ul class="pagination-list">
-                                <li>
-                                    <a class="pagination-link" aria-label="Goto page 1">1</a>
-                                </li>
-                                <li>
-                                    <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
-                                </li>
-                            </ul> -->
-                    </nav>
-                </div>
-            </div>
 
+            {{> pagination }}
+            
             {{else}}
             <div class="column"></div>
             <div class="column">

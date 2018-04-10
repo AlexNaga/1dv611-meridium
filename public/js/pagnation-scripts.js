@@ -6,7 +6,7 @@ function getArchiveList(number) {
             if (response.ok) {
                 return response.json();
             } else {
-                throw response;//new Error('Something went wrong');
+                throw response; //new Error('Something went wrong');
             }
         })
         .then(function (data) {
@@ -20,7 +20,6 @@ function getArchiveList(number) {
         .catch(function (err) {
             err.json().then(errorMessage => {
                 console.log(errorMessage);
-
             });
 
         });
@@ -41,7 +40,7 @@ function deleteLink(name) {
     let a = document.createElement('a');
     a.title = 'Delete ' + name;
     a.classList.add('delete');
-    a.addEventListener('click', function () {
+    a.addEventListener('click', () => {
         fetch('/archives/' + name, {
             method: 'DELETE'
         })
@@ -49,7 +48,7 @@ function deleteLink(name) {
                 if (response.ok) {
                     this.parentNode.parentNode.removeChild(this.parentNode);
                 } else {
-                    console.log('something went wrong');
+                    console.log('Something went wrong when trying to delete a link!');
                 }
             });
     });
@@ -58,7 +57,7 @@ function deleteLink(name) {
 
 function createLink(name) {
     let a = document.createElement('a');
-    let linkText = document.createTextNode(name);
+    let linkText = document.createTextNode(name + ' ');
     a.appendChild(linkText);
     a.title = name;
     a.href = '/archives/' + name;
@@ -79,13 +78,13 @@ function getQueryString(key) {
 let listNextButton = document.getElementById('list-next');
 let listPreviousButton = document.getElementById('list-previous');
 
-listNextButton.addEventListener('click', function () {
+listNextButton.addEventListener('click', () => {
     // let page = parseInt(decodeQueryString('page'));
     getArchiveList(++page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
 });
 
-listPreviousButton.addEventListener('click', function () {
+listPreviousButton.addEventListener('click', () => {
     // page = parseInt(decodeQueryString('page'));
     page = --page < 1 ? 0 : page;
     getArchiveList(page);
