@@ -40,7 +40,7 @@ function deleteLink(name) {
     let a = document.createElement('a');
     a.title = 'Delete ' + name;
     a.classList.add('delete');
-    a.addEventListener('click', () => {
+    a.addEventListener('click', function () {
         fetch('/archives/' + name, {
             method: 'DELETE'
         })
@@ -48,7 +48,7 @@ function deleteLink(name) {
                 if (response.ok) {
                     this.parentNode.parentNode.removeChild(this.parentNode);
                 } else {
-                    console.log('Something went wrong when trying to delete a link!');
+                    console.log('Something went wrong when trying to delete an archive');
                 }
             });
     });
@@ -78,18 +78,17 @@ function getQueryString(key) {
 let listNextButton = document.getElementById('list-next');
 let listPreviousButton = document.getElementById('list-previous');
 
-listNextButton.addEventListener('click', () => {
+listNextButton.addEventListener('click', function () {
     // let page = parseInt(decodeQueryString('page'));
     getArchiveList(++page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
 });
 
-listPreviousButton.addEventListener('click', () => {
+listPreviousButton.addEventListener('click', function () {
     // page = parseInt(decodeQueryString('page'));
     page = --page < 1 ? 0 : page;
     getArchiveList(page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
-
 });
 
 getArchiveList(page);
