@@ -46,7 +46,7 @@ exports.loginUser = async (req, res, next) => {
         if (result === false) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
         req.session.user = { email: email };
-        req.session.flash = { message: 'Välkommen!', success: true };
+        req.session.flash = { message: `Välkommen, ${email}`, success: true };
 
         return res.redirect('/');
     }
