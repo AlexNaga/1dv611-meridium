@@ -27,7 +27,8 @@ function archive(settings, callback) {
         excludePaths: settings.excludePaths.map(path => `-*${path}*`),
         robots: settings.robots,
         structure: settings.structure
-    }
+    };
+
     crawl(crawlSettings, (error, response) => {
         if (error) return callback(error);
 
@@ -49,7 +50,7 @@ function archive(settings, callback) {
 
 function crawl(settings, callback) {
     let httrack = './httrack/httrack.exe'; // For Windows OS
-    if (settings.isLinux === 'true') httrack = 'httrack';  // For Linux/Mac OS
+    if (settings.isLinux === 'true') httrack = 'httrack';  // For Linux / Mac OS
 
     execFile(httrack, [
         settings.url,                // Url to crawl.
