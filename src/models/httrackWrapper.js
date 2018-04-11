@@ -31,12 +31,14 @@ function archive(settings, callback) {
     crawl(crawlSettings, (error, response) => {
         if (error) return callback(error);
 
-        let folderToZip = `${archivesPath}/${id}`;
+        let folderToZip = `${archivesPath}/${id}/web`;
+        if (crawlSettings.structure === '0') folderToZip = `${archivesPath}/${id}/${hostname}`;
+
         let zipDest = `${archivesPath}/${id}.zip`;
         zipFolder(folderToZip, zipDest, (error) => {
             if (error) return callback(error);
 
-            fs.remove(folderToZip, error => {
+            fs.remove(`${archivesPath}/${id}`, error => {
                 if (error) return callback(error);
 
                 callback(null, { zipFile: `${id}.zip` });
@@ -50,19 +52,19 @@ function crawl(settings, callback) {
     if (settings.isLinux === 'true') httrack = 'httrack';  // For Linux/Mac OS
 
     execFile(httrack, [
-        settings.url,               // Url to crawl.
-        '-O', settings.outputPath,  // Output path.
-        ...settings.includeDomains, // Domains to include.
-        ...settings.excludePaths,   // Paths to exclude.
-        `-N${settings.structure}`,  // Site structure. 0 = default site structure.
-        `-s${settings.robots}`,     // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        `-A${100000000000}` ,       // Maximum transfer rate in bytes/seconds.
-        `-%c${10}`,                 // Maximum number of connections/seconds.
-        // '-%!',                   // Crawl without limit. DO NOT USE.
-        `-C${0}`,                   // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
-        '-%F', '<!-- Arkivdium -->',// Footer content.
-        `-f${2}`,                   // 2 = put all logs in a single log file.
-        '-q'                        // Quiet mode. No questions. No log.
+        settings.url,                // Url to crawl.
+        '-O', settings.outputPath,   // Output path.
+        ...settings.includeDomains,  // Domains to include.
+        ...settings.excludePaths,    // Paths to exclude.
+        `-N${settings.structure}`,   // Site structure. 0 = default site structure.
+        `-s${settings.robots}`,      // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        `-A${100000000000}`,         // Maximum transfer rate in bytes/seconds.
+        `-%c${10}`,                  // Maximum number of connections/seconds.
+        // '-%!',                    // Crawl without limit. DO NOT USE.
+        `-C${0}`,                    // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
+        '-%F', '<!-- Arkivdium -->', // Footer content.
+        `-f${2}`,                    // 2 = put all logs in a single log file.
+        '-q'                         // Quiet mode. No questions. No log.
     ], (error, stdout, stderr) => {
         if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
 
