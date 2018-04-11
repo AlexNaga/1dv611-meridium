@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const EmailModel = require('../models/emailModel');
+const generator = require('generate-password');
 
 function throwError(status, message) {
     let error = new Error(message);
@@ -88,12 +89,18 @@ exports.editUser = async (req, res, next) => {
 
 exports.resetPassword = (req, res, next) => {
     const email = req.body.email;
-    const tempPassword = 'Helloooo';
+    var tempPassword = generator.generate({
+        length: 10,
+        numbers: true
+    });
+
+    let updateUserPassword = await User.findOneAndUpdate({ email: email }, { $set: tempPassword }, { new: true });
+    await updateUserPassword.save();
 
     let emailSettings = {
         email: email,
         subject: 'Återställning av lösenord.',
-        message: `<p><b>Ditt tillfälliga lösenord: ${tempPassword}</b></p>`
+        message: `<p><b>Ditt tillfälliga lösenord: ${tempPassword}</b></p>` + 'För att ändra ditt lösenord, klicka här: http://localhost:3000/acount/edit'
     };
 
     console.log('Sending user password reset mail...');
