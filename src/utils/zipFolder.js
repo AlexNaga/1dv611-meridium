@@ -1,0 +1,36 @@
+let fs = require('fs');
+let archiver = require('archiver');
+
+/**
+ * @param {string} srcFolder Folder to zip
+ * @param {string} zipFilePath Destination
+ * @return {Zip} Filesize in bytes
+ * @typedef {Object} Zip
+ * @property {Object} error
+ * @property {Number} size
+ *
+ *
+ * Original author: https://github.com/sole/node-zip-folder
+ */
+function zipFolder(srcFolder, zipFilePath, callback) {
+    let output = fs.createWriteStream(zipFilePath);
+    let zipArchive = archiver('zip');
+
+    output.on('close', function () {
+        callback(null, zipArchive.pointer()); // sends back filesize in byte
+    });
+
+    zipArchive.pipe(output);
+
+    zipArchive.bulk([
+        { cwd: srcFolder, src: ['**/*'], expand: true }
+    ]);
+
+    zipArchive.finalize(function (err, bytes) {
+        if (err) {
+            callback(err, null);
+        }
+    });
+}
+
+module.exports = zipFolder;

@@ -29,7 +29,8 @@ exports.createUser = async (req, res, next) => {
         await newUser.save();
 
         req.session.user = {
-            email: email
+            email: email,
+            id: newUser._id
         };
         req.session.flash = {
             message: 'Kontot har skapats.',
@@ -61,7 +62,8 @@ exports.loginUser = async (req, res, next) => {
         if (result === false) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
         req.session.user = {
-            email: email
+            email: email,
+            id: user._id
         };
         req.session.flash = {
             message: `Välkommen, ${email}`,
@@ -99,10 +101,10 @@ exports.editUser = async (req, res, next) => {
         let updateUser = await User.findOneAndUpdate({
             email: email
         }, {
-            $set: updateParams
-        }, {
-            new: true
-        });
+                $set: updateParams
+            }, {
+                new: true
+            });
         await updateUser.save();
 
         req.session.flash = {
@@ -145,10 +147,10 @@ exports.resetPassword = async (req, res, next) => {
             let userTempCode = await User.findOneAndUpdate({
                 email: email
             }, {
-                $set: tempValue
-            }, {
-                new: true
-            });
+                    $set: tempValue
+                }, {
+                    new: true
+                });
             await userTempCode.save();
 
             let emailSettings = {
@@ -178,11 +180,11 @@ exports.resetPassword = async (req, res, next) => {
 exports.validateLink = async (req, res, next) => {
     let code = req.params.temporaryCode;
     console.log(code);
-    if(await isValidCode(code)) {
+    if (await isValidCode(code)) {
         return res.render('account/update-password', {
             loadValidation: true
         });
-    }; 
+    };
     req.session.flash = {
         message: 'Länken har utgått!',
         danger: true
@@ -206,7 +208,7 @@ exports.updatePassword = async (req, res, next) => {
     const code = req.params.temporaryCode;
     console.log(req.body);
 
-    if(await !isValidCode(code)) {
+    if (await !isValidCode(code)) {
         req.session.flash = {
             message: 'Länken har utgått!',
             danger: true
@@ -225,10 +227,10 @@ exports.updatePassword = async (req, res, next) => {
         let updateUser = await User.findOneAndUpdate({
             code: code
         }, {
-            $set: updateParams
-        }, {
-            new: true
-        });
+                $set: updateParams
+            }, {
+                new: true
+            });
         await updateUser.save();
 
         req.session.flash = {

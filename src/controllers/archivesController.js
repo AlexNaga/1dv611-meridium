@@ -7,7 +7,7 @@ const prettyFileSize = require('prettysize');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
-// const Archive = require('../models/archive');
+const Archive = require('../models/archive');
 
 exports.createArchive = (req, res, next) => {
     let url = req.body.url;
@@ -34,18 +34,18 @@ exports.createArchive = (req, res, next) => {
     };
 
     console.log('Starting the archiving...');
-    // console.log('user', req.session.user);
-    httrackWrapper.archive(httrackSettings, (error, response) => {
+    httrackWrapper.archive(httrackSettings, req.session.user.id, (error, response) => {
         if (error) return console.log(error);
 
-        console.log('Archive was successful!');
-        // console.log('user', req.session.user);
+        console.log(`Archive ${response.zipFile} was successful!`);
 
-        // let archive = new Archive({
-        //     fileName: response.zipFile,
-        //     // owner: req.session.user._id,
-        //     fileSize: 1000
-        // });
+        let archive = new Archive({
+            fileName: response.zipFile,
+            owner: response.ownerId,
+            fileSize: response.fileSize
+        });
+        archive.save();
+
         let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
 
         let emailSettings = {
@@ -71,21 +71,18 @@ exports.getArchive = (req, res, next) => {
 exports.listArchives = (req, res, next) => {
     let page = req.query.page || 0;
     let itemsPerPage = 10;
-
-    readdir.async.stat('archives', { filter: '*.zip' })
-        .then((files) => {
-            res.status(200).json({
-                archives: files.sort((a, b) => {
-                    // Sort by modification date descending order
-                    return b.mtime - a.mtime || b.path - a.path; // mtime = timestamp last modified. path = filename
-                }).map(archive => {
-                    return {
-                        fileName: archive.path,
-                        fileSize: prettyFileSize(archive.size)
-                    };
-                }).slice(page * itemsPerPage, (page + 1) * itemsPerPage) // Take 10
-            });
-        })
+    Archive.find({ owner: req.session.user.id })
+        .sort({ createdAt: 'desc' })
+        .skip(page * itemsPerPage)
+        .limit(itemsPerPage)
+        .then(data => res.json({
+            archives: data.map(archive => {
+                return {
+                    fileName: archive.fileName,
+                    fileSize: prettyFileSize(archive.fileSize)
+                };
+            })
+        }))
         .catch((err) => {
             res.status(500).json({
                 error: err
@@ -104,10 +101,10 @@ exports.deleteArchive = (req, res, next) => {
                 deleted = deleted[0].split('archives/')[1]; // Only get file name and not the file path
                 console.log('Deleted file:', deleted);
             }
-
-            res.status(200).json({
-                deleted: deleted
-            });
+            return Archive.deleteOne({ fileName: id });
+        })
+        .then(() => {
+            res.sendStatus(200);
         })
         .catch((err) => {
             res.status(500).json({

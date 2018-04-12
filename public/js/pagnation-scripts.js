@@ -1,7 +1,9 @@
 let page = parseInt(getQueryString('page')) || 0;
 
 function getArchiveList(number) {
-    fetch('/archives/?page=' + number)
+    fetch('/archives/?page=' + number, {
+        credentials: 'same-origin', // send cookies for the current domain
+    })
         .then(response => {
             if (response.ok) {
                 return response.json();

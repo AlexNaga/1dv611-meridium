@@ -1,4 +1,5 @@
-const zipFolder = require('zip-folder');
+// const zipFolder = require('zip-folder');
+const zipFolder = require('../utils/zipFolder');
 const { URL } = require('url');
 const { exec } = require('child_process');
 const fs = require('fs-extra');
@@ -11,9 +12,9 @@ const validUrl = require('valid-url');
  * @param {string} settings The settings to archive.
  * @param {function} callback Function to be called when archive is done.
  */
-function archive(settings, callback) {
+function archive(settings, ownerId, callback) {
     let hostname = new URL(settings.url).hostname;
-    let timestamp = moment().format('YYYYMMDD_HHmmss'); // 20180329_222921
+    let timestamp = moment().format('x'); // Unix ms timestamp
 
     let id = `${hostname}_${timestamp}`;
 
@@ -37,13 +38,18 @@ function archive(settings, callback) {
             callback('Httrackwrapper error. Could not find a folder to zip.');
 
         let zipDest = `${archivesPath}/${id}.zip`;
-        zipFolder(folderToZip, zipDest, (error) => {
+        zipFolder(folderToZip, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
             fs.remove(`${archivesPath}/${id}`, error => {
                 if (error) return callback(error);
 
-                callback(null, { zipFile: `${id}.zip`, path: zipDest });
+                callback(null, {
+                    ownerId: ownerId,
+                    zipFile: `${id}.zip`,
+                    fileSize: fileSize,
+                    path: zipDest
+                });
             });
         });
     });
