@@ -13,10 +13,9 @@ const validUrl = require('valid-url');
  */
 function archive(settings, callback) {
     let hostname = new URL(settings.url).hostname;
-    let timestamp = moment().format('YYYY-MM-DD_HH:mm:ss'); // 2018-03-29_22:29:21
-    let randomInt = Math.floor(Math.random() * (99 - 10 + 1) + 10); // Get a random integer between 10 and 99
+    let timestamp = moment().format('YYYYMMDD_HHmmss'); // 20180329_222921
 
-    let id = `${hostname}_${timestamp}_${randomInt}`;
+    let id = `${hostname}_${timestamp}`;
 
     let archivesPath = path.join(__dirname + '/../../archives');
 
@@ -51,9 +50,9 @@ function archive(settings, callback) {
 }
 
 function createCommand(settings) {
-    let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : './httrack/httrack.exe';
+    let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
-    let output      = settings.output;
+    let output      = '"' + settings.output + '"';
     let include     = settings.includeDomains.map(domain => `+*${domain}*`);
     let exclude     = settings.excludePaths.map(path => `-*${path}*`);
     let robots      = settings.robots;
