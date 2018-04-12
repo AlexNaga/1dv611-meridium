@@ -33,6 +33,8 @@ function createList(arrWithFiles) {
     let list = document.createElement('ul');
     for (let i = 0; i < arrWithFiles.length; i++) {
         let archiveName = arrWithFiles[i].path;
+        let archiveSize = Math.round(arrWithFiles[i].size / 1000); // Convert to KB
+
         let li = document.createElement('li');
         let btnContainer = document.createElement('div');
         btnContainer.classList.add('buttons');
@@ -40,56 +42,12 @@ function createList(arrWithFiles) {
         btnContainer.appendChild(deleteBtn(archiveName));
         btnContainer.appendChild(downloadBtn(archiveName));
         btnContainer.appendChild(previewBtn(archiveName));
+        btnContainer.appendChild(sizeInfo(archiveSize));
 
         li.appendChild(btnContainer);
         list.appendChild(li);
     }
     return list;
-}
-
-function previewBtn(archiveName) {
-    let btn = document.createElement('button');
-    let btnText = document.createTextNode(archiveName);
-
-    btn.appendChild(btnText);
-    btn.classList.add('button');
-    btn.classList.add('is-inverted');
-    btn.classList.add('is-link');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-small');
-    btn.classList.add('modal-button');
-    btn.dataset.target = 'previewArchive';
-    btn.title = 'Förhandsgranska arkiv';
-
-    btn.addEventListener('click', () => {
-        fetch('/archives/preview/' + archiveName, {
-            method: 'GET'
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-                let previewContainer = document.querySelector('#previewContainer');
-                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    });
-    return btn;
-}
-
-function downloadBtn(archiveName) {
-    let btn = document.createElement('a');
-    let btnText = document.createTextNode('Ladda ned');
-    btn.appendChild(btnText);
-
-    btn.classList.add('button');
-    btn.classList.add('is-outlined');
-    btn.classList.add('is-primary');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-small');
-    btn.href = '/archives/' + archiveName;
-    btn.title = 'Ladda ned arkiv';
-    return btn;
 }
 
 function deleteBtn(archiveName) {
@@ -137,6 +95,66 @@ function deleteBtn(archiveName) {
     });
     return btn;
 }
+
+function downloadBtn(archiveName) {
+    let btn = document.createElement('a');
+    let btnText = document.createTextNode('Ladda ned');
+    btn.appendChild(btnText);
+
+    btn.classList.add('button');
+    btn.classList.add('is-outlined');
+    btn.classList.add('is-primary');
+    btn.classList.add('is-rounded');
+    btn.classList.add('is-small');
+    btn.href = '/archives/' + archiveName;
+    btn.title = 'Ladda ned arkiv';
+    return btn;
+}
+
+function previewBtn(archiveName) {
+    let btn = document.createElement('button');
+    let btnText = document.createTextNode(archiveName);
+
+    btn.appendChild(btnText);
+    btn.classList.add('button');
+    btn.classList.add('is-inverted');
+    btn.classList.add('is-link');
+    btn.classList.add('is-rounded');
+    btn.classList.add('is-small');
+    btn.classList.add('modal-button');
+    btn.dataset.target = 'previewArchive';
+    btn.title = 'Förhandsgranska arkiv';
+
+    btn.addEventListener('click', () => {
+        fetch('/archives/preview/' + archiveName, {
+            method: 'GET'
+        })
+            .then((resp) => resp.json())
+            .then((data) => {
+                let previewContainer = document.querySelector('#previewContainer');
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
+    return btn;
+}
+
+function sizeInfo(archiveSize) {
+    let btn = document.createElement('button');
+    let btnText = document.createTextNode(archiveSize + ' KB');
+    btn.appendChild(btnText);
+
+    btn.classList.add('button');
+    btn.classList.add('is-outlined');
+    btn.classList.add('is-static');
+    btn.classList.add('is-rounded');
+    btn.classList.add('is-small');
+    btn.title = 'Filstorlek';
+    return btn;
+}
+
 
 function getQueryString(key) {
     if (location.search) {
