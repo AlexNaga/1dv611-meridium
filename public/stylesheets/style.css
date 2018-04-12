@@ -1,3 +1,20 @@
 #recent-list ul li {
     margin-bottom: 10px;
 }
+
+.fade-out {
+    -webkit-animation: fadeout 0.5s linear forwards;
+    -webkit-animation-delay: 5s;
+    animation: fadeout 0.5s linear forwards;
+    animation-delay: 5s;
+}
+
+@-webkit-keyframes fadeout {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
