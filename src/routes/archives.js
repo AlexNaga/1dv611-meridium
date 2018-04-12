@@ -12,6 +12,9 @@ module.exports = (app, baseRoute) => {
     // Get a specific archive
     app.get(baseRoute + '/:id', ArchivesController.getArchive);
 
+    // Preview a specific archive
+    app.get(baseRoute + '/preview/:id', ArchivesController.previewArchive);
+
     // Delete a specific archive
     app.delete(baseRoute + '/:id', ArchivesController.deleteArchive);
 

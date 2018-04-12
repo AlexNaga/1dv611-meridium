@@ -3,6 +3,7 @@ const path = require('path');
 const readdir = require('readdir-enhanced');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
+const StreamZip = require('node-stream-zip');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -50,6 +51,7 @@ exports.createArchive = (req, res, next) => {
         });
     });
 };
+
 
 exports.getArchive = (req, res, next) => {
     let id = req.params.id;
@@ -100,4 +102,29 @@ exports.deleteArchive = (req, res, next) => {
                 error: err
             });
         });
+};
+
+
+exports.previewArchive = (req, res, next) => {
+    let id = req.params.id;
+
+    const zip = new StreamZip({
+        file: 'archives/' + id,
+        storeEntries: true
+    });
+
+    // Handle errors
+    zip.on('error', err => {
+        console.log(err);
+    });
+
+    zip.on('ready', () => {
+        console.log('Entries read: ' + zip.entriesCount);
+        for (const entry of Object.values(zip.entries())) {
+            const desc = entry.isDirectory ? 'directory' : `${entry.size} bytes`;
+            console.log(`Entry ${entry.name}: ${desc}`);
+        }
+        // Do not forget to close the file once you're done
+        zip.close();
+    });
 };
