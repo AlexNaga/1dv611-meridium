@@ -1,4 +1,19 @@
 <div class="column">
+    <div id="previewArchive" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title"></p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <iframe id="previewContainer" width="100%" height="600px">
+                    <p>Your browser does not support iframes.</p>
+                </iframe>
+            </section>
+        </div>
+    </div>
+
     <div id="confirmDel" class="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
@@ -21,8 +36,18 @@
         <p id="recent-list" class="control"></p>
         <br>
         <nav class="pagination" role="navigation" aria-label="pagination">
-            <a id="list-previous" class="pagination-previous">Föregående</a>
-            <a id="list-next" class="pagination-next">Nästa</a>
+            <button id="list-previous" class="button pagination-previous">
+                <span class="icon">
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+                <span>Föregående</span>
+            </button>
+            <button id="list-next" class="button pagination-next">
+                <span>Nästa</span>
+                <span class="icon">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </button>
             <!-- <ul class="pagination-list">
                 <li>
                     <a class="pagination-link" aria-label="Goto page 1">1</a>

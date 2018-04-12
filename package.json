@@ -20,6 +20,7 @@
     "fs-extra": "^5.0.0",
     "generate-password": "^1.4.0",
     "jsonwebtoken": "^8.2.0",
+    "jszip": "^3.1.5",
     "moment": "^2.21.0",
     "mongoose": "^5.0.12",
     "mongoose-timestamp": "^0.6.0",

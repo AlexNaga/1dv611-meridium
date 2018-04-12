@@ -51,6 +51,7 @@ exports.createArchive = (req, res, next) => {
     });
 };
 
+
 exports.getArchive = (req, res, next) => {
     let id = req.params.id;
     res.status(200).sendFile(path.join(__dirname + '/../../archives/' + id));
@@ -100,4 +101,27 @@ exports.deleteArchive = (req, res, next) => {
                 error: err
             });
         });
+};
+
+
+exports.previewArchive = (req, res, next) => {
+    let id = req.params.id;
+    var fs = require('fs');
+    var JSZip = require('jszip');
+
+    // read a zip file
+    fs.readFile('archives/' + id, function (err, data) {
+        if (err) throw err;
+        JSZip.loadAsync(data).then(function (zip) {
+            let str = zip.file('index.html').async('string')
+                .then(result => {
+                    res.status(200).json({
+                        html: result
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    });
 };

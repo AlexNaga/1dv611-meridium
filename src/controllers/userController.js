@@ -202,6 +202,7 @@ isValidCode = async (code) => {
     return false;
 }
 
+<<<<<<< HEAD
 exports.updatePassword = async (req, res, next) => {
     const code = req.params.temporaryCode;
     console.log(req.body);
@@ -243,6 +244,10 @@ exports.updatePassword = async (req, res, next) => {
         };
         return res.redirect('/account/reset-password/' + code);
     }
+=======
+    req.session.flash = { message: 'Återställningslänk skickad.', info: true };
+    res.redirect('/');
+>>>>>>> 97c06555cecceac95340bc53fa3313233ff72df5
 };
 
 exports.logoutUser = (req, res, next) => {
