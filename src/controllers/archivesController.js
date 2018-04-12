@@ -7,7 +7,7 @@ const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 
-exports.createArchive = (req, res, next) => {
+exports.createArchive = (req, res) => {
     let url = req.body.url;
     let includeDomains = req.body.includeDomains.replace(/\s+/g, '').split(',');
     let excludePaths = req.body.excludePaths.replace(/\s+/g, '').split(',');
@@ -55,13 +55,13 @@ exports.createArchive = (req, res, next) => {
 };
 
 
-exports.getArchive = (req, res, next) => {
+exports.getArchive = (req, res) => {
     let id = req.params.id;
     res.status(200).sendFile(path.join(__dirname + '/../../archives/' + id));
 };
 
 
-exports.listArchives = (req, res, next) => {
+exports.listArchives = (req, res) => {
     let page = req.query.page || 0;
     let itemsPerPage = 10;
     Archive.find({ owner: req.session.user.id })
@@ -77,7 +77,7 @@ exports.listArchives = (req, res, next) => {
 };
 
 
-exports.deleteArchive = (req, res, next) => {
+exports.deleteArchive = (req, res) => {
     let id = req.params.id;
 
     del.promise(['archives/' + id])
@@ -100,7 +100,7 @@ exports.deleteArchive = (req, res, next) => {
 };
 
 
-exports.previewArchive = (req, res, next) => {
+exports.previewArchive = (req, res) => {
     let id = req.params.id;
     var fs = require('fs');
     var JSZip = require('jszip');

@@ -1,4 +1,4 @@
 
-exports.home = (req, res, next) => {
+exports.home = (req, res) => {
     res.render('home', { isStartPage: true });
 };

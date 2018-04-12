@@ -11,7 +11,7 @@ function throwError(status, message) {
     throw error;
 }
 
-exports.createUser = async (req, res, next) => {
+exports.createUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password[0];
 
@@ -48,7 +48,7 @@ exports.createUser = async (req, res, next) => {
     }
 };
 
-exports.loginUser = async (req, res, next) => {
+exports.loginUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -81,7 +81,7 @@ exports.loginUser = async (req, res, next) => {
     }
 };
 
-exports.editUser = async (req, res, next) => {
+exports.editUser = async (req, res) => {
     const email = req.session.user.email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
@@ -123,7 +123,7 @@ exports.editUser = async (req, res, next) => {
     }
 };
 
-exports.resetPassword = async (req, res, next) => {
+exports.resetPassword = async (req, res) => {
     const email = req.body.email;
     let user = await User.findOne({
         email: email
@@ -177,7 +177,7 @@ exports.resetPassword = async (req, res, next) => {
     }
 };
 
-exports.validateLink = async (req, res, next) => {
+exports.validateLink = async (req, res) => {
     let code = req.params.temporaryCode;
     console.log(code);
     if (await isValidCode(code)) {
@@ -204,7 +204,7 @@ isValidCode = async (code) => {
     return false;
 }
 
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = async (req, res) => {
     const code = req.params.temporaryCode;
     console.log(req.body);
 
@@ -247,7 +247,7 @@ exports.updatePassword = async (req, res, next) => {
     }
 };
 
-exports.logoutUser = (req, res, next) => {
+exports.logoutUser = (req, res) => {
     req.session.user = null;
     req.session.flash = {
         message: 'Du har blivit utloggad.',
@@ -256,23 +256,23 @@ exports.logoutUser = (req, res, next) => {
     res.redirect('/');
 };
 
-exports.getRegisterPage = (req, res, next) => {
+exports.getRegisterPage = (req, res) => {
     res.render('account/register', {
         loadValidation: true
     });
 };
 
-exports.getLoginPage = (req, res, next) => {
+exports.getLoginPage = (req, res) => {
     res.render('account/login');
 };
 
-exports.getEditPage = (req, res, next) => {
+exports.getEditPage = (req, res) => {
     res.render('account/profile', {
         loadValidation: true
     });
 };
 
-exports.getPasswordResetPage = (req, res, next) => {
+exports.getPasswordResetPage = (req, res) => {
     res.render('account/forgot-password', {
         loadValidation: true
     });

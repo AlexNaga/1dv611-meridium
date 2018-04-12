@@ -34,6 +34,7 @@ function getArchiveList(number) {
 function createList(arrWithFiles) {
     let list = document.createElement('ul');
     for (let i = 0; i < arrWithFiles.length; i++) {
+        let archiveId = arrWithFiles[i]._id;
         let archiveName = arrWithFiles[i].fileName;
         let archiveSize = arrWithFiles[i].fileSize; // Convert to KB
 
@@ -41,7 +42,7 @@ function createList(arrWithFiles) {
         let btnContainer = document.createElement('div');
         btnContainer.classList.add('buttons');
 
-        btnContainer.appendChild(deleteBtn(archiveName));
+        btnContainer.appendChild(deleteBtn(archiveId));
         btnContainer.appendChild(downloadBtn(archiveName));
         btnContainer.appendChild(previewBtn(archiveName));
         btnContainer.appendChild(sizeInfo(archiveSize));
@@ -52,7 +53,7 @@ function createList(arrWithFiles) {
     return list;
 }
 
-function deleteBtn(archiveName) {
+function deleteBtn(archiveId) {
     let btn = document.createElement('button');
     btn.classList.add('button');
     btn.classList.add('is-inverted');
@@ -82,7 +83,7 @@ function deleteBtn(archiveName) {
 
         let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
-            fetch('/archives/' + archiveName, {
+            fetch('/archives/' + archiveId, {
                 method: 'DELETE'
             })
                 .then(response => {
