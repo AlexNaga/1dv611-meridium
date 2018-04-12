@@ -1,9 +1,10 @@
 const zipFolder = require('zip-folder');
 const { URL } = require('url');
-const { execFile } = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
+const validUrl = require('valid-url');
 
 /**
  *
@@ -19,21 +20,22 @@ function archive(settings, callback) {
 
     let archivesPath = path.join(__dirname + '/../../archives');
 
-    let crawlSettings = {
-        isLinux: process.env.IS_RUNNING_LINUX_OS,
-        url: settings.url,
-        outputPath: `${archivesPath}/${id}`,
-        includeDomains: settings.includeDomains.map(domain => `+*${domain}*`),
-        excludePaths: settings.excludePaths.map(path => `-*${path}*`),
-        robots: settings.robots,
-        structure: settings.structure
-    };
+    let command = '';
+    if (typeof settings === 'string')
+        command = settings;
+    else
+        command = createCommand({ output: `${archivesPath}/${id}`, ...settings });
 
-    crawl(crawlSettings, (error, response) => {
+    exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
-        let folderToZip = `${archivesPath}/${id}/web`;
-        if (crawlSettings.structure === '0') folderToZip = `${archivesPath}/${id}/${hostname}`;
+        let folderToZip = '';
+        if (fs.existsSync(`${archivesPath}/${id}/web`))
+            folderToZip = `${archivesPath}/${id}/web`;
+        else if (fs.existsSync(`${archivesPath}/${id}/${hostname}`))
+            folderToZip = `${archivesPath}/${id}/${hostname}`;
+        else
+            callback('Httrackwrapper error. Could not find a folder to zip.');
 
         let zipDest = `${archivesPath}/${id}.zip`;
         zipFolder(folderToZip, zipDest, (error) => {
@@ -42,35 +44,39 @@ function archive(settings, callback) {
             fs.remove(`${archivesPath}/${id}`, error => {
                 if (error) return callback(error);
 
-                callback(null, { zipFile: `${id}.zip` });
+                callback(null, { zipFile: `${id}.zip`, path: zipDest });
             });
         });
     });
 }
 
-function crawl(settings, callback) {
-    let httrack = './httrack/httrack.exe'; // For Windows OS
-    if (settings.isLinux === 'true') httrack = 'httrack';  // For Linux / Mac OS
+function createCommand(settings) {
+    let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : './httrack/httrack.exe';
+    let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
+    let output      = settings.output;
+    let include     = settings.includeDomains.map(domain => `+*${domain}*`);
+    let exclude     = settings.excludePaths.map(path => `-*${path}*`);
+    let robots      = settings.robots;
+    let structure   = settings.structure;
 
-    execFile(httrack, [
-        settings.url,                // Url to crawl.
-        '-O', settings.outputPath,   // Output path.
-        ...settings.includeDomains,  // Domains to include.
-        ...settings.excludePaths,    // Paths to exclude.
-        `-N${settings.structure}`,   // Site structure. 0 = default site structure.
-        `-s${settings.robots}`,      // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        `-A${100000000000}`,         // Maximum transfer rate in bytes/seconds.
-        `-%c${10}`,                  // Maximum number of connections/seconds.
-        // '-%!',                    // Crawl without limit. DO NOT USE.
-        `-C${0}`,                    // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
-        '-%F', '<!-- Arkivdium -->', // Footer content.
-        `-f${2}`,                    // 2 = put all logs in a single log file.
-        '-q'                         // Quiet mode. No questions. No log.
-    ], (error, stdout, stderr) => {
-        if (error) return callback(new Error(stderr.trim() + '. Command: ' + error.cmd));
+    let command = [
+        httrack,
+        url,                            // Url to crawl.
+        '-O', output,                   // Output path.
+        ...include,                     // Domains to include.
+        ...exclude,                     // Paths to exclude.
+        `-s${robots}`,                  // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        `-N${structure}`,               // Site structure. 0 = default site structure.
+        `-A${100000000000}`,            // Maximum transfer rate in bytes/seconds.
+        `-%c${10}`,                     // Maximum number of connections/seconds.
+        // '-%!',                       // Crawl without limit. DO NOT USE.
+        `-C${0}`,                       // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
+        '-%F', '"<!-- Arkivdium -->"',  // Footer content.
+        `-f${2}`,                       // 2 = put all logs in a single log file.
+        '-q'                            // Quiet mode. No questions. No log.
+    ];
 
-        callback(null, {});
-    });
+    return command.join(' ');
 }
 
 module.exports = { archive };
