@@ -1,16 +1,24 @@
 let page = parseInt(getQueryString('page')) || 0;
 
+/**
+ * @param {string} url The resource that you wish to fetch
+ * @param {Object} options An options object containing any custom settings that you want to apply to the request.
+ */
+function fetchUrl(url, options) {
+    let defaultOptions = {
+        credentials: 'same-origin' // send cookies for the current domain
+    };
+    Object.assign(defaultOptions, options); // sent options overrides defaultOptions
+    return fetch(url, defaultOptions)
+        .then(resp => {
+            if (resp.ok) return resp.json();
+
+            throw resp; //new Error('Something went wrong');
+        });
+}
+
 function getArchiveList(number) {
-    fetch('/archives/?page=' + number, {
-        credentials: 'same-origin', // send cookies for the current domain
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw response; //new Error('Something went wrong');
-            }
-        })
+    fetchUrl('/archives/?page=' + number)
         .then(function (data) {
             let myNode = document.getElementById('recent-list');
 
@@ -24,10 +32,6 @@ function getArchiveList(number) {
         })
         .catch(function (err) {
             console.log(err);
-
-            err.json().then(errorMessage => {
-                console.log(errorMessage);
-            });
         });
 }
 
@@ -44,7 +48,7 @@ function createList(arrWithFiles) {
 
         btnContainer.appendChild(deleteBtn(archiveId));
         btnContainer.appendChild(downloadBtn(archiveName));
-        btnContainer.appendChild(previewBtn(archiveName));
+        btnContainer.appendChild(previewBtn(archiveId, archiveName));
         btnContainer.appendChild(sizeInfo(archiveSize));
 
         li.appendChild(btnContainer);
@@ -83,16 +87,16 @@ function deleteBtn(archiveId) {
 
         let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
-            fetch('/archives/' + archiveId, {
+            fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
-                .then(response => {
-                    if (response.ok) {
-                        btn.parentNode.parentNode.removeChild(btn.parentNode);
-                        removeConfirmDeletion();
-                    } else {
-                        console.log('Something went wrong when trying to delete an archive');
-                    }
+                .then(() => {
+                    btn.parentNode.parentNode.removeChild(btn.parentNode);
+                    removeConfirmDeletion();
+                })
+                .catch(function (err) {
+                    console.log('Something went wrong when trying to delete an archive');
+                    console.log(err);
                 });
         });
     });
@@ -114,7 +118,7 @@ function downloadBtn(archiveName) {
     return btn;
 }
 
-function previewBtn(archiveName) {
+function previewBtn(archiveId, archiveName) {
     let btn = document.createElement('button');
     let btnText = document.createTextNode(archiveName);
 
@@ -129,10 +133,9 @@ function previewBtn(archiveName) {
     btn.title = 'Förhandsgranska arkiv';
 
     btn.addEventListener('click', () => {
-        fetch('/archives/preview/' + archiveName, {
+        fetchUrl('/archives/preview/' + archiveId, {
             method: 'GET'
         })
-            .then((resp) => resp.json())
             .then((data) => {
                 let previewContainer = document.querySelector('#previewContainer');
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
@@ -154,11 +157,14 @@ function sizeInfo(archiveSize) {
     btn.classList.add('is-static');
     btn.classList.add('is-rounded');
     btn.classList.add('is-small');
-    btn.title = 'Filstorlek';
+    btn.title = 'Filstorlek ' + archiveSize;
     return btn;
 }
 
-
+/**
+ * Gets the value of the key in the querystring
+ * @param {string} key Key name
+ */
 function getQueryString(key) {
     if (location.search) {
         let search = location.search.substring(1);

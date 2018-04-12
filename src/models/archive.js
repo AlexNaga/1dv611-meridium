@@ -6,7 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const archiveSchema = mongoose.Schema({
     fileName: { type: String, unique: true },
-    owner: { type: ObjectId },
+    ownerId: { type: ObjectId },
     fileSize: { type: String }
 });
 

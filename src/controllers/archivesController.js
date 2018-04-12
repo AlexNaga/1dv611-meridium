@@ -39,7 +39,7 @@ exports.createArchive = (req, res) => {
 
         let archive = new Archive({
             fileName: response.zipFile,
-            owner: response.ownerId,
+            ownerId: response.ownerId,
             fileSize: response.fileSize
         });
         archive.save();
@@ -64,13 +64,14 @@ exports.getArchive = (req, res) => {
 exports.listArchives = (req, res) => {
     let page = req.query.page || 0;
     let itemsPerPage = 10;
-    Archive.find({ owner: req.session.user.id })
+
+    Archive.find({ ownerId: req.session.user.id })
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
         .then(data => res.json({ archives: data }))
         .catch((err) => {
-            res.status(500).json({
+            res.status(400).json({
                 error: err
             });
         });
@@ -81,7 +82,7 @@ exports.deleteArchive = (req, res) => {
     let id = req.params.id;
     const deleteFile = require('util').promisify(fs.unlink);
 
-    Archive.findByIdAndRemove({ _id: id }).exec()
+    Archive.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
             return deleteFile('archives/' + doc.fileName);
         })
@@ -89,7 +90,7 @@ exports.deleteArchive = (req, res) => {
             res.sendStatus(200);
         })
         .catch((err) => {
-            res.status(500).json({
+            res.status(400).json({
                 error: err.code // ENOENT = No such file
             });
         });
@@ -101,19 +102,27 @@ exports.previewArchive = (req, res) => {
     var fs = require('fs');
     var JSZip = require('jszip');
 
-    // read a zip file
-    fs.readFile('archives/' + id, function (err, data) {
-        if (err) throw err;
-        JSZip.loadAsync(data).then(function (zip) {
-            let str = zip.file('index.html').async('string')
-                .then(result => {
-                    res.status(200).json({
-                        html: result
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
+    Archive.findOne({ _id: id, ownerId: req.session.user.id })
+        .then((doc) => {
+            // read a zip file
+            fs.readFile('archives/' + doc.fileName, function (err, data) {
+                if (err) throw err;
+                JSZip.loadAsync(data).then(function (zip) {
+                    let str = zip.file('index.html').async('string')
+                        .then(result => {
+                            res.status(200).json({
+                                html: result
+                            });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
                 });
+            });
+        })
+        .catch((err) => {
+            res.status(400).json({
+                msg: 'No such file'
+            });
         });
-    });
 };
