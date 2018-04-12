@@ -87,7 +87,7 @@ exports.editUser = async (req, res, next) => {
     }
 };
 
-exports.resetPassword = (req, res, next) => {
+exports.resetPassword = async (req, res, next) => {
     const email = req.body.email;
     var tempPassword = generator.generate({
         length: 10,
@@ -111,7 +111,7 @@ exports.resetPassword = (req, res, next) => {
 
     req.session.flash = { message: 'Återställningslänk skickad.', info: true };
     res.redirect('/');
-}; 
+};
 
 exports.logoutUser = (req, res, next) => {
     req.session.user = null;
