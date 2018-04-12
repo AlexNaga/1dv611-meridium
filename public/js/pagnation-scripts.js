@@ -37,9 +37,9 @@ function createList(arrWithFiles) {
         let btnContainer = document.createElement('div');
         btnContainer.classList.add('buttons');
 
-        btnContainer.appendChild(previewBtn(archiveName));
-        btnContainer.appendChild(downloadBtn(archiveName));
         btnContainer.appendChild(deleteBtn(archiveName));
+        btnContainer.appendChild(downloadBtn(archiveName));
+        btnContainer.appendChild(previewBtn(archiveName));
 
         li.appendChild(btnContainer);
         list.appendChild(li);
@@ -57,15 +57,31 @@ function previewBtn(archiveName) {
     btn.classList.add('is-link');
     btn.classList.add('is-rounded');
     btn.classList.add('is-small');
+    btn.classList.add('modal-button');
+    btn.dataset.target = 'previewArchive';
     btn.title = 'Förhandsgranska arkiv';
+
+    btn.addEventListener('click', () => {
+        fetch('/archives/preview/' + archiveName, {
+            method: 'GET'
+        })
+            .then((resp) => resp.json())
+            .then((data) => {
+                let previewContainer = document.querySelector('#previewContainer');
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
     return btn;
 }
 
 function downloadBtn(archiveName) {
     let btn = document.createElement('a');
     let btnText = document.createTextNode('Ladda ned');
-
     btn.appendChild(btnText);
+
     btn.classList.add('button');
     btn.classList.add('is-outlined');
     btn.classList.add('is-primary');
@@ -73,22 +89,6 @@ function downloadBtn(archiveName) {
     btn.classList.add('is-small');
     btn.href = '/archives/' + archiveName;
     btn.title = 'Ladda ned arkiv';
-
-    // btn.addEventListener('click', function () {
-    //     let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
-    //     modalRemoveBtn.addEventListener('click', function () {
-    //         fetch('/archives/' + archiveName, {
-    //             method: 'DELETE'
-    //         })
-    //             .then(response => {
-    //                 if (response.ok) {
-    //                     btn.parentNode.parentNode.removeChild(btn.parentNode);
-    //                 } else {
-    //                     console.log('Something went wrong when trying to delete an archive');
-    //                 }
-    //             });
-    //     });
-    // });
     return btn;
 }
 
@@ -107,9 +107,9 @@ function deleteBtn(archiveName) {
     iconContainer.classList.add('icon');
 
     let icon = document.createElement('i');
+    icon.classList.add('fas');
     icon.classList.add('fa-lg');
     icon.classList.add('fa-times');
-    icon.classList.add('fas');
 
     iconContainer.appendChild(icon);
     btn.appendChild(iconContainer);
@@ -135,7 +135,6 @@ function deleteBtn(archiveName) {
                 });
         });
     });
-
     return btn;
 }
 
@@ -150,16 +149,16 @@ function getQueryString(key) {
     }
 }
 
-let listNextButton = document.getElementById('list-next');
-let listPreviousButton = document.getElementById('list-previous');
+let listNextBtn = document.getElementById('list-next');
+let listPreviousBtn = document.getElementById('list-previous');
 
-listNextButton.addEventListener('click', function () {
+listNextBtn.addEventListener('click', function () {
     // let page = parseInt(decodeQueryString('page'));
     getArchiveList(++page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
 });
 
-listPreviousButton.addEventListener('click', function () {
+listPreviousBtn.addEventListener('click', function () {
     // page = parseInt(decodeQueryString('page'));
     page = --page < 1 ? 0 : page;
     getArchiveList(page);
@@ -201,10 +200,6 @@ function addConfirmDeletion() {
             removeConfirmDeletion();
         }
     });
-
-    function getAll(selector) {
-        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
-    }
 }
 
 function removeConfirmDeletion() {
@@ -215,10 +210,6 @@ function removeConfirmDeletion() {
         modals.forEach((elem) => {
             elem.classList.remove('is-active');
         });
-    }
-
-    function getAll(selector) {
-        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
     }
 
     closeModals();
@@ -235,8 +226,8 @@ function previewArchive() {
             });
         });
     }
+}
 
-    function getAll(selector) {
-        return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
-    }
+function getAll(selector) {
+    return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
 }

@@ -3,7 +3,6 @@ const path = require('path');
 const readdir = require('readdir-enhanced');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
-const StreamZip = require('node-stream-zip');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -107,24 +106,22 @@ exports.deleteArchive = (req, res, next) => {
 
 exports.previewArchive = (req, res, next) => {
     let id = req.params.id;
+    var fs = require('fs');
+    var JSZip = require('jszip');
 
-    const zip = new StreamZip({
-        file: 'archives/' + id,
-        storeEntries: true
-    });
-
-    // Handle errors
-    zip.on('error', err => {
-        console.log(err);
-    });
-
-    zip.on('ready', () => {
-        console.log('Entries read: ' + zip.entriesCount);
-        for (const entry of Object.values(zip.entries())) {
-            const desc = entry.isDirectory ? 'directory' : `${entry.size} bytes`;
-            console.log(`Entry ${entry.name}: ${desc}`);
-        }
-        // Do not forget to close the file once you're done
-        zip.close();
+    // read a zip file
+    fs.readFile('archives/' + id, function (err, data) {
+        if (err) throw err;
+        JSZip.loadAsync(data).then(function (zip) {
+            let str = zip.file('index.html').async('string')
+                .then(result => {
+                    res.status(200).json({
+                        html: result
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
     });
 };
