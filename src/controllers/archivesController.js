@@ -1,5 +1,5 @@
-const del = require('delete');
 const path = require('path');
+const fs = require('fs');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
 
@@ -79,22 +79,18 @@ exports.listArchives = (req, res) => {
 
 exports.deleteArchive = (req, res) => {
     let id = req.params.id;
+    const deleteFile = require('util').promisify(fs.unlink);
 
-    del.promise(['archives/' + id])
-        .then((deleted) => {
-            // If something actually was deleted
-            if (deleted.length > 0) {
-                deleted = deleted[0].split('archives/')[1]; // Only get file name and not the file path
-                console.log('Deleted file:', deleted);
-            }
-            return Archive.deleteOne({ fileName: id });
+    Archive.findByIdAndRemove({ _id: id }).exec()
+        .then((doc) => {
+            return deleteFile('archives/' + doc.fileName);
         })
         .then(() => {
             res.sendStatus(200);
         })
         .catch((err) => {
             res.status(500).json({
-                error: err
+                error: err.code // ENOENT = No such file
             });
         });
 };
