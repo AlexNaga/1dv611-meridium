@@ -32,8 +32,8 @@ function getArchiveList(number) {
 function createList(arrWithFiles) {
     let list = document.createElement('ul');
     for (let i = 0; i < arrWithFiles.length; i++) {
-        let archiveName = arrWithFiles[i].path;
-        let archiveSize = Math.round(arrWithFiles[i].size / 1000); // Convert to KB
+        let archiveName = arrWithFiles[i].fileName;
+        let archiveSize = arrWithFiles[i].fileSize; // Convert to KB
 
         let li = document.createElement('li');
         let btnContainer = document.createElement('div');
@@ -143,7 +143,7 @@ function previewBtn(archiveName) {
 
 function sizeInfo(archiveSize) {
     let btn = document.createElement('button');
-    let btnText = document.createTextNode(archiveSize + ' KB');
+    let btnText = document.createTextNode(archiveSize);
     btn.appendChild(btnText);
 
     btn.classList.add('button');
