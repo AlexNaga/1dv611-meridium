@@ -9,8 +9,7 @@ let archiver = require('archiver');
  * @property {Object} error
  * @property {Number} size
  *
- *
- * Original author: https://github.com/sole/node-zip-folder
+ * Slightly modified from original source: https://github.com/sole/node-zip-folder
  */
 function zipFolder(srcFolder, zipFilePath, callback) {
     let output = fs.createWriteStream(zipFilePath);
@@ -26,7 +25,7 @@ function zipFolder(srcFolder, zipFilePath, callback) {
         { cwd: srcFolder, src: ['**/*'], expand: true }
     ]);
 
-    zipArchive.finalize(function (err, bytes) {
+    zipArchive.finalize(function (err) {
         if (err) {
             callback(err, null);
         }

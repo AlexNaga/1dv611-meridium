@@ -1,4 +1,3 @@
-// const zipFolder = require('zip-folder');
 const zipFolder = require('../utils/zipFolder');
 const { URL } = require('url');
 const { exec } = require('child_process');

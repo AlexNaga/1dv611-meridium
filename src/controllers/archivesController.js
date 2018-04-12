@@ -1,9 +1,7 @@
 const del = require('delete');
 const path = require('path');
-const readdir = require('readdir-enhanced');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
-const prettyFileSize = require('prettysize');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -46,18 +44,13 @@ exports.createArchive = (req, res, next) => {
         });
         archive.save();
 
-        let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
-
         let emailSettings = {
             email: email,
-            subject: 'Arkiveringen är klar ✔',
-            message: `<p><b>Din arkivering av <a href="${url}">${url}</a> är klar!</b></p><p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
+            url: url,
+            downloadUrl: process.env.SERVER_DOMAIN + '/archives/' + response.zipFile
         };
 
-        EmailModel.sendMail(emailSettings, (error, response) => {
-            if (error) return console.log(error);
-            console.log('Email sent: %s', response.messageId);
-        });
+        EmailModel.sendMail(emailSettings);
     });
 };
 
@@ -75,14 +68,7 @@ exports.listArchives = (req, res, next) => {
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
-        .then(data => res.json({
-            archives: data.map(archive => {
-                return {
-                    fileName: archive.fileName,
-                    fileSize: prettyFileSize(archive.fileSize)
-                };
-            })
-        }))
+        .then(data => res.json({ archives: data }))
         .catch((err) => {
             res.status(500).json({
                 error: err

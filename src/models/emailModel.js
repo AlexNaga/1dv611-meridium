@@ -1,9 +1,10 @@
 var nodemailer = require('nodemailer');
 
-function sendMail(settings, callback) {
-    let email = settings.email;
-    let subject = settings.subject;
-    let message = settings.message;
+function sendMail(settings) {
+    settings.subject = 'Arkiveringen är klar ✔';
+    settings.message = `<p><b>Din arkivering av
+        <a href="${settings.url}">${settings.url}</a> är klar!</b></p>
+        <p><a href="${settings.downloadUrl}">Ladda ned som .zip</a></p>`;
 
     var transporter = nodemailer.createTransport({
         host: 'smtp@gmail.com',
@@ -18,13 +19,18 @@ function sendMail(settings, callback) {
 
     let mailOptions = {
         from: 'kurs1dv611@gmail.com',
-        to: email,
-        subject: subject,
-        html: message
+        to: settings.email,
+        subject: settings.subject,
+        html: settings.message
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
-        callback(error, info);
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log('Email sent:', info.messageId);
+        }
     });
 }
 
