@@ -3,7 +3,6 @@ const AccountController = require('../controllers/accountController');
 module.exports = (app, baseRoute) => {
 
     // Views
-    app.get(baseRoute + '/edit', AccountController.getEditPage);
     app.get(baseRoute + '/login', AccountController.getLoginPage);
     app.get(baseRoute + '/register', AccountController.getRegisterPage);
     app.get(baseRoute + '/forgot-password', AccountController.getPasswordResetPage);
@@ -14,9 +13,6 @@ module.exports = (app, baseRoute) => {
 
     // Authenticate a user
     app.post(baseRoute + '/login', AccountController.loginUser);
-
-    // Edit a user
-    app.post(baseRoute + '/edit', AccountController.editUser);
 
     // Reset user password
     app.post(baseRoute + '/forgot-password', AccountController.resetPassword);

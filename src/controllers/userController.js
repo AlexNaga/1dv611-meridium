@@ -47,13 +47,13 @@ exports.editUser = async (req, res) => {
             danger: true
         };
 
-        return res.redirect('/account/edit');
+        return res.redirect('/profile/edit');
     }
 };
 
 
 exports.getEditPage = (req, res) => {
-    res.render('account/profile', {
+    res.render('profile/edit', {
         loadValidation: true
     });
 };
