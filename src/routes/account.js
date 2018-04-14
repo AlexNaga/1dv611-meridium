@@ -1,31 +1,31 @@
-const UserController = require('../controllers/userController');
+const AccountController = require('../controllers/accountController');
 
 module.exports = (app, baseRoute) => {
 
     // Views
-    app.get(baseRoute + '/edit', UserController.getEditPage);
-    app.get(baseRoute + '/login', UserController.getLoginPage);
-    app.get(baseRoute + '/register', UserController.getRegisterPage);
-    app.get(baseRoute + '/forgot-password', UserController.getPasswordResetPage);
-    app.get(baseRoute + '/reset-password/:temporaryCode', UserController.validateLink);
+    app.get(baseRoute + '/edit', AccountController.getEditPage);
+    app.get(baseRoute + '/login', AccountController.getLoginPage);
+    app.get(baseRoute + '/register', AccountController.getRegisterPage);
+    app.get(baseRoute + '/forgot-password', AccountController.getPasswordResetPage);
+    app.get(baseRoute + '/reset-password/:temporaryCode', AccountController.validateLink);
 
     // Create a user
-    app.post(baseRoute + '/register', UserController.createUser);
+    app.post(baseRoute + '/register', AccountController.createUser);
 
     // Authenticate a user
-    app.post(baseRoute + '/login', UserController.loginUser);
+    app.post(baseRoute + '/login', AccountController.loginUser);
 
     // Edit a user
-    app.post(baseRoute + '/edit', UserController.editUser);
+    app.post(baseRoute + '/edit', AccountController.editUser);
 
     // Reset user password
-    app.post(baseRoute + '/forgot-password', UserController.resetPassword);
+    app.post(baseRoute + '/forgot-password', AccountController.resetPassword);
 
     //Update password when asked for resetlink
-    app.post(baseRoute + '/reset-password/:temporaryCode', UserController.updatePassword);
+    app.post(baseRoute + '/reset-password/:temporaryCode', AccountController.updatePassword);
 
     // Destroy a user session
-    app.get(baseRoute + '/logout', UserController.logoutUser);
+    app.get(baseRoute + '/logout', AccountController.logoutUser);
 
 
     // Get a specific user

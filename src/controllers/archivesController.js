@@ -44,10 +44,14 @@ exports.createArchive = (req, res) => {
         });
         archive.save();
 
+        let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
         let emailSettings = {
             email: email,
             url: url,
-            downloadUrl: process.env.SERVER_DOMAIN + '/archives/' + response.zipFile
+            subject: 'Arkiveringen är klar ✔',
+            message: `<p><b>Din arkivering av
+              <a href="${url}">${url}</a> är klar!</b></p>
+              <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
         };
 
         EmailModel.sendMail(emailSettings);

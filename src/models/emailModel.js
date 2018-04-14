@@ -1,10 +1,7 @@
 var nodemailer = require('nodemailer');
 
 function sendMail(settings) {
-    settings.subject = 'Arkiveringen är klar ✔';
-    settings.message = `<p><b>Din arkivering av
-        <a href="${settings.url}">${settings.url}</a> är klar!</b></p>
-        <p><a href="${settings.downloadUrl}">Ladda ned som .zip</a></p>`;
+
 
     var transporter = nodemailer.createTransport({
         host: 'smtp@gmail.com',
