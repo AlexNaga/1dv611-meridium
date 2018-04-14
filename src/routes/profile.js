@@ -1,12 +1,12 @@
-const UserController = require('../controllers/userController');
+const ProfileController = require('../controllers/profileController');
 
 module.exports = (app, baseRoute) => {
 
     // Views
-    app.get(baseRoute + '/edit', UserController.getEditPage);
+    app.get(baseRoute + '/edit', ProfileController.getEditPage);
 
     // Edit a user
-    app.post(baseRoute + '/edit', UserController.editUser);
+    app.post(baseRoute + '/edit', ProfileController.editUser);
 
     // Get a specific user
     // app.get('/:id', UserController.getUser);
