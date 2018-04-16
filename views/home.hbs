@@ -4,11 +4,11 @@
 
             {{#if user}}
             <div class="column">
-                <form id="settingForm">
-                <label class="label">Standard settings
-                    <input type="radio" name="settungs" id="settings" onclick="standard();">
+                <label class="label">Inställningar
+                    <input type="radio" name="settings" id="settings" onclick="standard();">
                 </label>
 
+<<<<<<< HEAD
                     <form action="/archives" method="post">
                         <div class="field">
                             <label class="label">Huvuddomän att arkivera</label>
@@ -64,27 +64,128 @@
                                     <div class="icon is-small is-left">
                                         <i class="fas fa-folder"></i>
                                     </div>
+=======
+                <script>
+                    function standard() {
+                        document.getElementById('url').disabled = false
+                        document.getElementById('includeDomains').disabled = false
+                        document.getElementById('excludePaths').disabled = false
+                        document.getElementById('s0').disabled = false
+                        document.getElementById('s1').disabled = false
+                        document.getElementById('s2').disabled = false
+                        document.getElementById('s3').disabled = false
+                        document.getElementById('s4').disabled = false
+                        document.getElementById('s5').disabled = false
+                        document.getElementById('metaTags0').disabled = false
+                        document.getElementById('metaTags1').disabled = false
+                        document.getElementById('metaTags2').disabled = false
+                        document.getElementById('structure').disabled = false
+
+                        document.getElementById('rawDataInput').disabled = true
+
+                        document.getElementById("settings").checked = true
+                        document.getElementById("advancedSettings").checked = false
+                    }
+
+                    function advanced() {
+                        document.getElementById('url').disabled = true
+                        document.getElementById('includeDomains').disabled = true
+                        document.getElementById('excludePaths').disabled = true
+                        document.getElementById('s0').disabled = true
+                        document.getElementById('s1').disabled = true
+                        document.getElementById('s2').disabled = true
+                        document.getElementById('s3').disabled = true
+                        document.getElementById('s4').disabled = true
+                        document.getElementById('s5').disabled = true
+                        document.getElementById('metaTags0').disabled = true
+                        document.getElementById('metaTags1').disabled = true
+                        document.getElementById('metaTags2').disabled = true
+                        document.getElementById('structure').disabled = true
+
+                        document.getElementById('rawDataInput').disabled = false
+
+                        document.getElementById("settings").checked = false
+                        document.getElementById("advancedSettings").checked = true
+                    }
+                </script>
+
+                <form action="/archives" method="post">
+                    <div class="field">
+                        <label class="label">Huvuddomän att arkivera</label>
+                        <p class="control has-icons-left">
+                            <input class="input" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu" disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-link"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
+                        <p class="control has-icons-left">
+                            <input class="input" id="includeDomains" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu"
+                                disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-link"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
+                        <p class="control has-icons-left">
+                            <input class="input" id="excludePaths" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag" disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-unlink"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <label class="label">Följ robots.txt och meta-taggar</label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
+                        </label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags1" name="robots" value="1"> Ja, men filter överskrider
+                        </label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags2" name="robots" value="2"> Nej
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="label">Sidstruktur</label>
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select name="structure" id="structure" disabled required>
+                                    <option selected="selected" name="structure" id="s0" value="0">Site-structure (default)</option>
+                                    <option name="structure" id="s1" value="1">HTML in web/, images/other files in web/images/</option>
+                                    <option name="structure" id="s2" value="2">HTML in web/HTML, images/other in web/images</option>
+                                    <option name="structure" id="s3" value="3">HTML in web/, images/other in web/</option>
+                                    <option name="structure" id="s4" value="4">HTML in web/, images/other in web/xxx, where xxx is the file extension</option>
+                                    <option name="structure" id="s5" value="5">Images/other in web/xxx and HTML in web/HTML</option>
+                                </select>
+                                <div class="icon is-small is-left">
+                                    <i class="fas fa-folder"></i>
+>>>>>>> 2e0963d2f72844852ac4c0f5141e7a199332e21d
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
-                            
-                            <label class="label">Advanced settings 
-                                <input type="radio" name="advancedSettings" id="advancedSettings" onclick="advanced();">
-                            </label>
+                    </div>
+                    <div class="field">
 
-                            <p class="control has-icons-left">
-                                <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Raw Data" disabled>
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-unlink"></i>
-                                </span>
-                            </p>
-                    </form>
+                        <label class="label">Avancerade inställningar
+                            <input type="radio" name="advancedSettings" id="advancedSettings" onclick="advanced();">
+                        </label>
+
+                        <p class="control has-icons-left">
+                            <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Raw Data" disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-unlink"></i>
+                            </span>
+                        </p>
                     </div>
 
                     <br>
                     <div class="field">
-                        <label class="label">Email</label>
+                        <label class="label">E-post</label>
                         <p class="control has-icons-left">
                             <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
                             <span class="icon is-small is-left">

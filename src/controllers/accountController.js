@@ -91,6 +91,9 @@ exports.resetPassword = async (req, res) => {
 
     const link = process.env.HOSTNAME || process.env.SERVER_DOMAIN;
     let resetLink = link + '/account/reset-password/' + tempCode;
+    console.log(resetLink);
+    console.log(link);
+    console.log(tempCode);
     let tempValue = {
         code: tempCode,
         date: Date.now() / 1000
@@ -110,7 +113,7 @@ exports.resetPassword = async (req, res) => {
             let emailSettings = {
                 email: email,
                 subject: 'Förfrågan om återställning av lösenord',
-                message: `Återställ ditt lösenord <a href=${resetLink}>här</a>`
+                message: `Återställ ditt lösenord <a href="${resetLink}">här</a>`
             }
             EmailModel.sendMail(emailSettings);
             req.session.flash = {
@@ -155,6 +158,16 @@ isValidCode = async (code) => {
     return false;
 }
 
+disableCode = async (code) => {
+    console.log('COOOODDDDEEEEEE' + code);
+    let updatedCode = {
+        code: null
+    }
+
+    let user = await User.findOneAndUpdate({code: code}, {$set: updatedCode}, {new: true});
+    console.log(code);
+}
+
 exports.updatePassword = async (req, res) => {
     const code = req.params.temporaryCode;
     console.log(req.body);
@@ -183,13 +196,16 @@ exports.updatePassword = async (req, res) => {
                 new: true
             });
         await updateUser.save();
+        await disableCode(code);
 
+            console.log('code:' + code);
         req.session.flash = {
             message: 'Lösenordet har uppdaterats!',
             success: true
         };
         return res.redirect('/');
     } catch (error) {
+        console.log(error);
         req.session.flash = {
             message: error.message,
             danger: true
