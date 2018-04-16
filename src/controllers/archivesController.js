@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
+const JSZip = require('jszip');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -119,8 +120,6 @@ exports.deleteArchive = (req, res) => {
 
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
-    var fs = require('fs');
-    var JSZip = require('jszip');
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
