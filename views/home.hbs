@@ -3,16 +3,17 @@
         <div class="columns">
             {{#if user}}
             <div class="column">
-
-                <form action="/archives" method="post">
-                    <label class="label">Inställningar
-                        <input checked="checked" type="radio" name="settings" id="settings" onclick="standard();">
-                    </label>
+                <div class="tabs is-medium">
+                    <ul>
+                        <li class="is-active" id="settings-li" onClick="showSettings();"><a>Inställningar</a></li>
+                        <li id="advancedSettings-li" onClick="showAdvancedSettings();"><a>Avancerade inställningar</a></li>
+                    </ul>
+                </div>
+                <form action="/archives" method="post" id="settings" style="display:none;">
                     <div class="field">
                         <label class="label">Huvuddomän att arkivera</label>
                         <p class="control has-icons-left">
-                            <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu"
-                                disabled>
+                            <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-link"></i>
                             </span>
@@ -21,8 +22,7 @@
                     <div class="field">
                         <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
                         <p class="control has-icons-left">
-                            <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu"
-                                disabled>
+                            <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-link"></i>
                             </span>
@@ -31,8 +31,7 @@
                     <div class="field">
                         <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
                         <p class="control has-icons-left">
-                            <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag"
-                                disabled>
+                            <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-unlink"></i>
                             </span>
@@ -54,13 +53,13 @@
                         <label class="label">Sidstruktur</label>
                         <div class="control has-icons-left">
                             <div class="select">
-                                <select name="structure" id="structure" disabled required>
-                                    <option selected="selected" name="structure" id="s0" value="0" disabled>Likadan sidstruktur som på källan (standard)</option>
-                                    <option name="structure" id="s1" value="1" disabled>HTML i /, bilder/övrigt i /images/</option>
-                                    <option name="structure" id="s2" value="2" disabled>HTML i /HTML/, bilder/övrigt i /images/</option>
-                                    <option name="structure" id="s3" value="3" disabled>HTML i /, bilder/övrigt i /</option>
-                                    <option name="structure" id="s4" value="4" disabled>HTML i /, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
-                                    <option name="structure" id="s5" value="5" disabled>HTML i /HTML/, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                                <select name="structure" id="structure" required>
+                                    <option selected="selected" name="structure" id="s0" value="0" >Likadan sidstruktur som på källan (standard)</option>
+                                    <option name="structure" id="s1" value="1" >HTML i /, bilder/övrigt i /images/</option>
+                                    <option name="structure" id="s2" value="2" >HTML i /HTML/, bilder/övrigt i /images/</option>
+                                    <option name="structure" id="s3" value="3" >HTML i /, bilder/övrigt i /</option>
+                                    <option name="structure" id="s4" value="4" >HTML i /, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                                    <option name="structure" id="s5" value="5" >HTML i /HTML/, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
                                 </select>
                                 <div class="icon is-small is-left">
                                     <i class="fas fa-folder"></i>
@@ -68,13 +67,31 @@
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <label class="label">Avancerade inställningar
-                        <input type="radio" name="advancedSettings" id="advancedSettings" onclick="advanced();">
-                    </label>
+                    <div class="field">
+                        <label class="label">E-post</label>
+                        <p class="control has-icons-left">
+                            <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </p>
+                        <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+                    </div>
+                    <div class="field">
+                        <p class="control">
+                            <button type="submit" class="button is-info">
+                                <span class="icon is-small">
+                                    <i class="fas fa-cloud-download-alt"></i>
+                                </span>
+                                <span>Arkivera</span>
+                            </button>
+                        </p>
+                    </div>
+                </form>
+                <form action="/archives" method="post" id="advancedSettings" style="display:none;">
                     <div class="field">
                         <p class="control has-icons-left">
-                            <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Raw Data" disabled>
+                            <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Raw Data">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-unlink"></i>
                             </span>

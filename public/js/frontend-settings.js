@@ -1,24 +1,40 @@
-function standard() {
-    // document.getElementsByClassName('normal').disabled = false;
-    // document.querySelectorAll('#url, #includeDomains, #excludePaths').disabled = false;
+function showSettings() {
+    let settingsDiv = document.getElementById('settings');
+    let advancedSettingsDiv = document.getElementById('advancedSettings');
 
-    let form = document.querySelector('form');
-    let inputs = form.querySelectorAll('input');
-    inputs.forEach(input => { input.disabled = false; });
+    if (settingsDiv.style.display === 'none') {
+        document.querySelector('#settings-li').classList.add('is-active');
+        document.querySelector('#advancedSettings-li').classList.remove('is-active');
+        
+        document.getElementById('advancedSettings').style.display = 'none';
 
-    document.getElementById('advancedSettings').checked = false;
-    document.getElementById('rawDataInput').disabled = true;
-    document.getElementById('settings').checked = true;
+        settingsDiv.style.display = 'block';
+    }
+    else {
+        if (document.querySelector('#settings-li').classList.contains('is-active')) {
+            return;
+        }
+        settingsDiv.style.display = 'none';
+    }
 }
 
-function advanced() {
-    let form = document.querySelector('form');
-    let inputs = form.querySelectorAll('input');
-    inputs.forEach(input => { input.disabled = true; });
+function showAdvancedSettings() {
+    let advancedSettingsDiv = document.getElementById('advancedSettings');
 
-    document.getElementById('advancedSettings').checked = true;
-    document.getElementById('rawDataInput').disabled = false;
-    document.getElementById('settings').checked = false;
+    if (advancedSettingsDiv.style.display === 'none') {
+        document.querySelector('#advancedSettings-li').classList.add('is-active');
+        document.querySelector('#settings-li').classList.remove('is-active');
+        
+        document.getElementById('settings').style.display = 'none';
+
+        advancedSettingsDiv.style.display = 'block';
+    }
+    else {
+        if (document.querySelector('#advancedSettings-li').classList.contains('is-active')) {
+            return;
+        }
+        advancedSettingsDiv.style.display = 'none';
+    }
 }
 
-standard();
+showSettings();

@@ -20,7 +20,7 @@ exports.createArchive = (req, res) => {
         req.session.flash = { message: 'Fel url!', danger: true };
         return res.redirect('/');
     }
-    if (includeDomains.length !== 0 && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
+    if (includeDomains[0] !== '' && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
         req.session.flash = { message: 'Fel sub-url!', danger: true };
         return res.redirect('/');
     }
