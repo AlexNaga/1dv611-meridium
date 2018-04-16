@@ -44,7 +44,7 @@ exports.createUser = async (req, res) => {
             danger: true
         };
 
-        return res.redirect('/');
+        return res.redirect('/account/register');
     }
 };
 

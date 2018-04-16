@@ -20,15 +20,14 @@ function fetchUrl(url, options) {
 function getArchiveList(number) {
     fetchUrl('/archives/?page=' + number)
         .then(function (data) {
-            let myNode = document.getElementById('recent-list');
+            let archiveList = document.getElementById('recent-list');
 
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
+            while (archiveList.firstChild) {
+                archiveList.removeChild(archiveList.firstChild);
             }
 
-            myNode.appendChild(createList(data.archives));
+            archiveList.appendChild(createList(data.archives));
             addConfirmDeletion(); // Add event listener for the confirmation message
-            previewArchive(); // Add event listener for previewing a .zip
         })
         .catch(function (err) {
             console.log(err);
@@ -44,6 +43,7 @@ function createList(arrWithFiles) {
 
         let li = document.createElement('li');
         let btnContainer = document.createElement('div');
+        btnContainer.classList.add('archive');
         btnContainer.classList.add('buttons');
 
         btnContainer.appendChild(deleteBtn(archiveId));
@@ -87,6 +87,7 @@ function deleteBtn(archiveId) {
 
         let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
+
             fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
@@ -94,7 +95,7 @@ function deleteBtn(archiveId) {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
                     removeConfirmDeletion();
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.log('Something went wrong when trying to delete an archive');
                     console.log(err);
                 });
@@ -133,11 +134,15 @@ function previewBtn(archiveId, archiveName) {
     btn.title = 'Förhandsgranska arkiv';
 
     btn.addEventListener('click', () => {
+        let previewContainer = document.querySelector('#previewContainer');
+        let previewTitle = document.querySelector('#previewTitle');
+        previewTitle.textContent = archiveName;
+        previewContainer.src = '';
+
         fetchUrl('/archives/preview/' + archiveId, {
             method: 'GET'
         })
             .then((data) => {
-                let previewContainer = document.querySelector('#previewContainer');
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
             })
             .catch((err) => {
@@ -240,19 +245,6 @@ function removeConfirmDeletion() {
     }
 
     closeModals();
-}
-
-
-function previewArchive() {
-    let archives = getAll('.archive');
-
-    if (archives.length > 0) {
-        archives.forEach((archive) => {
-            archive.addEventListener('click', () => {
-                console.log(archive.title);
-            });
-        });
-    }
 }
 
 function getAll(selector) {
