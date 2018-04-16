@@ -1,78 +1,78 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-
             {{#if user}}
             <div class="column">
-                <label class="label">Inställningar
-                    <input type="radio" name="settings" id="settings" onclick="standard();">
-                </label>
 
-                    <form action="/archives" method="post">
-                        <div class="field">
-                            <label class="label">Huvuddomän att arkivera</label>
-                            <p class="control has-icons-left">
-                                <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu" disabled>
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-link"></i>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="field">
-                            <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
-                            <p class="control has-icons-left">
-                                <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu" disabled>
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-link"></i>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="field">
-                            <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
-                            <p class="control has-icons-left">
-                                <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag" disabled>
-                                <span class="icon is-small is-left">
-                                    <i class="fas fa-unlink"></i>
-                                </span>
-                            </p>
-                        </div>
-                        <div class="control">
-                            <label class="label">Följ robots.txt och meta-taggar</label>
-                            <label class="radio">
-                                <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
-                            </label>
-                            <label class="radio">
-                                <input type="radio" id="metaTags1" name="robots" value="1"> Ja, men filter överskrider
-                            </label>
-                            <label class="radio">
-                                <input type="radio" id="metaTags2" name="robots" value="2"> Nej
-                            </label>
-                        </div>
-                        <div class="field">
-                            <label class="label">Sidstruktur</label>
-                            <div class="control has-icons-left">
-                                <div class="select">
-                                    <select name="structure" required>
-                                        <option name="structure" id="s0" value="0" disabled >Site-structure (default)</option>
-                                        <option name="structure" id="s1" value="1" disabled>HTML in web/, images/other files in web/images/</option>
-                                        <option name="structure" id="s2" value="2" disabled>HTML in web/HTML, images/other in web/images</option>
-                                        <option name="structure" id="s3" value="3" disabled>HTML in web/, images/other in web/</option>
-                                        <option name="structure" id="s4" value="4" disabled>HTML in web/, images/other in web/xxx, where xxx is the file extension</option>
-                                        <option name="structure" id="s5" value="5" disabled>Images/other in web/xxx and HTML in web/HTML</option>
-                                    </select>
-                                    <div class="icon is-small is-left">
-                                        <i class="fas fa-folder"></i>
-                                    </div>
+                <form action="/archives" method="post">
+                    <label class="label">Inställningar
+                        <input checked="checked" type="radio" name="settings" id="settings" onclick="standard();">
+                    </label>
+                    <div class="field">
+                        <label class="label">Huvuddomän att arkivera</label>
+                        <p class="control has-icons-left">
+                            <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu"
+                                disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-link"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Subdomän att arkivera (ex. "https://sub.vecka.nu, https://sub2.vecka.nu")</label>
+                        <p class="control has-icons-left">
+                            <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="Ange din sub-webbadress" value="https://sub.vecka.nu"
+                                disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-link"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <label class="label">Sidor att exkludera (ex. "/fredag, /torsdag, /onsdag")</label>
+                        <p class="control has-icons-left">
+                            <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="Ange en sida" value="/fredag"
+                                disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-unlink"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="control">
+                        <label class="label">Följ robots.txt och meta-taggar</label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
+                        </label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags1" name="robots" value="1"> Ja, men filter överskrider
+                        </label>
+                        <label class="radio">
+                            <input type="radio" id="metaTags2" name="robots" value="2"> Nej
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="label">Sidstruktur</label>
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select name="structure" id="structure" disabled required>
+                                    <option selected="selected" name="structure" id="s0" value="0" disabled>Likadan sidstruktur som på källan (standard)</option>
+                                    <option name="structure" id="s1" value="1" disabled>HTML i /, bilder/övrigt i /images/</option>
+                                    <option name="structure" id="s2" value="2" disabled>HTML i /HTML/, bilder/övrigt i /images/</option>
+                                    <option name="structure" id="s3" value="3" disabled>HTML i /, bilder/övrigt i /</option>
+                                    <option name="structure" id="s4" value="4" disabled>HTML i /, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                                    <option name="structure" id="s5" value="5" disabled>HTML i /HTML/, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                                </select>
+                                <div class="icon is-small is-left">
+                                    <i class="fas fa-folder"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <br>
+                    <label class="label">Avancerade inställningar
+                        <input type="radio" name="advancedSettings" id="advancedSettings" onclick="advanced();">
+                    </label>
                     <div class="field">
-
-                        <label class="label">Avancerade inställningar
-                            <input type="radio" name="advancedSettings" id="advancedSettings" onclick="advanced();">
-                        </label>
-
                         <p class="control has-icons-left">
                             <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Raw Data" disabled>
                             <span class="icon is-small is-left">
@@ -80,8 +80,6 @@
                             </span>
                         </p>
                     </div>
-
-                    <br>
                     <div class="field">
                         <label class="label">E-post</label>
                         <p class="control has-icons-left">
@@ -90,8 +88,6 @@
                                 <i class="fas fa-envelope"></i>
                             </span>
                         </p>
-
-
                         <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
                     </div>
                     <div class="field">
@@ -106,8 +102,8 @@
                     </div>
                 </form>
             </div>
-
-            {{> pagination }} {{else}}
+            {{> pagination }}
+            {{else}}
             <div class="column"></div>
             <div class="column">
                 <h1 class="title">Hem</h1>
@@ -115,7 +111,6 @@
             </div>
             <div class="column"></div>
             {{/if}}
-
         </div>
     </div>
 </section>
