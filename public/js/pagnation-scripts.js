@@ -48,8 +48,8 @@ function createList(arrWithFiles) {
 
         btnContainer.appendChild(deleteBtn(archiveId));
         btnContainer.appendChild(downloadBtn(archiveName));
-        btnContainer.appendChild(previewBtn(archiveId, archiveName));
         btnContainer.appendChild(sizeInfo(archiveSize));
+        btnContainer.appendChild(previewBtn(archiveId, archiveName));
 
         li.appendChild(btnContainer);
         list.appendChild(li);
@@ -91,13 +91,18 @@ function deleteBtn(archiveId) {
             fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
-                .then(() => {
+                // .then(() => {
+                //     btn.parentNode.parentNode.removeChild(btn.parentNode);
+                //     removeConfirmDeletion();
+                // })
+                .catch((err) => {
+                    // console.log('Something went wrong when trying to delete an archive');
+                    // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db
+                    console.log(err);
+                })
+                .finally(() => {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
                     removeConfirmDeletion();
-                })
-                .catch((err) => {
-                    console.log('Something went wrong when trying to delete an archive');
-                    console.log(err);
                 });
         });
     });
@@ -146,7 +151,7 @@ function previewBtn(archiveId, archiveName) {
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
             })
             .catch((err) => {
-                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' '+ err.statusText);
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' ' + err.statusText);
             });
     });
     return btn;

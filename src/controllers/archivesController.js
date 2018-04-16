@@ -73,8 +73,20 @@ exports.createArchive = (req, res) => {
 
 
 exports.getArchive = (req, res) => {
-    let id = req.params.id;
-    res.status(200).sendFile(path.join(__dirname + '/../../archives/' + id));
+    let pathToFile = path.join(__dirname + '/../../archives/' + req.params.id);
+
+    fs.stat(pathToFile, function (err, stat) {
+        if (err == null) {
+            //Exist
+            return res.status(200).sendFile(pathToFile);
+        } else {
+            // ENOENT = No such file
+            res.sendStatus(err.code === 'ENOENT' ? 404 : 400);
+            // .json({
+            //     error: err
+            // });
+        }
+    });
 };
 
 
@@ -111,9 +123,11 @@ exports.deleteArchive = (req, res) => {
             });
         })
         .catch((err) => {
-            res.status(400).json({
-                error: err.code // ENOENT = No such file
-            });
+            // err.code ENOENT = No such file on disk, but removed entry removed from db.
+            res.status(err.code === 'ENOENT' ? 404 : 400)
+                .json({
+                    error: 'No such file'
+                });
         });
 };
 
