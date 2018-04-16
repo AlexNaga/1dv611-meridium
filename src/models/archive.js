@@ -12,7 +12,8 @@ const archiveSchema = mongoose.Schema({
 
 archiveSchema.plugin(timestamp);
 
-archiveSchema.post('init', function (doc) {
+// After finding documents, run this function on each document.
+archiveSchema.post('init', (doc) => {
     doc.fileSize = prettyFileSize(doc.fileSize);
 });
 

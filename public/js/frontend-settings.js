@@ -9,8 +9,7 @@ function showSettings() {
         document.getElementById('advancedSettings').style.display = 'none';
 
         settingsDiv.style.display = 'block';
-    }
-    else {
+    } else {
         if (document.querySelector('#settings-li').classList.contains('is-active')) {
             return;
         }
@@ -28,8 +27,7 @@ function showAdvancedSettings() {
         document.getElementById('settings').style.display = 'none';
 
         advancedSettingsDiv.style.display = 'block';
-    }
-    else {
+    } else {
         if (document.querySelector('#advancedSettings-li').classList.contains('is-active')) {
             return;
         }

@@ -15,7 +15,7 @@ function zipFolder(srcFolder, zipFilePath, callback) {
     let output = fs.createWriteStream(zipFilePath);
     let zipArchive = archiver('zip');
 
-    output.on('close', function () {
+    output.on('close', () => {
         callback(null, zipArchive.pointer()); // sends back filesize in byte
     });
 
@@ -23,10 +23,8 @@ function zipFolder(srcFolder, zipFilePath, callback) {
 
     zipArchive.directory(srcFolder, false);
 
-    zipArchive.finalize(function (err) {
-        if (err) {
-            callback(err, null);
-        }
+    zipArchive.finalize((err) => {
+        if (err) callback(err, null);
     });
 }
 

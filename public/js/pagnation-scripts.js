@@ -19,7 +19,7 @@ function fetchUrl(url, options) {
 
 function getArchiveList(number) {
     fetchUrl('/archives/?page=' + number)
-        .then(function (data) {
+        .then((data) => {
             let archiveList = document.getElementById('recent-list');
 
             while (archiveList.firstChild) {
@@ -29,7 +29,7 @@ function getArchiveList(number) {
             archiveList.appendChild(createList(data.archives));
             addConfirmDeletion(); // Add event listener for the confirmation message
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.log(err);
         });
 }
@@ -180,8 +180,7 @@ function getQueryString(key) {
         let search = location.search.substring(1);
         let obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
         return obj[key];
-    }
-    else {
+    } else {
         return 0;
     }
 }
@@ -189,13 +188,13 @@ function getQueryString(key) {
 let listNextBtn = document.getElementById('list-next');
 let listPreviousBtn = document.getElementById('list-previous');
 
-listNextBtn.addEventListener('click', function () {
+listNextBtn.addEventListener('click', () => {
     // let page = parseInt(decodeQueryString('page'));
     getArchiveList(++page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
 });
 
-listPreviousBtn.addEventListener('click', function () {
+listPreviousBtn.addEventListener('click', () => {
     // page = parseInt(decodeQueryString('page'));
     page = --page < 1 ? 0 : page;
     getArchiveList(page);

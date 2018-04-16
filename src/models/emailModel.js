@@ -24,8 +24,7 @@ function sendMail(settings) {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log(error);
-        }
-        else {
+        } else {
             console.log('Email sent:', info.messageId);
         }
     });
