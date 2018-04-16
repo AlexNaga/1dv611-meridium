@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
+const JSZip = require('jszip');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -119,30 +120,33 @@ exports.deleteArchive = (req, res) => {
 
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
-    var fs = require('fs');
-    var JSZip = require('jszip');
 
-    Archive.findOne({ _id: id, ownerId: req.session.user.id })
+    Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
             // read a zip file
-            fs.readFile('archives/' + doc.fileName, function (err, data) {
-                if (err) throw err;
-                JSZip.loadAsync(data).then(function (zip) {
-                    let str = zip.file('index.html').async('string')
-                        .then(result => {
-                            res.status(200).json({
-                                html: result
-                            });
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
+            return new Promise((resolve, reject) => {
+                fs.readFile('archives/' + doc.fileName, (err, data) => {
+                    if (err) reject(err);
+                    resolve(data);
                 });
             });
         })
+        .then((data) => {
+            return JSZip.loadAsync(data);
+        })
+        .then((data) => {
+            data.file('index.html').async('string')
+                .then(result => {
+                    res.status(200).json({
+                        html: result
+                    });
+                })
+                .catch(err => {
+                    throw err;
+                });
+
+        })
         .catch((err) => {
-            res.status(400).json({
-                msg: 'No such file'
-            });
+            res.sendStatus(404);
         });
 };
