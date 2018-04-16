@@ -146,7 +146,7 @@ function previewBtn(archiveId, archiveName) {
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
             })
             .catch((err) => {
-                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' '+ err.statusText);
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' ' + err.statusText);
             });
     });
     return btn;
