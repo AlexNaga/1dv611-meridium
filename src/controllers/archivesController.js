@@ -15,6 +15,11 @@ exports.createArchive = (req, res) => {
     let structure = req.body.structure;
     let email = req.body.email;
 
+    function standard(){
+        console.log('funktion standard');
+    }
+
+
     if (validUrl.isUri(url) === false) return res.send('Invalid url!');
     if (includeDomains.every(domain => validUrl.isUri(domain)) === false) return res.send('Invalid sub-url!');
     if (req.body.robots > 2 && req.body.robots < 0) return res.send('Invalid robots-settings!');
