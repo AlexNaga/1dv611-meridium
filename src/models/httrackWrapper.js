@@ -11,41 +11,46 @@ const validUrl = require('valid-url');
  * @param {string} settings The settings to archive.
  * @param {function} callback Function to be called when archive is done.
  */
-function archive(settings, ownerId, callback) {
+function archive(settings, callback) {
     let hostname = new URL(settings.url).hostname;
     let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
-    let id = `${hostname}_${timestamp}`;
-    let archivesPath = path.join(__dirname + '/../../archives');
+    let folderName = `${hostname}_${timestamp}`;
+    let archivesFolderPath = path.join(__dirname + '/../../archives');
+    let pathToFolder = `${archivesFolderPath}/${folderName}`;
 
     let command = '';
     if (typeof settings === 'string')
         command = settings;
     else
-        command = createCommand({ output: `${archivesPath}/${id}`, ...settings });
+        command = createCommand({ output: pathToFolder, ...settings });
 
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
         let folderToZip = '';
-        if (fs.existsSync(`${archivesPath}/${id}/web`))
-            folderToZip = `${archivesPath}/${id}/web`;
-        else if (fs.existsSync(`${archivesPath}/${id}/${hostname}`))
-            folderToZip = `${archivesPath}/${id}/${hostname}`;
+        if (fs.existsSync(`${pathToFolder}/web`))
+            folderToZip = `${pathToFolder}/web`;
+        else if (fs.existsSync(`${pathToFolder}/${hostname}`))
+            folderToZip = `${pathToFolder}/${hostname}`;
         else
             callback('Httrackwrapper error. Could not find a folder to zip.');
 
-        let zipDest = `${archivesPath}/${id}.zip`;
+        let zipDest = `${pathToFolder}.zip`;
         zipFolder(folderToZip, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
-            fs.remove(`${archivesPath}/${id}`, error => {
+            fs.remove(`${pathToFolder}`, error => {
                 if (error) return callback(error);
 
+                // Return everything thats needed for the calling method
+                // to save archive and send email
                 callback(null, {
-                    ownerId: ownerId,
-                    zipFile: `${id}.zip`,
+                    ownerId: settings.ownerId,
+                    zipFile: `${folderName}.zip`,
                     fileSize: fileSize,
-                    path: zipDest
+                    path: zipDest,
+                    url: settings.url,
+                    email: settings.email
                 });
             });
         });

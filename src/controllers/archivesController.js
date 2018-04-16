@@ -15,6 +15,8 @@ exports.createArchive = (req, res) => {
     let robots = req.body.robots;
     let structure = req.body.structure;
     let email = req.body.email;
+    let ownerId = req.session.user.id;
+    let isSave = (req.body.action === '1'); // action = name of buttons. 0 = Arkivera, 1 = Spara
 
     if (url === undefined || validUrl.isUri(url) === false) {
         req.session.flash = { message: 'Fel url!', danger: true };
@@ -41,41 +43,48 @@ exports.createArchive = (req, res) => {
         includeDomains, // including urls
         excludePaths,   // excluding paths
         robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        structure       // 0 = default site structure.
+        structure,      // 0 = default site structure.
+        ownerId,        // pass along to response
+        email           // pass along to response
     };
 
-    console.log('Starting the archiving...');
-    httrackWrapper.archive(httrackSettings, req.session.user.id, (error, response) => {
-        if (error) return console.log(error);
+    if (isSave) {
+        console.log('TODO: Spara till databasen');
 
-        console.log(`Archive ${response.zipFile} was successful!`);
+    } else {
+        console.log('Starting the archiving...');
+        httrackWrapper.archive(httrackSettings, (error, response) => {
+            if (error) return console.log(error);
 
-        let archive = new Archive({
-            fileName: response.zipFile,
-            ownerId: response.ownerId,
-            fileSize: response.fileSize
-        });
-        archive.save();
+            console.log(`Archive ${response.zipFile} was successful!`);
 
-        let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
-        let emailSettings = {
-            email: email,
-            url: url,
-            subject: 'Arkiveringen är klar ✔',
-            message: `<p><b>Din arkivering av
-              <a href="${url}">${url}</a> är klar!</b></p>
+            let archive = new Archive({
+                fileName: response.zipFile,
+                ownerId: response.ownerId,
+                fileSize: response.fileSize
+            });
+            archive.save();
+
+            let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
+            let emailSettings = {
+                email: response.email,
+                subject: 'Arkiveringen är klar ✔',
+                message: `<p><b>Din arkivering av
+              <a href="${response.url}">${response.url}</a> är klar!</b></p>
               <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
-        };
+            };
 
-        EmailModel.sendMail(emailSettings);
-    });
+            EmailModel.sendMail(emailSettings);
+        });
+    }
+
 };
 
 
 exports.getArchive = (req, res) => {
     let pathToFile = path.join(__dirname + '/../../archives/' + req.params.id);
 
-    fs.stat(pathToFile, function (err, stat) {
+    fs.stat(pathToFile, (err, stat) => {
         if (err == null) {
             //Exist
             return res.status(200).sendFile(pathToFile);
