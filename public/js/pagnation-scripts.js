@@ -87,6 +87,7 @@ function deleteBtn(archiveId) {
 
         let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
+            
             fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
@@ -94,7 +95,7 @@ function deleteBtn(archiveId) {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
                     removeConfirmDeletion();
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.log('Something went wrong when trying to delete an archive');
                     console.log(err);
                 });
@@ -157,7 +158,7 @@ function sizeInfo(archiveSize) {
     btn.classList.add('is-static');
     btn.classList.add('is-rounded');
     btn.classList.add('is-small');
-    btn.title = 'Filstorlek';
+    btn.title = 'Filstorlek ' + archiveSize;
     return btn;
 }
 
