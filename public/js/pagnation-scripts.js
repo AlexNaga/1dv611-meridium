@@ -48,8 +48,8 @@ function createList(arrWithFiles) {
 
         btnContainer.appendChild(deleteBtn(archiveId));
         btnContainer.appendChild(downloadBtn(archiveName));
-        btnContainer.appendChild(previewBtn(archiveId, archiveName));
         btnContainer.appendChild(sizeInfo(archiveSize));
+        btnContainer.appendChild(previewBtn(archiveId, archiveName));
 
         li.appendChild(btnContainer);
         list.appendChild(li);
