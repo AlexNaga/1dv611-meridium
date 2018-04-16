@@ -157,7 +157,7 @@ function sizeInfo(archiveSize) {
     btn.classList.add('is-static');
     btn.classList.add('is-rounded');
     btn.classList.add('is-small');
-    btn.title = 'Filstorlek ' + archiveSize;
+    btn.title = 'Filstorlek';
     return btn;
 }
 

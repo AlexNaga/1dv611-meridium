@@ -13,10 +13,8 @@ const validUrl = require('valid-url');
  */
 function archive(settings, ownerId, callback) {
     let hostname = new URL(settings.url).hostname;
-    let timestamp = moment().format('x'); // Unix ms timestamp
-
+    let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
     let id = `${hostname}_${timestamp}`;
-
     let archivesPath = path.join(__dirname + '/../../archives');
 
     let command = '';
