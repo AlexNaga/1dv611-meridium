@@ -9,16 +9,28 @@ const Archive = require('../models/archive');
 
 exports.createArchive = (req, res) => {
     let url = req.body.url;
-    let includeDomains = req.body.includeDomains.replace(/\s+/g, '').split(',');
-    let excludePaths = req.body.excludePaths.replace(/\s+/g, '').split(',');
+    let includeDomains = req.body.includeDomains === undefined ? [] : req.body.includeDomains.replace(' ', '').split(',');
+    let excludePaths = req.body.excludePaths === undefined ? [] : req.body.excludePaths.replace(' ', '').split(',');
     let robots = req.body.robots;
     let structure = req.body.structure;
     let email = req.body.email;
 
-    if (validUrl.isUri(url) === false) return res.send('Invalid url!');
-    if (includeDomains.every(domain => validUrl.isUri(domain)) === false) return res.send('Invalid sub-url!');
-    if (req.body.robots > 2 && req.body.robots < 0) return res.send('Invalid robots-settings!');
-    if (validEmail.validate(email) === false) return res.send('Invalid email!');
+    if (url === undefined || validUrl.isUri(url) === false) {
+        req.session.flash = { message: 'Fel url!', danger: true };
+        return res.redirect('/');
+    }
+    if (includeDomains.length !== 0 && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
+        req.session.flash = { message: 'Fel sub-url!', danger: true };
+        return res.redirect('/');
+    }
+    if (req.body.robots > 2 && req.body.robots < 0) {
+        req.session.flash = { message: 'Fel robot-inställningar!', danger: true };
+        return res.redirect('/');
+    }
+    if (validEmail.validate(email) === false) {
+        req.session.flash = { message: 'Fel epost!', danger: true };
+        return res.redirect('/');
+    }
 
     req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
     res.redirect('/');
