@@ -5,7 +5,7 @@
             {{#if user}}
             <div class="column">
                 <label class="label">Inställningar
-                    <input type="radio" name="settings" id="settings" onclick="standard();">
+                    <input checked="checked" type="radio" name="settings" id="settings" onclick="standard();">
                 </label>
 
                     <form action="/archives" method="post">
@@ -52,13 +52,13 @@
                             <label class="label">Sidstruktur</label>
                             <div class="control has-icons-left">
                                 <div class="select">
-                                    <select name="structure" required>
-                                        <option name="structure" id="s0" value="0" disabled >Site-structure (default)</option>
-                                        <option name="structure" id="s1" value="1" disabled>HTML in web/, images/other files in web/images/</option>
-                                        <option name="structure" id="s2" value="2" disabled>HTML in web/HTML, images/other in web/images</option>
-                                        <option name="structure" id="s3" value="3" disabled>HTML in web/, images/other in web/</option>
-                                        <option name="structure" id="s4" value="4" disabled>HTML in web/, images/other in web/xxx, where xxx is the file extension</option>
-                                        <option name="structure" id="s5" value="5" disabled>Images/other in web/xxx and HTML in web/HTML</option>
+                                    <select name="structure" id="structure" disabled required>
+                                        <option selected="selected" name="structure" id="s0" value="0" disabled>Likadan sidstruktur som på källan (standard)</option>
+                                        <option name="structure" id="s1" value="1" disabled>HTML i /, bilder/övrigt i /images/</option>
+                                        <option name="structure" id="s2" value="2" disabled>HTML i /HTML/, bilder/övrigt i /images/</option>
+                                        <option name="structure" id="s3" value="3" disabled>HTML i /, bilder/övrigt i /</option>
+                                        <option name="structure" id="s4" value="4" disabled>HTML i /, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                                        <option name="structure" id="s5" value="5" disabled>HTML i /HTML/, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
                                     </select>
                                     <div class="icon is-small is-left">
                                         <i class="fas fa-folder"></i>
