@@ -84,15 +84,17 @@ exports.listArchives = (req, res) => {
 
 exports.deleteArchive = (req, res) => {
     let id = req.params.id;
+    let archiveName = '';
     const deleteFile = require('util').promisify(fs.unlink);
 
     Archive.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
         .then((archive) => {
+            archiveName = archive.fileName;
             return deleteFile('archives/' + archive.fileName);
         })
         .then(() => {
             res.status(200).json({
-                message: 'Removed archive'
+                deleted: archiveName
             });
         })
         .catch((err) => {
