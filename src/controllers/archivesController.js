@@ -135,7 +135,7 @@ exports.previewArchive = (req, res) => {
             return JSZip.loadAsync(data);
         })
         .then((data) => {
-            data.file('index.htmla').async('string')
+            data.file('index.html').async('string')
                 .then(result => {
                     res.status(200).json({
                         html: result
