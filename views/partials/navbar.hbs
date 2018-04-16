@@ -1,11 +1,8 @@
-<section>
-    <nav class="navbar is-transparent">
+<section id="navbar">
+    <nav class="navbar">
         <div class="navbar-brand"></div>
         <div class="navbar-menu">
-
-            {{#if user}}
             <div class="navbar-start">
-                {{#unless isStartPage}}
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
@@ -18,14 +15,13 @@
                         </p>
                     </div>
                 </div>
-                {{/unless}}
-                <p class='navbar-item'>Inloggad som, {{user.email}}</p>
             </div>
+            {{#if user}}
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-info" href="/profile/edit">
+                            <a class="button is-link" href="/profile/edit">
                                 <span class="icon">
                                     <i class="fas fa-user"></i>
                                 </span>
@@ -37,7 +33,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-info" href="/account/logout">
+                            <a class="button is-link" href="/account/logout">
                                 <span class="icon">
                                     <i class="fas fa-sign-out-alt"></i>
                                 </span>
@@ -47,30 +43,12 @@
                     </div>
                 </div>
             </div>
-
             {{else}}
-            <div class="navbar-start">
-                {{#unless isStartPage}}
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link" href="/">
-                                <span class="icon">
-                                    <i class="fas fa-home"></i>
-                                </span>
-                                <span>Hem</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                {{/unless}}
-            </div>
-
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-info" href="/account/register">
+                            <a class="button is-link" href="/account/register">
                                 <span class="icon">
                                     <i class="fas fa-user"></i>
                                 </span>
@@ -79,11 +57,10 @@
                         </p>
                     </div>
                 </div>
-
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-info" href="/account/login">
+                            <a class="button is-link" href="/account/login">
                                 <span class="icon">
                                     <i class="fas fa-sign-in-alt"></i>
                                 </span>
@@ -94,6 +71,5 @@
                 </div>
             </div>
             {{/if}}
-
     </nav>
 </section>

@@ -17,3 +17,17 @@ function getAll(selector) {
 }
 
 closeNotification(); // Add event listener for closing notifications
+
+// Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
+window.onscroll = function() {stickyNavBar();};
+let navbar = document.getElementById('navbar');
+let sticky = navbar.offsetTop;
+function stickyNavBar() {
+    if (window.pageYOffset >= sticky) {
+        navbar.classList.add('sticky');
+        navbar.firstElementChild.classList.add('is-dark');
+    } else {
+        navbar.classList.remove('sticky');
+        navbar.firstElementChild.classList.remove('is-dark');
+    }
+}
