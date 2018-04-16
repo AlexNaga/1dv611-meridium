@@ -18,4 +18,6 @@ module.exports = (app, baseRoute) => {
     // Delete a specific archive
     app.delete(baseRoute + '/:id', ArchivesController.deleteArchive);
 
+    console.log('hej server')
+
 };
