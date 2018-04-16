@@ -50,14 +50,14 @@ app.use((req, res, next) => {
 // Routes
 require('./src/routes')(app);
 
-app.use((err, req, res) => {
-    console.log(err);
-    res.status(err.status || 500);
-    res.json({
-        error: {
-            message: err.message
-        }
-    });
+app.use((req, res, next) => {
+    res.sendStatus(404);
+    // res.status(404).redirect('/');
+    // console.log('err',err);
+    // res.status(err.status || 404).json({
+    //     error: {
+    //         message: err.message
+    //     }
+    // });
 });
-
 module.exports = app;
