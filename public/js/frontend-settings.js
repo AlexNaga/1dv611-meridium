@@ -19,6 +19,7 @@ function advanced() {
     document.getElementById('advancedSettings').checked = true;
     document.getElementById('rawDataInput').disabled = false;
     document.getElementById('settings').checked = false;
+    document.getElementById('settings').disabled = false;
 }
 
 standard();

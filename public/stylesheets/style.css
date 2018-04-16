@@ -7,6 +7,12 @@
     height: 85%;
 }
 
+.asd {
+    background-color: red;
+    z-index: 1;
+    position: absolute;
+}
+
 .fade-out {
     -webkit-animation: fadeout 0.5s linear forwards;
     -webkit-animation-delay: 5s;
