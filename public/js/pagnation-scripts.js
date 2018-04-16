@@ -91,13 +91,18 @@ function deleteBtn(archiveId) {
             fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
-                .then(() => {
+                // .then(() => {
+                //     btn.parentNode.parentNode.removeChild(btn.parentNode);
+                //     removeConfirmDeletion();
+                // })
+                .catch((err) => {
+                    // console.log('Something went wrong when trying to delete an archive');
+                    // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db
+                    console.log(err);
+                })
+                .finally(() => {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
                     removeConfirmDeletion();
-                })
-                .catch((err) => {
-                    console.log('Something went wrong when trying to delete an archive');
-                    console.log(err);
                 });
         });
     });

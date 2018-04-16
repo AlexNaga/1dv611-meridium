@@ -123,11 +123,10 @@ exports.deleteArchive = (req, res) => {
             });
         })
         .catch((err) => {
-            console.log('err.code', err.code);
-
+            // err.code ENOENT = No such file on disk, but removed entry removed from db.
             res.status(err.code === 'ENOENT' ? 404 : 400)
                 .json({
-                    error: 'No such file' //err.code // ENOENT = No such file
+                    error: 'No such file'
                 });
         });
 };
