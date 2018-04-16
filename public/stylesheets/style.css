@@ -41,3 +41,11 @@
     padding-top: 6.25rem; /* navbar min-height + section padding-top*/
 }
 
+/* Saved archives table */
+.table-container {
+    height: 300px;
+    overflow-y: scroll;
+}
+.table-row-hover > tr:hover {
+    background-color: #e2e2e7 !important;
+}

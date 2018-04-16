@@ -17,7 +17,8 @@
                 {{/if}} {{> settings }} {{!-- Visa ifall användaren är admin --}} {{#if false}} {{> advancedSettings }} {{/if}}
             </div>
             <div class="column is-two-thirds">
-                {{> pagination }}
+                {{> listJobs }}
+                {{> listArchives }}
             </div>
             {{else}}
             <div class="column"></div>
