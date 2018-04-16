@@ -14,8 +14,10 @@ function throwError(status, message) {
 exports.createUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password[0];
+    const confirmPassword = req.body.password[1];
 
     try {
+        if(password !== confirmPassword) throwError(400, 'Lösenorden stämmer inte överrens.')
         let user = await User.findOne({
             email: email
         });

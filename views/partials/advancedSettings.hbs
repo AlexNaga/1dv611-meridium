@@ -1,0 +1,33 @@
+<form action="/archives" method="post" id="advancedSettings" style="display:none;">
+    <div class="field">
+        <label class="label">Rådata
+            <i class="far fa-question-circle"></i>
+        </label>
+        <p class="control has-icons-left">
+            <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Rådata">
+            <span class="icon is-small is-left">
+                <i class="fas fa-code"></i>
+            </span>
+        </p>
+    </div>
+    <div class="field">
+        <label class="label">E-post</label>
+        <p class="control has-icons-left">
+            <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+            <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+            </span>
+        </p>
+        <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+    </div>
+    <div class="field">
+        <p class="control">
+            <button type="submit" class="button is-info">
+                <span class="icon is-small">
+                    <i class="fas fa-cloud-download-alt"></i>
+                </span>
+                <span>Arkivera</span>
+            </button>
+        </p>
+    </div>
+</form>
