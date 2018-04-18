@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
+const exphbs = require('express-handlebars');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const exphbs = require('express-handlebars');
 const path = require('path');
+const helpers = require('handlebars-helpers')(['comparison']);
 
 mongoose.connect(
     'mongodb://admin:' + process.env.MONGODB_ATLAS_PASSWORD +

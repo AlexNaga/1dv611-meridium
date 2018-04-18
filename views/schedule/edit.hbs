@@ -1,0 +1,33 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            {{#if user}}
+            <div class="column is-one-third">
+                {{#if true}}
+                <div class="tabs is-medium">
+                    <ul>
+                        <li class="is-active" id="settings-li" onClick="showSettings();">
+                            <a>Inställningar</a>
+                        </li>
+                        <li id="advancedSettings-li" onClick="showAdvancedSettings();">
+                            <a>Avancerade inställningar</a>
+                        </li>
+                    </ul>
+                </div>
+                {{/if}} {{> updateSettings }} {{!-- Visa ifall användaren är admin --}} {{#if true}} {{> advancedSettings }} {{/if}}
+            </div>
+            <div class="column is-two-thirds">
+                {{ schedule }}
+                {{> listArchives }}
+            </div>
+            {{else}}
+            <div class="column"></div>
+            <div class="column">
+                <h1 class="title">Hem</h1>
+                <h2 class="subtitle">Ej inloggad</h2>
+            </div>
+            <div class="column"></div>
+            {{/if}}
+        </div>
+    </div>
+</section>

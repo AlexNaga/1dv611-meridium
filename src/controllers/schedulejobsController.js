@@ -16,6 +16,21 @@ exports.listSchedule = (req, res) => {
         });
 }
 
+
+exports.getSchedule = async (req, res) => {
+    let id = req.params.id;
+
+    Schedule.findOne({ _id: id }).exec()
+        .then((data) => {
+            res.render('schedule/edit', { schedule: data });
+        })
+        .catch((err) => {
+            res.status(400).json({
+                error: err
+            });
+        });
+};
+
 exports.updateSchedule = async (req, res) => {
     //TODO: Invänta sparafunktionen 
 };
@@ -25,13 +40,13 @@ exports.deleteSchedule = (req, res) => {
     let id = req.params.id;
     let url = req.params.url;
 
-    Schedule.findOneAndRemove({ _id: id}).exec()
+    Schedule.findOneAndRemove({ _id: id }).exec()
         .then(() => {
             req.session.flash = {
                 message: 'Schemaläggningen har tagits bort!',
                 success: true
             };
-    
+
             return res.redirect('/');
         })
         .catch((err) => {
@@ -41,7 +56,14 @@ exports.deleteSchedule = (req, res) => {
                 message: 'Vi kunde inte ta bort schemainställningen!',
                 danger: true
             };
-    
+
             return res.redirect('/');
         });
+};
+
+
+exports.getEditPage = (req, res) => {
+    let id = req.params.id;
+
+    res.render('schedule/edit', { id: id });
 };
