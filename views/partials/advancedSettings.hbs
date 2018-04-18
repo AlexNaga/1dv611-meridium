@@ -11,6 +11,26 @@
         </p>
     </div>
     <div class="field">
+        <label class="label">Schemaläggning
+            <i class="far fa-question-circle"></i>
+        </label>
+        <p>
+            <div class="control has-icons-left">
+                <div class="select">
+                    <select name="schedule" id="schedule" required>
+                        <option selected="selected" name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>
+                        <option name="schedule" id="schedule-option-day" value="1">Varje dag</option>
+                        <option name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
+                        <option name="schedule" id="schedule-option-month" value="3">Varje månad</option>
+                    </select>
+                    <div class="icon is-small is-left">
+                        <i class="far fa-calendar-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </p>
+    </div>
+    <div class="field">
         <label class="label">E-post</label>
         <p class="control has-icons-left">
             <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
