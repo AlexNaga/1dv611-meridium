@@ -65,7 +65,7 @@ function deleteBtn(archiveId) {
     btn.classList.add('is-danger');
     btn.classList.add('is-small');
     btn.classList.add('modal-button');
-    btn.dataset.target = 'confirmDel';
+    btn.dataset.target = 'confirmArchiveDel';
     btn.title = 'Radera arkiv';
 
     let iconContainer = document.createElement('span');
@@ -81,11 +81,11 @@ function deleteBtn(archiveId) {
 
     btn.addEventListener('click', () => {
         // Clone elem to remove old event listeners
-        let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+        let oldElem = document.querySelector('#confirmArchiveDel > div.modal-content > div > button.button.is-danger');
         let newElem = oldElem.cloneNode(true);
         oldElem.parentNode.replaceChild(newElem, oldElem);
 
-        let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+        let modalRemoveBtn = document.querySelector('#confirmArchiveDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
 
             fetchUrl('/archives/' + archiveId, {
@@ -93,7 +93,7 @@ function deleteBtn(archiveId) {
             })
                 // .then(() => {
                 //     btn.parentNode.parentNode.removeChild(btn.parentNode);
-                //     removeConfirmDeletion();
+                //     closeModals();
                 // })
                 .catch((err) => {
                     // console.log('Something went wrong when trying to delete an archive');
@@ -102,7 +102,7 @@ function deleteBtn(archiveId) {
                 })
                 .finally(() => {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
-                    removeConfirmDeletion();
+                    closeModals();
                 });
         });
     });
@@ -224,7 +224,7 @@ function addConfirmDeletion() {
     if (modalCloses.length > 0) {
         modalCloses.forEach((elem) => {
             elem.addEventListener('click', () => {
-                removeConfirmDeletion();
+                closeModals();
             });
         });
     }
@@ -233,22 +233,19 @@ function addConfirmDeletion() {
     document.addEventListener('keydown', (event) => {
         let e = event || window.event;
         if (e.keyCode === 27) {
-            removeConfirmDeletion();
+            closeModals();
         }
     });
 }
 
-function removeConfirmDeletion() {
-    let rootElem = document.documentElement;
+function closeModals() {
     let modals = getAll('.modal');
-    function closeModals() {
-        rootElem.classList.remove('is-clipped');
-        modals.forEach((elem) => {
-            elem.classList.remove('is-active');
-        });
-    }
+    let rootElem = document.documentElement;
 
-    closeModals();
+    rootElem.classList.remove('is-clipped');
+    modals.forEach((elem) => {
+        elem.classList.remove('is-active');
+    });
 }
 
 function getAll(selector) {
