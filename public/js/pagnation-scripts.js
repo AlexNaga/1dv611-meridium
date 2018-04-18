@@ -141,7 +141,7 @@ function previewBtn(archiveId, archiveName) {
     btn.addEventListener('click', () => {
         let previewContainer = document.querySelector('#previewContainer');
         let previewTitle = document.querySelector('#previewTitle');
-        previewTitle.textContent = archiveName;
+        previewTitle.textContent = `Förhandsgranskning av: ${archiveName}`;
         previewContainer.src = '';
 
         fetchUrl('/archives/preview/' + archiveId, {
