@@ -7,10 +7,11 @@ exports.updateSchedule = async (req, res) => {
 };
 
 exports.deleteSchedule = (req, res) => {
+    console.log('deleteSchedule');
     let id = req.params.id;
     let url = req.params.url;
 
-    Schedule.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
+    Schedule.findOneAndRemove({ _id: id}).exec()
         .then(() => {
             res.status(200).json({
                 deleted: url

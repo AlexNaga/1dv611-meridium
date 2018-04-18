@@ -7,9 +7,9 @@ module.exports = (app, baseRoute) => {
     app.get(baseRoute + '/', ScheduleController.listSchedule);
 
     // Edit a specific schedule
-    app.post(baseRoute + '/:id', ScheduleController.editSchedule);
+    app.post(baseRoute + '/:id', ScheduleController.updateSchedule);
 
     // Delete a specific schedule
-    app.delete(baseRoute + '/:id', ScheduleController.deleteSchedule);
+    app.get(baseRoute + '/:id', ScheduleController.deleteSchedule);
 
 };
