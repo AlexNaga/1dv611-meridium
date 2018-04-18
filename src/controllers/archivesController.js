@@ -167,7 +167,6 @@ exports.previewArchive = (req, res) => {
                 .catch(err => {
                     throw err;
                 });
-
         })
         .catch((err) => {
             res.sendStatus(404);
