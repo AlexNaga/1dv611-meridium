@@ -22,6 +22,8 @@ function getArchiveList(number) {
         .then((data) => {
             let archiveList = document.getElementById('recent-list');
 
+            console.log(data)
+
             while (archiveList.firstChild) {
                 archiveList.removeChild(archiveList.firstChild);
             }
