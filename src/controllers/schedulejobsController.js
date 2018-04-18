@@ -1,20 +1,15 @@
 
-const fs = require('fs');
 const Schedule = require('../models/scheduledJobs');
 
-exports.deleteSchedule = (req, res) => {
+
+exports.deleteArchive = (req, res) => {
     let id = req.params.id;
-    let scheduleName = '';
-    const deleteFile = require('util').promisify(fs.unlink);
+    let url = req.params.url;
 
     Schedule.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
-        .then((archive) => {
-            scheduleName = archive.fileName;
-            return deleteFile('archives/' + archive.fileName);
-        })
         .then(() => {
             res.status(200).json({
-                deleted: scheduleName
+                deleted: url
             });
         })
         .catch((err) => {
