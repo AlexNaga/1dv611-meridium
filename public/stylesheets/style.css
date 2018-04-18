@@ -48,4 +48,5 @@
 }
 .table-row-hover > tr:hover {
     background-color: #e2e2e7 !important;
+    cursor: pointer;
 }
