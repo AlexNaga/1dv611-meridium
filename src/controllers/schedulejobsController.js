@@ -2,7 +2,7 @@
 const Schedule = require('../models/scheduledJobs');
 
 
-exports.deleteArchive = (req, res) => {
+exports.deleteSchedule = (req, res) => {
     let id = req.params.id;
     let url = req.params.url;
 
