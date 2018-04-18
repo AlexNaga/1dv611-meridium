@@ -4,16 +4,27 @@ const timestamp = require('mongoose-timestamp');
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const scheduledJobs = mongoose.Schema({
-    typeOfSetting: { type: Number },  // 0 = standard, 1 = advanced
-    advancedSeting: { type: String }, // advanced string setting
-    url: { type: String },            // url to crawl
-    includeDomains: { type: String }, // including urls
-    excludePaths: { type: String },   // excluding paths
-    robots: { type: Number },         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-    structure: { type: Number },      // 0 = default site structure.
-    ownerId: { type: ObjectId },      // pass along to response
-    email: { type: String },          // pass along to response
-    typeOfShedule: { type: Number }       // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
+    // 0 = standard, 1 = advanced
+    typeOfSetting: { type: Number },
+    // advanced settings-string
+    advancedSeting: { type: String },
+    // 0 = ignore all metadata and robots.txt.
+    // 1 = check all file types without directories.
+    // 2 = check all file types including directories.
+    robots: { type: Number, min: 0, max: 2 },
+    // 0 = default site structure.
+    structure: { type: Number, min: 0, max: 5 },
+    // 0 = none
+    // 1 = daily
+    // 2 = weekly
+    // 3 = monthly
+    typeOfShedule: { type: Number, min: 0, max: 3 },
+
+    url: { type: String },
+    includeDomains: { type: String },
+    excludePaths: { type: String },
+    ownerId: { type: ObjectId },
+    email: { type: String }
 });
 
 scheduledJobs.plugin(timestamp);
