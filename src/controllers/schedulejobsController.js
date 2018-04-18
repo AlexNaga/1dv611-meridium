@@ -1,4 +1,3 @@
-
 const Schedule = require('../models/scheduledJobs');
 
 exports.listSchedule = (req, res) => {
@@ -9,31 +8,16 @@ exports.listSchedule = (req, res) => {
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
-        .then(data => res.json({ archives: data }))
+        .then(data => res.json({ schedules: data }))
         .catch((err) => {
             res.status(400).json({
                 error: err
             });
         });
-    }
-    
-    function test() {
-        then((data) => {
-            let testList = document.getElementById('scheduledArchives');
-            while (testList.firstChild) {
-                testList.removeChild(testList.firstChild);
-            }
-
-            testList.appendChild(createList(data.scheduledlist));
-        })
-        .catch((err) => {
-            console.log(err);
-        });
 }
 
-
 exports.updateSchedule = async (req, res) => {
-  //TODO: Invänta sparafunktionen 
+    //TODO: Invänta sparafunktionen 
 };
 
 exports.deleteSchedule = (req, res) => {
