@@ -1,59 +1,49 @@
 const path = require('path');
 const fs = require('fs');
-const validEmail = require('email-validator');
-const validUrl = require('valid-url');
+const validator = require('../utils/validator');
 const JSZip = require('jszip');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
+const ScheduledJobs = require('../models/scheduledJobs');
 
 exports.createArchive = (req, res) => {
-    let url = req.body.url;
-    let includeDomains = req.body.includeDomains === undefined ? [] : req.body.includeDomains.replace(' ', '').split(',');
-    let excludePaths = req.body.excludePaths === undefined ? [] : req.body.excludePaths.replace(' ', '').split(',');
-    let robots = req.body.robots;
-    let structure = req.body.structure;
-    let email = req.body.email;
-    let ownerId = req.session.user.id;
-    let isSave = (req.body.action === '1'); // action = name of buttons. 0 = Arkivera, 1 = Spara
-
-    if (url === undefined || validUrl.isUri(url) === false) {
-        req.session.flash = { message: 'Fel url!', danger: true };
-        return res.redirect('/');
-    }
-    if (includeDomains[0] !== '' && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
-        req.session.flash = { message: 'Fel sub-url!', danger: true };
-        return res.redirect('/');
-    }
-    if (req.body.robots > 2 && req.body.robots < 0) {
-        req.session.flash = { message: 'Fel robot-inställningar!', danger: true };
-        return res.redirect('/');
-    }
-    if (validEmail.validate(email) === false) {
-        req.session.flash = { message: 'Fel epost!', danger: true };
-        return res.redirect('/');
+    let { httrackSettings, error } = validator.validateHttrackSettings(req.body, req.session.user.id);
+    if (error) {
+        req.session.flash = error;
+        return res.redirect('/'); // return to not continue with archive/saving schedule
     }
 
     req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
     res.redirect('/');
 
-    let httrackSettings = {
-        url,            // url to crawl
-        includeDomains, // including urls
-        excludePaths,   // excluding paths
-        robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        structure,      // 0 = default site structure.
-        ownerId,        // pass along to response
-        email           // pass along to response
-    };
-
-    if (isSave) {
-        console.log('TODO: Spara till databasen');
-
+    if (httrackSettings.isScheduled) {
+        if (httrackSettings.typeOfSetting === '0') { // standard settings
+            ScheduledJobs.create({
+                typeOfSetting: httrackSettings.typeOfSetting,
+                url: httrackSettings.url,
+                includeDomains: httrackSettings.includeDomains,
+                excludePaths: httrackSettings.excludePaths,
+                robots: httrackSettings.robots,
+                structure: httrackSettings.structure,
+                email: httrackSettings.email,
+                ownerId: httrackSettings.ownerId,
+                typeOfShedule: httrackSettings.typeOfShedule
+            });
+        } else { // advanced settings
+            ScheduledJobs.create({
+                typeOfSetting: httrackSettings.typeOfSetting,
+                advancedSeting: httrackSettings.rawDataInput,
+                email: httrackSettings.email,
+                ownerId: httrackSettings.ownerId,
+                typeOfShedule: httrackSettings.typeOfShedule
+            });
+        }
     } else {
         console.log('Starting the archiving...');
         httrackWrapper.archive(httrackSettings, (error, response) => {
+            // TODO : skicka mail med ett bra felmeddelande
             if (error) return console.log(error);
 
             console.log(`Archive ${response.zipFile} was successful!`);

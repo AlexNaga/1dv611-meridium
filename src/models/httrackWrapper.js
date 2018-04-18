@@ -33,7 +33,7 @@ function archive(settings, callback) {
         else if (fs.existsSync(`${pathToFolder}/${hostname}`))
             folderToZip = `${pathToFolder}/${hostname}`;
         else
-            callback('Httrackwrapper error. Could not find a folder to zip.');
+            return callback('Httrackwrapper error. Could not find a folder to zip.');
 
         let zipDest = `${pathToFolder}.zip`;
         zipFolder(folderToZip, zipDest, (error, fileSize) => {

@@ -13,7 +13,7 @@ const scheduledJobs = mongoose.Schema({
     structure: { type: Number },      // 0 = default site structure.
     ownerId: { type: ObjectId },      // pass along to response
     email: { type: String },          // pass along to response
-    scheduled: { type: Number }       // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
+    typeOfShedule: { type: Number }       // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
 });
 
 scheduledJobs.plugin(timestamp);

@@ -1,10 +1,11 @@
 <form action="/archives" method="post" id="advancedSettings" style="display:none;">
+    <input type="hidden" name="setting" value="1">
     <div class="field">
         <label class="label">Rådata
             <i class="far fa-question-circle"></i>
         </label>
         <p class="control has-icons-left">
-            <input class="input" id="rawDataInput" type="text" required name="test" placeholder="Rådata">
+            <input class="input" id="rawDataInput" type="text" required name="rawDataInput" placeholder="Rådata">
             <span class="icon is-small is-left">
                 <i class="fas fa-code"></i>
             </span>
@@ -17,7 +18,7 @@
         <p>
             <div class="control has-icons-left">
                 <div class="select">
-                    <select name="schedule" id="schedule" required>
+                    <select name="typeOfShedule" id="schedule" required>
                         <option selected="selected" name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>
                         <option name="schedule" id="schedule-option-day" value="1">Varje dag</option>
                         <option name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
@@ -42,11 +43,17 @@
     </div>
     <div class="field">
         <p class="control">
-            <button type="submit" class="button is-info">
+            <button type="submit" name="action" value="0" class="button is-info">
                 <span class="icon is-small">
                     <i class="fas fa-cloud-download-alt"></i>
                 </span>
                 <span>Arkivera</span>
+            </button>
+            <button type="submit" name="action" value="1" class="button is-success">
+                <span class="icon is-small">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span>Schemalägg</span>
             </button>
         </p>
     </div>
