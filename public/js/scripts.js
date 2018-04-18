@@ -19,7 +19,7 @@ function getAll(selector) {
 closeNotification(); // Add event listener for closing notifications
 
 // Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
-window.onscroll = function() {stickyNavBar();};
+window.onscroll = function () { stickyNavBar(); };
 let navbar = document.getElementById('navbar');
 let sticky = navbar.offsetTop;
 function stickyNavBar() {
@@ -30,4 +30,15 @@ function stickyNavBar() {
         navbar.classList.remove('sticky');
         navbar.firstElementChild.classList.remove('is-dark');
     }
+}
+
+// Table row clickable
+let tableRows = document.querySelectorAll('.table-row-hover tr');
+for (let i = 0; i < tableRows.length; i++) {
+    tableRows[i].addEventListener('click', function() {
+        let links = this.getElementsByTagName('a');
+        if (links.length) {
+            window.location = links[0].href;
+        }
+    });
 }
