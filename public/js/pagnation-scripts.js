@@ -21,9 +21,6 @@ function getArchiveList(number) {
     fetchUrl('/archives/?page=' + number)
         .then((data) => {
             let archiveList = document.getElementById('recent-list');
-
-            console.log(data)
-
             while (archiveList.firstChild) {
                 archiveList.removeChild(archiveList.firstChild);
             }
@@ -35,6 +32,21 @@ function getArchiveList(number) {
             console.log(err);
         });
 }
+
+function test() {
+        then((data) => {
+            let testList = document.getElementById('scheduledArchives');
+            while (testList.firstChild) {
+                testList.removeChild(testList.firstChild);
+            }
+
+            testList.appendChild(createList(data.scheduledlist));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
 
 function createList(arrWithFiles) {
     let list = document.createElement('ul');
