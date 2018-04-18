@@ -27,15 +27,21 @@ exports.deleteSchedule = (req, res) => {
 
     Schedule.findOneAndRemove({ _id: id}).exec()
         .then(() => {
-            res.status(200).json({
-                deleted: url
-            });
+            req.session.flash = {
+                message: 'Schemaläggningen har tagits bort!',
+                success: true
+            };
+    
+            return res.redirect('/');
         })
         .catch((err) => {
+            console.log(err);
             // err.code ENOENT = No such file on disk, but removed entry removed from db.
-            res.status(err.code === 'ENOENT' ? 404 : 400)
-                .json({
-                    error: 'No such file'
-                });
+            req.session.flash = {
+                message: 'Vi kunde inte ta bort schemainställningen!',
+                danger: true
+            };
+    
+            return res.redirect('/');
         });
 };
