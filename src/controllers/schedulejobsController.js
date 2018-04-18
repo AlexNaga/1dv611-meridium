@@ -2,6 +2,10 @@
 const Schedule = require('../models/scheduledJobs');
 
 
+exports.updateSchedule = async (req, res) => {
+  //TODO: Invänta sparafunktionen 
+};
+
 exports.deleteSchedule = (req, res) => {
     let id = req.params.id;
     let url = req.params.url;
