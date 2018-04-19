@@ -8,6 +8,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
 const helpers = require('handlebars-helpers')(['comparison']);
+const schedule = require('node-schedule');
 
 mongoose.connect(
     'mongodb://admin:' + process.env.MONGODB_ATLAS_PASSWORD +
@@ -46,6 +47,21 @@ app.use((req, res, next) => {
     res.locals.flash = req.session.flash;
     req.session.flash = null;
     next();
+});
+
+const httrackWrapper = require('./src/models/httrackWrapper');
+const Schedule = require('./src/models/scheduledJobs');
+// Node schedule
+schedule.scheduleJob('50 * * * * *', () => {
+    console.log('Nu är klockan 30!');
+    Schedule.find({}).exec()
+        .then((schedules) => {
+            let everyDay = schedules.filter(schedule => schedule.typeOfSchedule === 1);
+            console.log(everyDay);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 // Routes

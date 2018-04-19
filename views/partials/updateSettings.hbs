@@ -97,10 +97,10 @@
             <div class="control has-icons-left">
                 <div class="select">
                     <select name="schedule" id="schedule" required>
-                        <option {{#eq schedule.typeOfShedule 0}}selected="selected"{{/eq}} name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>                        
-                        <option {{#eq schedule.typeOfShedule 1}}selected="selected"{{/eq}} name="schedule" id="schedule-option-day" value="1">Varje dag</option>
-                        <option {{#eq schedule.typeOfShedule 2}}selected="selected"{{/eq}} name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
-                        <option {{#eq schedule.typeOfShedule 3}}selected="selected"{{/eq}} name="schedule" id="schedule-option-month" value="3">Varje månad</option>
+                        <option {{#eq schedule.typeOfSchedule 0}}selected="selected"{{/eq}} name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>                        
+                        <option {{#eq schedule.typeOfSchedule 1}}selected="selected"{{/eq}} name="schedule" id="schedule-option-day" value="1">Varje dag</option>
+                        <option {{#eq schedule.typeOfSchedule 2}}selected="selected"{{/eq}} name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
+                        <option {{#eq schedule.typeOfSchedule 3}}selected="selected"{{/eq}} name="schedule" id="schedule-option-month" value="3">Varje månad</option>
                     </select>
                     <div class="icon is-small is-left">
                         <i class="far fa-calendar-alt"></i>

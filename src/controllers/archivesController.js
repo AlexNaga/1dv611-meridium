@@ -29,7 +29,7 @@ exports.createArchive = (req, res) => {
                 structure: httrackSettings.structure,
                 email: httrackSettings.email,
                 ownerId: httrackSettings.ownerId,
-                typeOfShedule: httrackSettings.typeOfShedule
+                typeOfSchedule: httrackSettings.typeOfSchedule
             });
         } else { // advanced settings
             ScheduledJobs.create({
@@ -37,7 +37,7 @@ exports.createArchive = (req, res) => {
                 advancedSetting: httrackSettings.rawDataInput,
                 email: httrackSettings.email,
                 ownerId: httrackSettings.ownerId,
-                typeOfShedule: httrackSettings.typeOfShedule
+                typeOfSchedule: httrackSettings.typeOfSchedule
             });
         }
     } else {
