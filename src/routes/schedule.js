@@ -3,7 +3,6 @@ const ScheduleController = require('../controllers/schedulejobsController');
 
 module.exports = (app, baseRoute) => {
     // Views
-    
     app.get(baseRoute + '/edit/:id', ScheduleController.getSchedule);
 
     // Lists all schedules
