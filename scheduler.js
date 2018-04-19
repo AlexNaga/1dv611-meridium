@@ -25,9 +25,9 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('50 * * * * *', () => {
                     shouldBeArchived.push(...everyMonth);
                 }
             }
-    
+
             shouldBeArchived = shouldBeArchived.filter(schedule => schedule.typeOfSetting === 0);
-    
+
             for (let i = 0; i < shouldBeArchived.length; i++) {
                 httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
                     // TODO : skicka mail med ett bra felmeddelande
@@ -42,16 +42,16 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('50 * * * * *', () => {
                     });
                     archive.save();
 
-                    let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
-                    let emailSettings = {
-                        email: response.email,
-                        subject: 'Din schemalagda arkivering är klar ✔',
-                        message: `<p><b>Din schemalagda arkivering av
-                      <a href="${response.url}">${response.url}</a> är klar!</b></p>
-                      <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
-                    };
+                    // let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
+                    // let emailSettings = {
+                    //     email: response.email,
+                    //     subject: 'Din schemalagda arkivering är klar ✔',
+                    //     message: `<p><b>Din schemalagda arkivering av
+                    //   <a href="${response.url}">${response.url}</a> är klar!</b></p>
+                    //   <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
+                    // };
         
-                    EmailModel.sendMail(emailSettings);
+                    // EmailModel.sendMail(emailSettings);
                 });
             }
         })
