@@ -1,4 +1,21 @@
-<form action="/archives" method="post" id="advancedSettings" style="display:none;">
+<div id="confirmScheduleDel" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <p class="has-text-weight-bold is-size-5">Vill du verkligen radera denna schemaläggning?</p>
+            <br>
+            <button class="button is-danger hideModal">
+                <span class="icon">
+                    <i class="fas fa-times"></i>
+                </span>
+                <span>Radera</span>
+            </button>
+            <button class="button hideModal">Avbryt</button>
+        </div>
+    </div>
+</div>
+
+<form action="/schedules" method="post" id="updateAdvancedSettings">
     <input type="hidden" name="setting" value="1">
     <div class="field">
         <label class="label">Kommando
@@ -43,17 +60,17 @@
     </div>
     <div class="field">
         <p class="control">
-            <button type="submit" name="action" value="0" class="button is-info">
+            <a name="action" value="0" class="button is-danger modal-button" data-target="confirmScheduleDel" title="Radera schemaläggning">
                 <span class="icon is-small">
-                    <i class="fas fa-cloud-download-alt"></i>
+                    <i class="fas fa-times"></i>
                 </span>
-                <span>Arkivera</span>
-            </button>
+                <span>Radera</span>
+            </a>
             <button type="submit" name="action" value="1" class="button is-success">
                 <span class="icon is-small">
-                    <i class="fas fa-save"></i>
+                    <i class="fas fa-wrench"></i>
                 </span>
-                <span>Schemalägg</span>
+                <span>Uppdatera</span>
             </button>
         </p>
     </div>

@@ -7,7 +7,7 @@ const scheduledJobs = mongoose.Schema({
     // 0 = standard, 1 = advanced
     typeOfSetting: { type: Number },
     // advanced settings-string
-    advancedSeting: { type: String },
+    advancedSetting: { type: String },
     // 0 = ignore all metadata and robots.txt.
     // 1 = check all file types without directories.
     // 2 = check all file types including directories.

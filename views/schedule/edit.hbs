@@ -4,7 +4,7 @@
             {{#if user}}
             <div class="column is-one-third">
                 {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
-                {{#eq schedule.typeOfSetting 1}} {{> advancedSettings }} {{/eq}}
+                {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings }} {{/eq}}
             </div>
             <div class="column is-two-thirds">
                 {{ schedule }}
