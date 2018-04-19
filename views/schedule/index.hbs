@@ -26,8 +26,11 @@
                     <td>{{structure}}</td>
                     <td>{{updatedAt}}</td>
                     <td>{{createdAt}}</td>
-                    <td>[edit]
-                        <a href="/schedules/id">[x]</a>
+                    <td>
+                        <a href="/schedule/{{_id}}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="/schedule/delete/{{_id}}">Delete</a>
                     </td>
                 </tr>
                 {{/each}}

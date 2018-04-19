@@ -12,5 +12,5 @@ module.exports = (app, baseRoute) => {
     app.post(baseRoute + '/:id', ScheduleController.updateSchedule);
 
     // Delete a specific schedule
-    app.delete(baseRoute + '/:id', ScheduleController.deleteSchedule);
+    app.get(baseRoute + '/delete/:id', ScheduleController.deleteSchedule);
 };

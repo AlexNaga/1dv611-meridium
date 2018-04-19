@@ -36,17 +36,14 @@ exports.updateSchedule = async (req, res) => {
 
 exports.deleteSchedule = (req, res) => {
     console.log('deleteSchedule');
-    let id = req.params.id;
-    let url = req.params.url;
-
-    Schedule.findOneAndRemove({ _id: id }).exec()
+    Schedule.findOneAndRemove({ _id: req.params.id }).exec()
         .then(() => {
             req.session.flash = {
                 message: 'Schemaläggningen har tagits bort!',
                 success: true
             };
 
-            return res.redirect('/');
+            return res.redirect('/schedule');
         })
         .catch((err) => {
             console.log(err);
