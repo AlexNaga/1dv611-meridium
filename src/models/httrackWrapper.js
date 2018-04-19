@@ -5,6 +5,7 @@ const fs = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
 const validUrl = require('valid-url');
+const getUrls = require('get-urls');
 
 /**
  *
@@ -12,59 +13,75 @@ const validUrl = require('valid-url');
  * @param {function} callback Function to be called when archive is done.
  */
 function archive(settings, callback) {
-    let hostname = new URL(settings.url).hostname;
     let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
-    let folderName = `${hostname}_${timestamp}`;
     let archivesFolderPath = path.join(__dirname + '/../../archives');
-    let pathToFolder = `${archivesFolderPath}/${folderName}`;
+    let pathToFolder = '';
+    let folderName = '';
 
     let command = '';
-    if (typeof settings === 'string')
-        command = settings;
-    else {
+
+    if (settings.typeOfSetting === '0') {
+        let hostname = new URL(settings.url).hostname;
+        folderName = `${hostname}_${timestamp}`;
+        pathToFolder = `${archivesFolderPath}/${folderName}`;
+    
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
     }
+    if (settings.typeOfSetting === '1') {
+        folderName = `hostname_${timestamp}`;
+        pathToFolder = `${archivesFolderPath}/${folderName}`;
+
+        let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
+        command = httrack + ' ' + settings.rawDataInput + ` -O ${pathToFolder}`;
+    }
+
+    let urls = getUrls(command);
+    urls = [...urls];
+    console.log(urls);
+    for (let i = 0; i < urls.length; i++) {
+        urls[i] = urls[i].substring(urls[i].indexOf('//') + 2);
+    }
+
+    console.log(command);
 
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
-        let folderToZip = '';
-        if (fs.existsSync(`${pathToFolder}/web`))
-            folderToZip = `${pathToFolder}/web`;
-        else if (fs.existsSync(`${pathToFolder}/${hostname}`))
-            folderToZip = `${pathToFolder}/${hostname}`;
-        else
-            return callback('Httrackwrapper error. Could not find a folder to zip.');
+        for (let i = 0; i < urls.length; i++) {
+            console.log('Url: ' + urls[i]);
+            if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
+                fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
+            }
+        }
 
         let zipDest = `${pathToFolder}.zip`;
-        zipFolder(folderToZip, zipDest, (error, fileSize) => {
+        zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
-            fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error);
+            // fs.remove(`${pathToFolder}`, error => {
+            //     if (error) return callback(error);
 
-                // Return everything thats needed for the calling method
-                // to save archive and send email
-                callback(null, {
-                    ownerId: settings.ownerId,
-                    zipFile: `${folderName}.zip`,
-                    fileSize: fileSize,
-                    path: zipDest,
-                    url: settings.url,
-                    email: settings.email
-                });
-            });
+            //     // Return everything thats needed for the calling method
+            //     // to save archive and send email
+            //     callback(null, {
+            //         ownerId: settings.ownerId,
+            //         zipFile: `${folderName}.zip`,
+            //         fileSize: fileSize,
+            //         path: zipDest,
+            //         url: settings.url,
+            //         email: settings.email
+            //     });
+            // });
         });
     });
 }
 
 function createCommand(settings, callback) {
-    console.log(settings);
     let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
     let output      = '"' + settings.output + '"';
-    let include     = Array.isArray(settings.includeDomains) ? settings.includeDomains.map(domain => `+*${domain}*`) : '';
+    let include     = Array.isArray(settings.includeDomains) ? settings.includeDomains.map(domain => `+*${domain}`) : '';
     let exclude     = Array.isArray(settings.excludePaths) ? settings.excludePaths.map(path => `-*${path}*`) : '';
     let robots      = settings.robots;
     let structure   = settings.structure;

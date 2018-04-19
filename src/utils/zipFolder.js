@@ -21,7 +21,13 @@ function zipFolder(srcFolder, zipFilePath, callback) {
 
     zipArchive.pipe(output);
 
-    zipArchive.directory(srcFolder, false);
+    if (Array.isArray(srcFolder)) {
+        for (let i = 0; i < srcFolder.length; i++) {
+            zipArchive.directory(srcFolder[i], true);
+        }
+    } else {
+        zipArchive.directory(srcFolder, false);
+    }
 
     zipArchive.finalize((err) => {
         if (err) callback(err, null);
