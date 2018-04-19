@@ -60,6 +60,5 @@ exports.deleteSchedule = (req, res) => {
 
 exports.getEditPage = (req, res) => {
     let id = req.params.id;
-
     res.render('schedule/edit', { id: id });
 };
