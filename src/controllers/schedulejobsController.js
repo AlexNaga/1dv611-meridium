@@ -17,9 +17,7 @@ exports.listSchedule = (req, res) => {
 }
 
 exports.getSchedule = async (req, res) => {
-    let id = req.params.id;
-
-    Schedule.findOne({ _id: id }).exec()
+    Schedule.findOne({ _id: req.params.id }).exec()
         .then((data) => {
             res.render('schedule/edit', { schedule: data });
         })
@@ -31,11 +29,39 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.updateSchedule = async (req, res) => {
-    //TODO: Invänta sparafunktionen 
-};
+    Schedule.findByIdAndUpdate({
+        _id: req.params.id
+    }, {
+        $set: {
+            url: req.body.url,
+            includeDomains: req.body.includeDomains,
+            excludePaths: req.body.excludePaths,
+            robots: req.body.robots,
+            structure: req.body.structure,
+            schedule: req.body.typeOfSchedule,
+            email: req.body.email,
+            action: req.body.typeOfSetting
+
+        }
+        })
+        .then(() => {
+            req.session.flash = {
+                message: 'Schemaläggningen har uppdaterats!',
+                success: true
+            };
+            return res.redirect('/schedule');
+        })
+        .catch((err) => {
+            console.log(err)
+            req.session.flash = {
+                message: 'Vi kunde inte uppdatera schemainställningarna!',
+                danger: true
+            }
+        })
+}
+
 
 exports.deleteSchedule = (req, res) => {
-    console.log('deleteSchedule');
     Schedule.findOneAndRemove({ _id: req.params.id }).exec()
         .then(() => {
             req.session.flash = {
@@ -59,6 +85,5 @@ exports.deleteSchedule = (req, res) => {
 
 
 exports.getEditPage = (req, res) => {
-    let id = req.params.id;
-    res.render('schedules/edit', { id: id });
+    res.render('schedule/edit', { id: req.params.id });
 };
