@@ -7,7 +7,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const archiveSchema = mongoose.Schema({
     fileName: { type: String, unique: true },
     ownerId: { type: ObjectId },
-    fileSize: { type: String }
+    fileSize: { type: String },
+    fromSchedule:{ type: ObjectId }
 });
 
 archiveSchema.plugin(timestamp);

@@ -1,4 +1,5 @@
 const Schedule = require('../models/scheduledJobs');
+const Archive = require('../models/archive');
 
 exports.listSchedule = (req, res) => {
     let page = req.query.page || 0;
@@ -17,9 +18,26 @@ exports.listSchedule = (req, res) => {
 }
 
 exports.getSchedule = async (req, res) => {
-    Schedule.findOne({ _id: req.params.id }).exec()
-        .then((data) => {
-            res.render('schedule/edit', { schedule: data });
+    let id = req.params.id;
+
+    Schedule.findOne({ _id: id }).exec()
+        .then((schedule) => {
+            Archive.find(
+                {
+                    ownerId: req.session.user.id,
+                    fromSchedule: schedule._id
+                })
+                .sort({ createdAt: 'desc' })
+                // .skip(page * itemsPerPage)
+                // .limit(itemsPerPage)
+                .then((archives) => {
+                    console.log('archives', archives);
+
+                    res.render('schedule/edit', { schedule, archives });
+                })
+                .catch((err) => {
+                    throw err;
+                });
         })
         .catch((err) => {
             res.status(400).json({
@@ -60,8 +78,8 @@ exports.updateSchedule = async (req, res) => {
         })
 }
 
-
 exports.deleteSchedule = (req, res) => {
+    console.log('deleteSchedule');
     Schedule.findOneAndRemove({ _id: req.params.id }).exec()
         .then(() => {
             req.session.flash = {

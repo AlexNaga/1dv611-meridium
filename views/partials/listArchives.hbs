@@ -33,7 +33,24 @@
 
 <div class="field">
     <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
-    <p id="recent-list" class="control"></p>
+    <div id="recent-list" class="control">
+        <ul>
+            {{#each archives as |archive|}}
+            <li>
+                <div class="archive buttons">
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel" data-id="{{ archive._id }}" title="Radera arkiv">
+                        <span class="icon">
+                            <i class="fas fa-lg fa-times"></i>
+                        </span>
+                    </button>
+                    <a class="button is-outlined is-primary is-rounded is-small" href="/archives/{{ archive.fileName }}" title="Ladda ned arkiv">Ladda ned</a>
+                    <button class="button is-outlined is-static is-rounded is-small" title="Filstorlek {{ archive.fileSize }}">{{ archive.fileSize }}</button>
+                    <button class="button is-inverted is-link is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive._id }}" data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">{{ archive.fileName }}</button>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
     <br>
     <nav class="pagination" role="navigation" aria-label="pagination">
         <button id="list-previous" class="button pagination-previous">

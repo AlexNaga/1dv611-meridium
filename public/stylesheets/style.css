@@ -42,10 +42,10 @@
 }
 
 /* Saved archives table */
-.table-container {
+/* .table-container {
     height: 300px;
     overflow-y: scroll;
-}
+} */
 .table-row-hover > tr:hover {
     background-color: #e2e2e7 !important;
     cursor: pointer;
