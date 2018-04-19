@@ -85,14 +85,6 @@ Schedule.find({}).exec()
                 if (error) return console.log(error);
     
                 console.log(`Archive ${response.zipFile} was successful!`);
-    
-                // let archive = new Archive({
-                //     fileName: response.zipFile,
-                //     ownerId: response.ownerId,
-                //     fileSize: response.fileSize
-                // });
-                // archive.save();
-    
             });
         }
     })
