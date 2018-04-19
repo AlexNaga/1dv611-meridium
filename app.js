@@ -52,17 +52,54 @@ app.use((req, res, next) => {
 const httrackWrapper = require('./src/models/httrackWrapper');
 const Schedule = require('./src/models/scheduledJobs');
 // Node schedule
-schedule.scheduleJob('50 * * * * *', () => {
-    console.log('Nu är klockan 30!');
-    Schedule.find({}).exec()
-        .then((schedules) => {
-            let everyDay = schedules.filter(schedule => schedule.typeOfSchedule === 1);
-            console.log(everyDay);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
+// schedule.scheduleJob('20 * * * * *', () => {
+console.log('Nu är klockan 30!');
+Schedule.find({}).exec()
+    .then((schedules) => {
+        let everyDay = schedules.filter(schedule => schedule.typeOfSchedule === 1);
+        let everyWeek = schedules.filter(schedule => schedule.typeOfSchedule === 2);
+        let everyMonth = schedules.filter(schedule => schedule.typeOfSchedule === 3);
+
+        let shouldBeArchived = everyDay;
+
+        let today = new Date().getDay();
+
+        if (today === 4) {
+            shouldBeArchived.push(...everyWeek);
+
+            let d = new Date();
+            let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            let weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+
+            if (weekNo % 4 === 0) {
+                shouldBeArchived.push(...everyMonth);
+            }
+        }
+
+        shouldBeArchived = shouldBeArchived.filter(schedule => schedule.typeOfSetting === 0);
+        // console.log(shouldBeArchived);
+
+        for (let i = 0; i < shouldBeArchived.length; i++) {
+            httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
+                // TODO : skicka mail med ett bra felmeddelande
+                if (error) return console.log(error);
+    
+                console.log(`Archive ${response.zipFile} was successful!`);
+    
+                // let archive = new Archive({
+                //     fileName: response.zipFile,
+                //     ownerId: response.ownerId,
+                //     fileSize: response.fileSize
+                // });
+                // archive.save();
+    
+            });
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+// });
 
 // Routes
 require('./src/routes')(app);
