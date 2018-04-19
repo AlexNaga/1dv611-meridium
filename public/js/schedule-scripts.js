@@ -1,5 +1,5 @@
 function listArchivedList() {
-    fetchUrl('/schedule/?page=' + 0)
+    fetchUrl('/schedules/?page=' + 0)
         .then((data) => {
             let archivedList = document.getElementById('scheduledArchives');
             while (archivedList.firstChild) {

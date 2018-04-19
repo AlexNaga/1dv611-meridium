@@ -1,5 +1,6 @@
 <div class="field">
     <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
+
     <div class="table-container">
         <table class="table is-fullwidth is-striped">
             <thead>
@@ -12,7 +13,6 @@
                     <th>Struktur</th>
                     <th>Senast uppdaterad</th>
                     <th>Skapad</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody class="table-row-hover">
@@ -27,14 +27,20 @@
                     <td>{{updatedAt}}</td>
                     <td>{{createdAt}}</td>
                     <td>
-                        <a href="/schedule/{{_id}}">Edit</a>
+                        <a href="/schedules/edit/{{_id}}"></a>
                     </td>
                     <td>
-                        <a href="/schedule/delete/{{_id}}">Delete</a>
+                        <a href="/schedules/delete/{{_id}}">
+                            {{!-- <button class="button is-danger hideModal"> --}}
+                                <span class="icon">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                {{!-- <span></span> --}}
+                            {{!-- </button> --}}
+                        </a>
                     </td>
                 </tr>
                 {{/each}}
-                
             </tbody>
         </table>
     </div>

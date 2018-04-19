@@ -43,7 +43,7 @@ exports.deleteSchedule = (req, res) => {
                 success: true
             };
 
-            return res.redirect('/schedule');
+            return res.redirect('/schedules');
         })
         .catch((err) => {
             console.log(err);
@@ -60,6 +60,5 @@ exports.deleteSchedule = (req, res) => {
 
 exports.getEditPage = (req, res) => {
     let id = req.params.id;
-
-    res.render('schedule/edit', { id: id });
+    res.render('schedules/edit', { id: id });
 };
