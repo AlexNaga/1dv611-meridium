@@ -18,7 +18,7 @@ const scheduledJobs = mongoose.Schema({
     // 1 = daily
     // 2 = weekly
     // 3 = monthly
-    typeOfShedule: { type: Number, min: 0, max: 3 },
+    typeOfSchedule: { type: Number, min: 0, max: 3 },
 
     url: { type: String },
     includeDomains: { type: String },

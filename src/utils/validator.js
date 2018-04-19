@@ -9,7 +9,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
     let structure = body.structure;
     let email = body.email;
     let isScheduled = (body.action === '1'); // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
-    let typeOfShedule = body.typeOfShedule; // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
+    let typeOfSchedule = body.typeOfSchedule; // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
     let error = undefined;
     let typeOfSetting = body.setting;
     let rawDataInput = body.rawDataInput;
@@ -43,7 +43,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
         rawDataInput,   // HTTrack uses this
         ownerId,        // just pass along, HTTrack does not use this
         email,          // just pass along
-        typeOfShedule,  // just pass along
+        typeOfSchedule,  // just pass along
         isScheduled,    // just pass along
 
     };
