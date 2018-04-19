@@ -24,7 +24,6 @@ function getArchiveList(number) {
             while (archiveList.firstChild) {
                 archiveList.removeChild(archiveList.firstChild);
             }
-
             archiveList.appendChild(createList(data.archives));
             addConfirmDeletion(); // Add event listener for the confirmation message
         })

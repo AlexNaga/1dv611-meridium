@@ -1,16 +1,14 @@
-function test(number) {
-    fetchUrl('/schedules/?page=' + number)
+function listArchivedList() {
+    fetchUrl('/schedule/?page=' + 0)
         .then((data) => {
-            // let testList = document.getElementById('scheduledArchives');
-            // while (testList.firstChild) {
-            //     testList.removeChild(testList.firstChild);
-            // }
-            console.log(data);
-
-            // testList.appendChild(createList(data.scheduledlist));
+            let archivedList = document.getElementById('scheduledArchives');
+            while (archivedList.firstChild) {
+                archivedList.removeChild(archivedList.firstChild);
+            }
+            archivedList.appendChild(createList(data.scheduledlist));
         })
         .catch((err) => {
             console.log(err);
         });
 }
-test();
+listArchivedList();

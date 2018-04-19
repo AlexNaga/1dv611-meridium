@@ -1,0 +1,38 @@
+<div class="field">
+    <h3 class="subtitle is-3">Dina schemalagda arkiveringar</h3>
+    <div class="table-container">
+        <table class="table is-fullwidth is-striped">
+            <thead>
+                <tr>
+                    <th>Webbplats</th>
+                    <th>Schemalagd</th>
+                    <th>Subdomän</th>
+                    <th>Exkludera</th>
+                    <th>Robots</th>
+                    <th>Struktur</th>
+                    <th>Senast uppdaterad</th>
+                    <th>Skapad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-row-hover">
+                {{#each data}}
+                <tr>
+                    <td>{{url}}</td>
+                    <td>{{typeOfShedule}}</td>
+                    <td>{{includeDomains}}</td>
+                    <td>{{excludePaths}}</td>
+                    <td>{{robots}}</td>
+                    <td>{{structure}}</td>
+                    <td>{{updatedAt}}</td>
+                    <td>{{createdAt}}</td>
+                    <td>[edit]
+                        <a href="/schedules/id">[x]</a>
+                    </td>
+                </tr>
+                {{/each}}
+                
+            </tbody>
+        </table>
+    </div>
+</div>
