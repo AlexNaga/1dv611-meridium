@@ -68,14 +68,14 @@
         </p>
     </div>
     <div class="field">
-        <label class="label">Sidstruktur
+        <label class="label">Mappstrukturen
             <i class="far fa-question-circle"></i>
         </label>
         <p>
             <div class="control has-icons-left">
                 <div class="select">
                     <select name="structure" id="structure" required>
-                        <option {{#eq schedule.structure 0}}selected="selected"{{/eq}} name="structure" id="s0" value="0">Likadan sidstruktur som på källan (standard)</option>
+                        <option {{#eq schedule.structure 0}}selected="selected"{{/eq}} name="structure" id="s0" value="0">Spegla mappstrukturen från källan (standard)</option>
                         <option {{#eq schedule.structure 1}}selected="selected"{{/eq}} name="structure" id="s1" value="1">HTML i /, bilder/övrigt i /images/</option>
                         <option {{#eq schedule.structure 2}}selected="selected"{{/eq}} name="structure" id="s2" value="2">HTML i /HTML/, bilder/övrigt i /images/</option>
                         <option {{#eq schedule.structure 3}}selected="selected"{{/eq}} name="structure" id="s3" value="3">HTML i /, bilder/övrigt i /</option>
