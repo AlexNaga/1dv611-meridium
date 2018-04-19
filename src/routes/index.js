@@ -5,5 +5,5 @@ module.exports = (app) => {
     require('./account')(app, '/account');
     require('./profile')(app, '/profile');
     require('./archives')(app, '/archives');
-    require('./schedule')(app, '/schedule');
+    require('./schedules')(app, '/schedules');
 };
