@@ -8,7 +8,10 @@ exports.listSchedule = (req, res) => {
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
-        .then(data => res.render('schedule/index', { data }))
+        .then(data => res.render('schedule/index', {
+            data,
+            schedulePageActive: true
+        }))
         .catch((err) => {
             res.status(400).json({
                 error: err

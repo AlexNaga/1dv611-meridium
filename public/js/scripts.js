@@ -18,23 +18,6 @@ function getAll(selector) {
 }
 closeNotification(); // Add event listener for closing notifications
 
-// TODO Alex
-// Code for showing active page
-function activePage() {
-    let btnContainer = document.getElementById('navbar');
-    let navBtns = btnContainer.getElementsByClassName('button');
-
-    //Loop through the buttons and add the active class to the current/clicked button
-    for (let i = 0; i < navBtns.length; i++) {
-        navBtns[i].addEventListener('click', function () {
-            let current = document.getElementsByClassName('is-active');
-            current[0].className = current[0].className.replace(' is-active', '');
-            this.className += ' is-active';
-        });
-    }
-}
-activePage(); // Add vent listener for showing active page
-
 
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
 window.onscroll = function () { stickyNavBar(); };

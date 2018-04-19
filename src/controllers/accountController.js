@@ -17,7 +17,7 @@ exports.createUser = async (req, res) => {
     const confirmPassword = req.body.password[1];
 
     try {
-        if(password !== confirmPassword) throwError(400, 'Lösenorden stämmer inte överrens.')
+        if (password !== confirmPassword) throwError(400, 'Lösenorden stämmer inte överrens.')
         let user = await User.findOne({
             email: email
         });
@@ -166,7 +166,7 @@ disableCode = async (code) => {
         code: null
     }
 
-    let user = await User.findOneAndUpdate({code: code}, {$set: updatedCode}, {new: true});
+    let user = await User.findOneAndUpdate({ code: code }, { $set: updatedCode }, { new: true });
     console.log(code);
 }
 
@@ -200,7 +200,7 @@ exports.updatePassword = async (req, res) => {
         await updateUser.save();
         await disableCode(code);
 
-            console.log('code:' + code);
+        console.log('code:' + code);
         req.session.flash = {
             message: 'Lösenordet har uppdaterats!',
             success: true
@@ -227,12 +227,13 @@ exports.logoutUser = (req, res) => {
 
 exports.getRegisterPage = (req, res) => {
     res.render('account/register', {
-        loadValidation: true
+        loadValidation: true,
+        registerPageActive: true
     });
 };
 
 exports.getLoginPage = (req, res) => {
-    res.render('account/login');
+    res.render('account/login', { loginPageActive: true });
 };
 
 exports.getPasswordResetPage = (req, res) => {

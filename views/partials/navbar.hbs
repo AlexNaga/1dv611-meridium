@@ -6,7 +6,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-link" href="/">
+                            <a class="button is-link {{#if homePageActive}}activePage{{/if}}" href="/">
                                 <span class="icon">
                                     <i class="fas fa-home"></i>
                                 </span>
@@ -21,7 +21,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-link" href="/schedules">
+                            <a class="button is-link {{#if schedulePageActive}}activePage{{/if}}" href="/schedules">
                                 <span class="icon">
                                     <i class="far fa-calendar-alt"></i>
                                 </span>
@@ -33,7 +33,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-link" href="/profile/edit">
+                            <a class="button is-link {{#if profilePageActive}}activePage{{/if}}" href="/profile/edit">
                                 <span class="icon">
                                     <i class="fas fa-user"></i>
                                 </span>
@@ -60,7 +60,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-link" href="/account/register">
+                            <a class="button is-link {{#if registerPageActive}}activePage{{/if}}" href="/account/register">
                                 <span class="icon">
                                     <i class="fas fa-user"></i>
                                 </span>
@@ -72,7 +72,7 @@
                 <div class="navbar-item">
                     <div class="field is-grouped">
                         <p class="control">
-                            <a class="button is-link" href="/account/login">
+                            <a class="button is-link {{#if loginPageActive}}activePage{{/if}}" href="/account/login">
                                 <span class="icon">
                                     <i class="fas fa-sign-in-alt"></i>
                                 </span>

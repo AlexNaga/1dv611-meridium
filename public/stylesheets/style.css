@@ -50,3 +50,7 @@
     background-color: #e2e2e7 !important;
     cursor: pointer;
 }
+
+.activePage {
+    background-color: hsl(0, 0%, 29%) !important;
+}
