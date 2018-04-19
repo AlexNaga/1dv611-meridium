@@ -21,8 +21,10 @@ function archive(settings, callback) {
     let command = '';
     if (typeof settings === 'string')
         command = settings;
-    else
-        command = createCommand({ output: pathToFolder, ...settings });
+    else {
+        settings.output = pathToFolder;
+        command = createCommand(settings, callback);
+    }
 
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
@@ -57,12 +59,13 @@ function archive(settings, callback) {
     });
 }
 
-function createCommand(settings) {
+function createCommand(settings, callback) {
+    console.log(settings);
     let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
     let output      = '"' + settings.output + '"';
-    let include     = settings.includeDomains.map(domain => `+*${domain}*`);
-    let exclude     = settings.excludePaths.map(path => `-*${path}*`);
+    let include     = Array.isArray(settings.includeDomains) ? settings.includeDomains.map(domain => `+*${domain}*`) : '';
+    let exclude     = Array.isArray(settings.excludePaths) ? settings.excludePaths.map(path => `-*${path}*`) : '';
     let robots      = settings.robots;
     let structure   = settings.structure;
 

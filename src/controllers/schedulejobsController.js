@@ -8,14 +8,13 @@ exports.listSchedule = (req, res) => {
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
-        .then(data => res.json({ schedules: data }))
+        .then(data => res.render('schedule/index', { data }))
         .catch((err) => {
             res.status(400).json({
                 error: err
             });
         });
 }
-
 
 exports.getSchedule = async (req, res) => {
     let id = req.params.id;
@@ -37,17 +36,14 @@ exports.updateSchedule = async (req, res) => {
 
 exports.deleteSchedule = (req, res) => {
     console.log('deleteSchedule');
-    let id = req.params.id;
-    let url = req.params.url;
-
-    Schedule.findOneAndRemove({ _id: id }).exec()
+    Schedule.findOneAndRemove({ _id: req.params.id }).exec()
         .then(() => {
             req.session.flash = {
                 message: 'Schemaläggningen har tagits bort!',
                 success: true
             };
 
-            return res.redirect('/');
+            return res.redirect('/schedule');
         })
         .catch((err) => {
             console.log(err);
@@ -64,6 +60,5 @@ exports.deleteSchedule = (req, res) => {
 
 exports.getEditPage = (req, res) => {
     let id = req.params.id;
-
     res.render('schedule/edit', { id: id });
 };
