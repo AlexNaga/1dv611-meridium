@@ -8,14 +8,13 @@ exports.listSchedule = (req, res) => {
         .sort({ createdAt: 'desc' })
         .skip(page * itemsPerPage)
         .limit(itemsPerPage)
-        .then(data => res.json({ schedules: data }))
+        .then(data => res.render('schedule/index', { data }))
         .catch((err) => {
             res.status(400).json({
                 error: err
             });
         });
 }
-
 
 exports.getSchedule = async (req, res) => {
     let id = req.params.id;
