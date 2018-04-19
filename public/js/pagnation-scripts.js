@@ -17,68 +17,20 @@ function fetchUrl(url, options) {
         });
 }
 
-function getArchiveList(number) {
-    fetchUrl('/archives/?page=' + number)
-        .then((data) => {
-            let archiveList = document.getElementById('recent-list');
-            while (archiveList.firstChild) {
-                archiveList.removeChild(archiveList.firstChild);
-            }
-            archiveList.appendChild(createList(data.archives));
-            addConfirmDeletion(); // Add event listener for the confirmation message
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-}
+function setupEventHandlers() {
+    let list = document.querySelectorAll('#recent-list > ul > li > div');
+    for (let i = 0; i < list.length; i++) {
+        let elem = list[i];
+        deleteBtn(elem);
+        addConfirmDeletion(); // Add event listener for the confirmation message
+        previewBtn(elem);
 
-
-
-
-function createList(arrWithFiles) {
-    let list = document.createElement('ul');
-    for (let i = 0; i < arrWithFiles.length; i++) {
-        let archiveId = arrWithFiles[i]._id;
-        let archiveName = arrWithFiles[i].fileName;
-        let archiveSize = arrWithFiles[i].fileSize; // Convert to KB
-
-        let li = document.createElement('li');
-        let btnContainer = document.createElement('div');
-        btnContainer.classList.add('archive');
-        btnContainer.classList.add('buttons');
-
-        btnContainer.appendChild(deleteBtn(archiveId));
-        btnContainer.appendChild(downloadBtn(archiveName));
-        btnContainer.appendChild(sizeInfo(archiveSize));
-        btnContainer.appendChild(previewBtn(archiveId, archiveName));
-
-        li.appendChild(btnContainer);
-        list.appendChild(li);
     }
-    return list;
 }
 
-function deleteBtn(archiveId) {
-    let btn = document.createElement('button');
-    btn.classList.add('button');
-    btn.classList.add('is-inverted');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-danger');
-    btn.classList.add('is-small');
-    btn.classList.add('modal-button');
-    btn.dataset.target = 'confirmArchiveDel';
-    btn.title = 'Radera arkiv';
-
-    let iconContainer = document.createElement('span');
-    iconContainer.classList.add('icon');
-
-    let icon = document.createElement('i');
-    icon.classList.add('fas');
-    icon.classList.add('fa-lg');
-    icon.classList.add('fa-times');
-
-    iconContainer.appendChild(icon);
-    btn.appendChild(iconContainer);
+function deleteBtn(elem) {
+    let btn = elem.querySelector('.action-delete');
+    let archiveId = btn.getAttribute('data-id');
 
     btn.addEventListener('click', () => {
         // Clone elem to remove old event listeners
@@ -107,37 +59,12 @@ function deleteBtn(archiveId) {
                 });
         });
     });
-    return btn;
 }
 
-function downloadBtn(archiveName) {
-    let btn = document.createElement('a');
-    let btnText = document.createTextNode('Ladda ned');
-    btn.appendChild(btnText);
-
-    btn.classList.add('button');
-    btn.classList.add('is-outlined');
-    btn.classList.add('is-primary');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-small');
-    btn.href = '/archives/' + archiveName;
-    btn.title = 'Ladda ned arkiv';
-    return btn;
-}
-
-function previewBtn(archiveId, archiveName) {
-    let btn = document.createElement('button');
-    let btnText = document.createTextNode(archiveName);
-
-    btn.appendChild(btnText);
-    btn.classList.add('button');
-    btn.classList.add('is-inverted');
-    btn.classList.add('is-link');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-small');
-    btn.classList.add('modal-button');
-    btn.dataset.target = 'previewArchive';
-    btn.title = 'Förhandsgranska arkiv';
+function previewBtn(elem) {
+    let btn = elem.querySelector('.action-preview');
+    let archiveId = btn.getAttribute('data-id');
+    let archiveName = btn.getAttribute('data-name');
 
     btn.addEventListener('click', () => {
         let previewContainer = document.querySelector('#previewContainer');
@@ -155,20 +82,6 @@ function previewBtn(archiveId, archiveName) {
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' ' + err.statusText);
             });
     });
-    return btn;
-}
-
-function sizeInfo(archiveSize) {
-    let btn = document.createElement('button');
-    let btnText = document.createTextNode(archiveSize);
-    btn.appendChild(btnText);
-
-    btn.classList.add('button');
-    btn.classList.add('is-outlined');
-    btn.classList.add('is-static');
-    btn.classList.add('is-rounded');
-    btn.classList.add('is-small');
-    btn.title = 'Filstorlek ' + archiveSize;
     return btn;
 }
 
@@ -191,18 +104,18 @@ let listPreviousBtn = document.getElementById('list-previous');
 
 listNextBtn.addEventListener('click', () => {
     // let page = parseInt(decodeQueryString('page'));
-    getArchiveList(++page);
     history.pushState({}, 'page ' + page, '/?page=' + page);
+    getArchiveList(++page);
 });
 
 listPreviousBtn.addEventListener('click', () => {
     // page = parseInt(decodeQueryString('page'));
+    history.pushState({}, 'page ' + page, '/?page=' + page);
     page = --page < 1 ? 0 : page;
     getArchiveList(page);
-    history.pushState({}, 'page ' + page, '/?page=' + page);
 });
 
-getArchiveList(page);
+setupEventHandlers();
 
 
 // Code for confirmation message when deleting an archive
