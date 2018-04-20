@@ -70,7 +70,7 @@ exports.updateSchedule = async (req, res) => {
                 message: 'Schemaläggningen har uppdaterats!',
                 success: true
             };
-            return res.redirect('/schedule');
+            return res.redirect('/schedules');
         })
         .catch((err) => {
             console.log(err)
