@@ -24,7 +24,7 @@ exports.listSchedule = (req, res) => {
 }
 
 exports.getSchedule = async (req, res) => {
-    Schedule.findOne({ _id: id }).exec()
+    Schedule.findOne({ _id: req.params.id }).exec()
         .then((schedule) => {
             let page = req.query.p || 1;
             let itemsPerPage = 10;
