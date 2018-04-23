@@ -2,7 +2,6 @@ const Schedule = require('../models/scheduledJobs');
 const Archive = require('../models/archive');
 
 exports.listSchedule = (req, res) => {
-    if (req.session.user) {
         let page = req.query.page || 0;
         let itemsPerPage = 10;
         Schedule.find({ ownerId: req.session.user.id })
@@ -18,9 +17,6 @@ exports.listSchedule = (req, res) => {
                     error: err
                 });
             });
-    } else {
-        res.redirect('account/login')
-    }
 }
 
 exports.getSchedule = async (req, res) => {
@@ -60,7 +56,6 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.updateSchedule = async (req, res) => {
-    if (req.session.user) {
         Schedule.findByIdAndUpdate({
             _id: req.params.id
         }, {
@@ -89,13 +84,9 @@ exports.updateSchedule = async (req, res) => {
                     danger: true
                 }
             })
-    } else {
-        res.redirect('account/login')
-    }
 }
 
 exports.deleteSchedule = (req, res) => {
-    if (req.session.user) {
         Schedule.findOneAndRemove({ _id: req.params.id }).exec()
             .then(() => {
                 req.session.flash = {
@@ -115,15 +106,9 @@ exports.deleteSchedule = (req, res) => {
 
                 return res.redirect('/');
             });
-    } else {
-        res.redirect('account/login')
-    }
 };
 
 exports.getEditPage = (req, res) => {
-    if (req.session.user) {
         res.render('schedule/edit', { id: req.params.id });
-    } else {
-        res.redirect('account/login')
-    }
+
 };
