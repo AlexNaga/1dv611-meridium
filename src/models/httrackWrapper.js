@@ -20,20 +20,19 @@ function archive(settings, callback) {
 
     let command = '';
 
-    if (settings.typeOfSetting === '0') {
+    if (parseInt(settings.typeOfSetting) === 0) {
         let hostname = new URL(settings.url).hostname;
         folderName = `${hostname}_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
     
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
-    }
-    if (settings.typeOfSetting === '1') {
+    } else if (parseInt(settings.typeOfSetting) === 1) {
         folderName = `hostname_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
         let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
-        command = httrack + ' ' + settings.rawDataInput + ` -O ${pathToFolder}`;
+        command = httrack + ' ' + settings.advancedSetting + ` -O ${pathToFolder}`;
     }
 
     let urls = getUrls(command);
@@ -47,9 +46,15 @@ function archive(settings, callback) {
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
-        for (let i = 0; i < urls.length; i++) {
-            if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
-                fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
+        if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting === 1)) {
+            for (let i = 0; i < urls.length; i++) {
+                if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
+                    fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
+                }
+            }
+        } else {
+            if (fs.existsSync(`${pathToFolder}/web`)) {
+                fs.moveSync(`${pathToFolder}/web`, `${pathToFolder}/folderToZip/`);
             }
         }
 
@@ -57,20 +62,20 @@ function archive(settings, callback) {
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
-            fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error);
+            // fs.remove(`${pathToFolder}`, error => {
+            //     if (error) return callback(error);
 
-                // Return everything thats needed for the calling method
-                // to save archive and send email
-                callback(null, {
-                    ownerId: settings.ownerId,
-                    zipFile: `${folderName}.zip`,
-                    fileSize: fileSize,
-                    path: zipDest,
-                    url: settings.url,
-                    email: settings.email
-                });
-            });
+            //     // Return everything thats needed for the calling method
+            //     // to save archive and send email
+            //     callback(null, {
+            //         ownerId: settings.ownerId,
+            //         zipFile: `${folderName}.zip`,
+            //         fileSize: fileSize,
+            //         path: zipDest,
+            //         url: settings.url,
+            //         email: settings.email
+            //     });
+            // });
         });
     });
 }

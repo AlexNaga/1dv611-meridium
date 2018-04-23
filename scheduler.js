@@ -4,7 +4,7 @@ const Schedule = require('./src/models/scheduledJobs');
 const Archive = require('./src/models/archive');
 const nodeSchedule = require('node-schedule');
 
-exports.nodeSchedule = nodeSchedule.scheduleJob('50 * * * * *', () => {
+exports.nodeSchedule = nodeSchedule.scheduleJob('00 * * * * *', () => {
     Schedule.find({}).exec()
         .then((schedules) => {
             let everyDay = schedules.filter(schedule => schedule.typeOfSchedule === 1);
@@ -14,7 +14,7 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('50 * * * * *', () => {
             let shouldBeArchived = everyDay;
 
             let today = new Date().getDay();
-            if (today === 4) {
+            if (today === 1) {
                 shouldBeArchived.push(...everyWeek);
 
                 let d = new Date();
@@ -26,7 +26,8 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('50 * * * * *', () => {
                 }
             }
 
-            shouldBeArchived = shouldBeArchived.filter(schedule => schedule.typeOfSetting === 0);
+            // shouldBeArchived = shouldBeArchived.filter(schedule => schedule.typeOfSetting === 0);
+            console.log(shouldBeArchived);
 
             for (let i = 0; i < shouldBeArchived.length; i++) {
                 httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
