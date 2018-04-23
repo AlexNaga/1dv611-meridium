@@ -35,17 +35,19 @@
     <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
     <div id="recent-list" class="control">
         <ul>
-            {{#each archives as |archive|}}
+            {{#each docs as |archive|}}
             <li>
                 <div class="archive buttons">
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel" data-id="{{ archive._id }}" title="Radera arkiv">
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel"
+                        data-id="{{ archive.id }}" title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>
                         </span>
                     </button>
-                    <a class="button is-outlined is-primary is-rounded is-small" href="/archives/{{ archive.fileName }}" title="Ladda ned arkiv">Ladda ned</a>
+                    <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">Ladda ned</a>
                     <button class="button is-outlined is-static is-rounded is-small" title="Filstorlek {{ archive.fileSize }}">{{ archive.fileSize }}</button>
-                    <button class="button is-inverted is-link is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive._id }}" data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">{{ archive.fileName }}</button>
+                    <button class="button is-inverted is-link is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
+                        data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">{{ archive.fileName }}</button>
                 </div>
             </li>
             {{/each}}
@@ -53,25 +55,21 @@
     </div>
     <br>
     <nav class="pagination" role="navigation" aria-label="pagination">
-        <button id="list-previous" class="button pagination-previous">
+        {{#paginate pagination type="previous"}}
+        <a href="?p={{n}}" id="list-previous" class="button pagination-previous" {{#if disabled}}disabled{{/if}}>
             <span class="icon">
                 <i class="fas fa-arrow-left"></i>
             </span>
             <span>Föregående</span>
-        </button>
-        <button id="list-next" class="button pagination-next">
+        </a>
+        {{/paginate}} {{#paginate pagination type="next"}}
+        <a href="?p={{n}}" id="list-next" class="button pagination-next" {{#if disabled}}disabled{{/if}}>
             <span>Nästa</span>
             <span class="icon">
                 <i class="fas fa-arrow-right"></i>
             </span>
-        </button>
-        <!-- <ul class="pagination-list">
-                <li>
-                    <a class="pagination-link" aria-label="Goto page 1">1</a>
-                </li>
-                <li>
-                    <a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>
-                </li>
-            </ul> -->
+        </a>
+        {{/paginate}}
     </nav>
+</div>
 </div>
