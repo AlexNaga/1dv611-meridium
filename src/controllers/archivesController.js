@@ -123,6 +123,11 @@ exports.deleteArchive = (req, res) => {
         })
         .catch((err) => {
             // err.code ENOENT = No such file on disk, but removed entry removed from db.
+            req.session.flash = {
+                message: 'Något gick fel vid radering av arkiv.',
+                danger: true
+            };
+
             res.status(err.code === 'ENOENT' ? 404 : 400)
                 .json({
                     error: 'No such file'
@@ -136,7 +141,7 @@ exports.previewArchive = (req, res) => {
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
-            // read a zip file
+            // Read a zip file
             return new Promise((resolve, reject) => {
                 fs.readFile('archives/' + doc.fileName, (err, data) => {
                     if (err) reject(err);
@@ -159,6 +164,11 @@ exports.previewArchive = (req, res) => {
                 });
         })
         .catch((err) => {
+            req.session.flash = {
+                message: 'Något gick fel vid hämtning av förhandsgranskning.',
+                danger: true
+            };
+
             res.sendStatus(404);
         });
 };

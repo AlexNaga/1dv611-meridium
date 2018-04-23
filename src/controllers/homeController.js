@@ -9,7 +9,8 @@ exports.home = (req, res) => {
         // .limit(itemsPerPage)
         .then(data => res.render('home', {
             archives: data,
-            homePageActive: true
+            homePageActive: true,
+            loadArchiveScripts: true
         }))
         .catch((err) => {
             res.status(400).json({
