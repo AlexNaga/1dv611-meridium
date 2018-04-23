@@ -11,7 +11,8 @@ exports.listSchedule = (req, res) => {
         .limit(itemsPerPage)
         .then(data => res.render('schedule/index', {
             data,
-            schedulePageActive: true
+            schedulePageActive: true,
+            loadScheduleScripts: true
         }))
         .catch((err) => {
             res.status(400).json({
@@ -36,7 +37,10 @@ exports.getSchedule = async (req, res) => {
                 .then((archives) => {
                     console.log('archives', archives);
 
-                    res.render('schedule/edit', { schedule, archives });
+                    res.render('schedule/edit', {
+                        schedule, archives,
+                        loadScheduleScripts: true
+                    });
                 })
                 .catch((err) => {
                     throw err;
@@ -53,17 +57,17 @@ exports.updateSchedule = async (req, res) => {
     Schedule.findByIdAndUpdate({
         _id: req.params.id
     }, {
-        $set: {
-            url: req.body.url,
-            includeDomains: req.body.includeDomains,
-            excludePaths: req.body.excludePaths,
-            robots: req.body.robots,
-            structure: req.body.structure,
-            schedule: req.body.typeOfSchedule,
-            email: req.body.email,
-            action: req.body.typeOfSetting
+            $set: {
+                url: req.body.url,
+                includeDomains: req.body.includeDomains,
+                excludePaths: req.body.excludePaths,
+                robots: req.body.robots,
+                structure: req.body.structure,
+                schedule: req.body.typeOfSchedule,
+                email: req.body.email,
+                action: req.body.typeOfSetting
 
-        }
+            }
         })
         .then(() => {
             req.session.flash = {
@@ -106,5 +110,7 @@ exports.deleteSchedule = (req, res) => {
 
 
 exports.getEditPage = (req, res) => {
-    res.render('schedule/edit', { id: req.params.id });
+    res.render('schedule/edit', {
+        id: req.params.id
+    });
 };
