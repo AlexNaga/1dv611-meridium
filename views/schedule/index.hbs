@@ -1,3 +1,20 @@
+<div id="confirmScheduleDel1" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <p class="has-text-weight-bold is-size-5">Vill du verkligen radera denna schemaläggning?</p>
+            <br>
+            <button class="button is-danger hideModal">
+                <span class="icon">
+                    <i class="fas fa-times"></i>
+                </span>
+                <span>Radera</span>
+            </button>
+            <button class="button hideModal">Avbryt</button>
+        </div>
+    </div>
+</div>
+
 <div class="field">
     <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
 
@@ -27,14 +44,16 @@
                     <td>{{updatedAt}}</td>
                     <td>{{createdAt}}</td>
                     <td>
-                        <a href="/schedules/edit/{{_id}}"></a>
+                        {{!-- <a href="/schedules/edit/{{_id}}"></a> --}}
                     </td>
                     <td>
-                        <a href="/schedules/delete/{{_id}}">
-                            {{!-- <button class="button is-danger hideModal"> --}}
-                                <span class="icon">
-                                    <i class="fas fa-times"></i>
-                                </span>
+                        {{!--
+                        <a href="/schedules/delete/{{_id}}"> --}} {{!-- </a> --}}
+                        <a class="button is-danger modal-button" data-target="confirmScheduleDel1" title="Radera schemaläggning">
+                            <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                            </span>
+                            <span>Radera</span>
                         </a>
                     </td>
                 </tr>
@@ -43,3 +62,10 @@
         </table>
     </div>
 </div>
+
+    <a class="button is-danger modal-button" data-target="confirmScheduleDel1" title="Radera schemaläggning">
+        <span class="icon is-small">
+            <i class="fas fa-times"></i>
+        </span>
+        <span>Radera</span>
+    </a>

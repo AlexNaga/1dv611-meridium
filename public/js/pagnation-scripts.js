@@ -1,3 +1,5 @@
+const modal = new Modal();
+
 let page = parseInt(getQueryString('page')) || 0;
 
 /**
@@ -13,7 +15,7 @@ function fetchUrl(url, options) {
         .then(resp => {
             if (resp.ok) return resp.json();
 
-            throw resp; //new Error('Something went wrong');
+            throw resp; // new Error('Something went wrong');
         });
 }
 
@@ -22,7 +24,7 @@ function setupEventHandlers() {
     for (let i = 0; i < list.length; i++) {
         let elem = list[i];
         deleteBtn(elem);
-        addConfirmDeletion(); // Add event listener for the confirmation message
+        modal.addEventListener();
         previewBtn(elem);
 
     }
@@ -55,7 +57,7 @@ function deleteBtn(elem) {
                 })
                 .finally(() => {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
-                    closeModals();
+                    modal.closeModals();
                 });
         });
     });
@@ -116,52 +118,3 @@ listPreviousBtn.addEventListener('click', () => {
 });
 
 setupEventHandlers();
-
-
-// Code for confirmation message when deleting an archive
-function addConfirmDeletion() {
-    let rootElem = document.documentElement;
-    let modalButtons = getAll('.modal-button');
-    let modalCloses = getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
-
-    if (modalButtons.length > 0) {
-        modalButtons.forEach((elem) => {
-            elem.addEventListener('click', () => {
-                let clickedElem = elem.dataset.target;
-                let target = document.getElementById(clickedElem);
-                rootElem.classList.add('is-clipped');
-                target.classList.add('is-active');
-            });
-        });
-    }
-
-    if (modalCloses.length > 0) {
-        modalCloses.forEach((elem) => {
-            elem.addEventListener('click', () => {
-                closeModals();
-            });
-        });
-    }
-
-    // If user press ESC-button
-    document.addEventListener('keydown', (event) => {
-        let e = event || window.event;
-        if (e.keyCode === 27) {
-            closeModals();
-        }
-    });
-}
-
-function closeModals() {
-    let modals = getAll('.modal');
-    let rootElem = document.documentElement;
-
-    rootElem.classList.remove('is-clipped');
-    modals.forEach((elem) => {
-        elem.classList.remove('is-active');
-    });
-}
-
-function getAll(selector) {
-    return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
-}
