@@ -14,7 +14,7 @@ const getUrls = require('get-urls');
  */
 function archive(settings, callback) {
     let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
-    let archivesFolderPath = path.join(__dirname + '/../../archives');
+    let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/`);
     let pathToFolder = '';
     let folderName = '';
 
