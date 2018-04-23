@@ -36,12 +36,12 @@ function stickyNavBar() {
 }
 
 // Table row clickable
-let tableRows = document.querySelectorAll('.table-row-hover tr');
-for (let i = 0; i < tableRows.length; i++) {
-    tableRows[i].addEventListener('click', function () {
-        let links = this.getElementsByTagName('a');
-        if (links.length) {
-            window.location = links[0].href;
-        }
-    });
-}
+// let tableRows = document.querySelectorAll('.table-row-hover tr');
+// for (let i = 0; i < tableRows.length; i++) {
+//     tableRows[i].addEventListener('click', function () {
+//         let links = this.getElementsByTagName('a');
+//         if (links.length) {
+//             window.location = links[0].href;
+//         }
+//     });
+// }
