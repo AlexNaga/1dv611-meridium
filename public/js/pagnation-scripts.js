@@ -78,6 +78,8 @@ function previewBtn(elem) {
             method: 'GET'
         })
             .then((data) => {
+                console.log(data);
+                
                 previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
             })
             .catch((err) => {

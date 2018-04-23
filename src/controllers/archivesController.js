@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const validator = require('../utils/validator');
 const JSZip = require('jszip');
+const getUrls = require('get-urls');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -14,9 +15,14 @@ exports.createArchive = (req, res) => {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }
-
-    req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
-    res.redirect('/');
+    
+    if (req.body.action == 0) {
+        req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        res.redirect('/');
+    } else if (req.body.action == 1) {
+        req.session.flash = { message: 'Arkiveringen är schemalagd. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        res.redirect('/');
+    }
 
     if (httrackSettings.isScheduled) {
         if (httrackSettings.typeOfSetting === '0') { // standard settings
@@ -41,7 +47,6 @@ exports.createArchive = (req, res) => {
             });
         }
     } else {
-        console.log('Starting the archiving...');
         httrackWrapper.archive(httrackSettings, (error, response) => {
             if (error) {
                 let emailSettings = {
@@ -63,7 +68,7 @@ exports.createArchive = (req, res) => {
                 fileSize: response.fileSize
             });
             archive.save();
-
+            
             let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {
                 email: response.email,
@@ -147,11 +152,14 @@ exports.deleteArchive = (req, res) => {
 
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
+    let url = '';
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
             // Read a zip file
             return new Promise((resolve, reject) => {
+                url = doc.fileName.split('_')[0]; // Get domain name from .zip-file
+
                 fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
                     if (err) reject(err);
                     resolve(data);
@@ -162,7 +170,7 @@ exports.previewArchive = (req, res) => {
             return JSZip.loadAsync(data);
         })
         .then((data) => {
-            data.file('index.html').async('string')
+            data.file(`${url}/index.html`).async('string')
                 .then(result => {
                     res.status(200).json({
                         html: result

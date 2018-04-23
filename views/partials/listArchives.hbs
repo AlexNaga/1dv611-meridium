@@ -40,20 +40,29 @@
             {{#each docs as |archive|}}
             <li>
                 <div class="archive buttons">
+                    {{!-- Delete button --}}
                     <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel"
                         data-id="{{ archive.id }}" title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>
                         </span>
                     </button>
+
+                    {{!-- Preview button --}}
+                    <button class="button is-outlined is-primary is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
+                        data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">
+                        Förhandsgranska
+                    </button>
+
+                    {{!-- File size info --}}
                     <button class="button is-outlined is-static is-rounded is-small" title="Filstorlek {{ archive.fileSize }}">
                         {{ archive.fileSize }}
                     </button>
-                    <button class="button is-inverted is-link is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
-                        data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">
+
+                    {{!-- Download button --}}
+                    <a class="button is-inverted is-link is-rounded is-small modal-button action-preview" href="{{ archive.path }}" title="Ladda ned arkiv">
                         {{ archive.fileName }}
-                    </button>
-                    <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">Ladda ned</a>
+                    </a>
                 </div>
             </li>
             {{/each}}
