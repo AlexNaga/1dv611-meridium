@@ -10,7 +10,6 @@ function throwError(status, message) {
 }
 
 exports.editUser = async (req, res) => {
-    if(req.session.user){
         const email = req.session.user.email;
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;
@@ -51,18 +50,11 @@ exports.editUser = async (req, res) => {
             return res.redirect('/profile/edit');
         }
 
-    }else{
-        res.redirect('account/login')
-    }
 };
 
 exports.getEditPage = (req, res) => {
-    if (req.session.user) {
         res.render('profile/edit', {
             loadValidation: true,
             profilePageActive: true
         });
-    } else {
-        res.redirect('/account/login')
-    }
     };
