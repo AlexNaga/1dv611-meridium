@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const exphbs = require('express-handlebars');
+const paginate = require('handlebars-paginate');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
@@ -29,7 +30,10 @@ app.engine('.hbs', exphbs({
     defaultLayout: 'main',
     extname: '.hbs',
     partialsDir: path.resolve(__dirname, 'views/partials'),
-    layoutsDir: path.resolve(__dirname, 'views/layout')
+    layoutsDir: path.resolve(__dirname, 'views/layout'),
+    helpers: {
+        paginate: paginate
+    }
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.resolve(__dirname, 'views'));

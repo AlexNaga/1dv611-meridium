@@ -95,28 +95,11 @@ function getQueryString(key) {
         let obj = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
         return obj[key];
     } else {
-        return 0;
+        return false;
     }
 }
 
-let listNextBtn = document.getElementById('list-next');
-let listPreviousBtn = document.getElementById('list-previous');
-
-listNextBtn.addEventListener('click', () => {
-    // let page = parseInt(decodeQueryString('page'));
-    history.pushState({}, 'page ' + page, '/?page=' + page);
-    getArchiveList(++page);
-});
-
-listPreviousBtn.addEventListener('click', () => {
-    // page = parseInt(decodeQueryString('page'));
-    history.pushState({}, 'page ' + page, '/?page=' + page);
-    page = --page < 1 ? 0 : page;
-    getArchiveList(page);
-});
-
 setupEventHandlers();
-
 
 // Code for confirmation message when deleting an archive
 function addConfirmDeletion() {
