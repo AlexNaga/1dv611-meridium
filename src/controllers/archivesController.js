@@ -47,7 +47,6 @@ exports.createArchive = (req, res) => {
             });
         }
     } else {
-        console.log('Starting the archiving...');
         httrackWrapper.archive(httrackSettings, (error, response) => {
             if (error) {
                 let emailSettings = {
@@ -69,7 +68,7 @@ exports.createArchive = (req, res) => {
                 fileSize: response.fileSize
             });
             archive.save();
-
+            
             let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {
                 email: response.email,
