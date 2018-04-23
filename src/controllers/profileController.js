@@ -10,6 +10,8 @@ function throwError(status, message) {
 }
 
 exports.editUser = async (req, res) => {
+    console.log('req body json', JSON.stringify(req.body))
+
     const email = req.session.user.email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
@@ -53,8 +55,12 @@ exports.editUser = async (req, res) => {
 
 
 exports.getEditPage = (req, res) => {
-    res.render('profile/edit', {
-        loadValidation: true,
-        profilePageActive: true
-    });
+    if(req.session.user){
+        res.render('profile/edit', {
+            loadValidation: true,
+            profilePageActive: true
+        });
+    }else{
+        res.redirect('/account/login')
+    }
 };

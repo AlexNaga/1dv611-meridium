@@ -2,22 +2,25 @@ const Schedule = require('../models/scheduledJobs');
 const Archive = require('../models/archive');
 
 exports.listSchedule = (req, res) => {
-    let page = req.query.page || 0;
-    let itemsPerPage = 10;
-
-    Schedule.find({ ownerId: req.session.user.id })
-        .sort({ createdAt: 'desc' })
-        .skip(page * itemsPerPage)
-        .limit(itemsPerPage)
-        .then(data => res.render('schedule/index', {
-            data,
-            schedulePageActive: true
-        }))
-        .catch((err) => {
-            res.status(400).json({
-                error: err
+    if(req.session.user){
+        let page = req.query.page || 0;
+        let itemsPerPage = 10;
+        Schedule.find({ ownerId: req.session.user.id })
+            .sort({ createdAt: 'desc' })
+            .skip(page * itemsPerPage)
+            .limit(itemsPerPage)
+            .then(data => res.render('schedule/index', {
+                data,
+                schedulePageActive: true
+            }))
+            .catch((err) => {
+                res.status(400).json({
+                    error: err
+                });
             });
-        });
+    }else{
+        res.redirect('account/login')
+    }
 }
 
 exports.getSchedule = async (req, res) => {
