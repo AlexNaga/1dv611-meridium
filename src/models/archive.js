@@ -9,7 +9,7 @@ const schema = mongoose.Schema({
     fileName: { type: String, unique: true },
     ownerId: { type: ObjectId },
     fileSize: { type: String },
-    fromSchedule:{ type: ObjectId }
+    fromSchedule: { type: ObjectId }
 });
 
 schema.plugin(timestamp);

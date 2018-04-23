@@ -25,19 +25,33 @@ exports.getSchedule = async (req, res) => {
 
     Schedule.findOne({ _id: id }).exec()
         .then((schedule) => {
-            Archive.find(
+            let page = req.query.p || 1;
+            let itemsPerPage = 10;
+
+            Archive.paginate(
                 {
                     ownerId: req.session.user.id,
                     fromSchedule: schedule._id
+                },
+                {
+                    sort: { createdAt: 'desc' },
+                    page: page,
+                    limit: itemsPerPage
                 })
-                .sort({ createdAt: 'desc' })
-                // .skip(page * itemsPerPage)
-                // .limit(itemsPerPage)
-                .then((archives) => {
-                    console.log('archives', archives);
+                .then(data =>
+                    res.render('schedule/edit', {
+                        schedule: schedule,
 
-                    res.render('schedule/edit', { schedule, archives });
-                })
+                        // pagination below
+                        docs: data.docs,
+                        total: data.total,
+                        limit: data.limit,
+                        pagination: {
+                            page: data.page,
+                            pageCount: data.pages,
+                        }
+                    })
+                )
                 .catch((err) => {
                     throw err;
                 });
@@ -53,17 +67,17 @@ exports.updateSchedule = async (req, res) => {
     Schedule.findByIdAndUpdate({
         _id: req.params.id
     }, {
-        $set: {
-            url: req.body.url,
-            includeDomains: req.body.includeDomains,
-            excludePaths: req.body.excludePaths,
-            robots: req.body.robots,
-            structure: req.body.structure,
-            schedule: req.body.typeOfSchedule,
-            email: req.body.email,
-            action: req.body.typeOfSetting
+            $set: {
+                url: req.body.url,
+                includeDomains: req.body.includeDomains,
+                excludePaths: req.body.excludePaths,
+                robots: req.body.robots,
+                structure: req.body.structure,
+                schedule: req.body.typeOfSchedule,
+                email: req.body.email,
+                action: req.body.typeOfSetting
 
-        }
+            }
         })
         .then(() => {
             req.session.flash = {
