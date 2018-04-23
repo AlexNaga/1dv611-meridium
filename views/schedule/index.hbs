@@ -1,4 +1,5 @@
-<div id="confirmScheduleDel1" class="modal">
+{{!-- Confirm deletion modal--}}
+<div id="confirmScheduleDel" class="modal">
     <div class="modal-background"></div>
     <div class="modal-content">
         <div class="box">
@@ -36,7 +37,7 @@
                 {{#each data}}
                 <tr>
                     <td>{{url}}</td>
-                    <td>{{typeOfShedule}}</td>
+                    <td>{{typeOfSchedule}}</td>
                     <td>{{includeDomains}}</td>
                     <td>{{excludePaths}}</td>
                     <td>{{robots}}</td>
@@ -44,16 +45,15 @@
                     <td>{{updatedAt}}</td>
                     <td>{{createdAt}}</td>
                     <td>
-                        {{!-- <a href="/schedules/edit/{{_id}}"></a> --}}
+                        <a href="/schedules/edit/{{_id}}"></a>
                     </td>
                     <td>
                         {{!--
                         <a href="/schedules/delete/{{_id}}"> --}} {{!-- </a> --}}
-                        <a class="button is-danger modal-button" data-target="confirmScheduleDel1" title="Radera schemaläggning">
+                        <a class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmScheduleDel1" title="Radera schemaläggning">
                             <span class="icon is-small">
                                 <i class="fas fa-times"></i>
                             </span>
-                            <span>Radera</span>
                         </a>
                     </td>
                 </tr>
@@ -62,10 +62,3 @@
         </table>
     </div>
 </div>
-
-    <a class="button is-danger modal-button" data-target="confirmScheduleDel1" title="Radera schemaläggning">
-        <span class="icon is-small">
-            <i class="fas fa-times"></i>
-        </span>
-        <span>Radera</span>
-    </a>

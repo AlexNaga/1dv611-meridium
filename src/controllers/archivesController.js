@@ -43,8 +43,17 @@ exports.createArchive = (req, res) => {
     } else {
         console.log('Starting the archiving...');
         httrackWrapper.archive(httrackSettings, (error, response) => {
-            // TODO : skicka mail med ett bra felmeddelande
-            if (error) return console.log(error);
+            if (error) {
+                let emailSettings = {
+                    email: response.email,
+                    subject: 'Din schemalagda arkivering kunde inte slutföras!',
+                    message: `<p><b>Din schemalagda arkivering av
+                  <a href="${response.url}">${response.url}</a> kunde inte slutföras.</b></p>`
+                };
+
+                EmailModel.sendMail(emailSettings);
+                return console.log(error);
+            }
 
             console.log(`Archive ${response.zipFile} was successful!`);
 
