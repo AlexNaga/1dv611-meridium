@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const validator = require('../utils/validator');
 const JSZip = require('jszip');
+const getUrls = require('get-urls');
 
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
@@ -147,11 +148,14 @@ exports.deleteArchive = (req, res) => {
 
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
+    let url = '';
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
             // Read a zip file
             return new Promise((resolve, reject) => {
+                url = doc.fileName.split('_')[0]; // Get domain name from .zip-file
+
                 fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
                     if (err) reject(err);
                     resolve(data);
@@ -162,7 +166,7 @@ exports.previewArchive = (req, res) => {
             return JSZip.loadAsync(data);
         })
         .then((data) => {
-            data.file('index.html').async('string')
+            data.file(`${url}/index.html`).async('string')
                 .then(result => {
                     res.status(200).json({
                         html: result
