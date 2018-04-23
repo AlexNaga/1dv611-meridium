@@ -1,3 +1,5 @@
+const modal = new Modal();
+
 let page = parseInt(getQueryString('page')) || 0;
 
 /**
@@ -13,7 +15,7 @@ function fetchUrl(url, options) {
         .then(resp => {
             if (resp.ok) return resp.json();
 
-            throw resp; //new Error('Something went wrong');
+            throw resp; // new Error('Something went wrong');
         });
 }
 
@@ -22,7 +24,7 @@ function setupEventHandlers() {
     for (let i = 0; i < list.length; i++) {
         let elem = list[i];
         deleteBtn(elem);
-        addConfirmDeletion(); // Add event listener for the confirmation message
+        modal.addEventListener();
         previewBtn(elem);
 
     }
@@ -55,7 +57,7 @@ function deleteBtn(elem) {
                 })
                 .finally(() => {
                     btn.parentNode.parentNode.removeChild(btn.parentNode);
-                    closeModals();
+                    modal.closeModals();
                 });
         });
     });
