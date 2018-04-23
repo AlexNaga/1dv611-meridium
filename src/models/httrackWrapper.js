@@ -38,7 +38,6 @@ function archive(settings, callback) {
 
     let urls = getUrls(command);
     urls = [...urls];
-    console.log(urls);
     for (let i = 0; i < urls.length; i++) {
         urls[i] = urls[i].substring(urls[i].indexOf('//') + 2);
     }
@@ -49,7 +48,6 @@ function archive(settings, callback) {
         if (error) return callback(error);
 
         for (let i = 0; i < urls.length; i++) {
-            console.log('Url: ' + urls[i]);
             if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
                 fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
             }
@@ -59,20 +57,20 @@ function archive(settings, callback) {
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
-            // fs.remove(`${pathToFolder}`, error => {
-            //     if (error) return callback(error);
+            fs.remove(`${pathToFolder}`, error => {
+                if (error) return callback(error);
 
-            //     // Return everything thats needed for the calling method
-            //     // to save archive and send email
-            //     callback(null, {
-            //         ownerId: settings.ownerId,
-            //         zipFile: `${folderName}.zip`,
-            //         fileSize: fileSize,
-            //         path: zipDest,
-            //         url: settings.url,
-            //         email: settings.email
-            //     });
-            // });
+                // Return everything thats needed for the calling method
+                // to save archive and send email
+                callback(null, {
+                    ownerId: settings.ownerId,
+                    zipFile: `${folderName}.zip`,
+                    fileSize: fileSize,
+                    path: zipDest,
+                    url: settings.url,
+                    email: settings.email
+                });
+            });
         });
     });
 }
@@ -81,8 +79,8 @@ function createCommand(settings, callback) {
     let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
     let output      = '"' + settings.output + '"';
-    let include     = Array.isArray(settings.includeDomains) ? settings.includeDomains.map(domain => `+*${domain}`) : '';
-    let exclude     = Array.isArray(settings.excludePaths) ? settings.excludePaths.map(path => `-*${path}*`) : '';
+    let include     = Array.isArray(settings.includeDomains) && settings.includeDomains.length > 0 ? settings.includeDomains.map(domain => `+*${domain}`) : '';
+    let exclude     = Array.isArray(settings.excludePaths) && settings.excludePaths.length > 0 ? settings.excludePaths.map(path => `-*${path}*`) : '';
     let robots      = settings.robots;
     let structure   = settings.structure;
 
@@ -98,7 +96,7 @@ function createCommand(settings, callback) {
         `-%c${10}`,                     // Maximum number of connections/seconds.
         // '-%!',                       // Crawl without limit. DO NOT USE.
         `-C${0}`,                       // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
-        '-%F', '"<!-- Arkivdium -->"',  // Footer content.
+        // '-%F', '<!-- Arkivdium -->',    // Footer content.
         `-f${2}`,                       // 2 = put all logs in a single log file.
         '-q'                            // Quiet mode. No questions. No log.
     ];
