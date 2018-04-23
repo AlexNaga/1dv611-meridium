@@ -18,7 +18,7 @@ function archive(settings, callback) {
     let previewFolderPath = path.join(__dirname + '/../../previews');
     let pathToFolder = '';
     let folderName = '';
-
+    let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
     if (parseInt(settings.typeOfSetting) === 0) {
@@ -32,7 +32,6 @@ function archive(settings, callback) {
         folderName = `hostname_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
-        let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
         command = httrack + ' ' + settings.advancedSetting + ` -O ${pathToFolder}`;
     }
 
@@ -44,10 +43,10 @@ function archive(settings, callback) {
         urls[i] = urls[i].substring(urls[i].indexOf('//') + 2);
     }
 
-    console.log(command);
+    console.log('command', command);
 
-    const previewCommmand = `httrack ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O ${previewFolderPath}/${folderName}_original`;
-    console.log(previewCommmand);
+    const previewCommmand = `${httrack} ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${previewFolderPath}/${folderName}_original"`;
+    console.log('previewCommmand', previewCommmand);
 
     // Run preview command
     exec(previewCommmand, (error, stdout, stderr) => {
