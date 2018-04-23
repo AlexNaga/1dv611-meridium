@@ -49,10 +49,14 @@
                     </button>
 
                     {{!-- Preview button --}}
-                    <button class="button is-outlined is-primary is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
+                    {{!-- <button class="button is-outlined is-primary is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
                         data-name="{{ archive.fileName }}" title="Förhandsgranska arkiv">
                         Förhandsgranska
-                    </button>
+                    </button> --}}
+
+                    <a class="button is-outlined is-primary is-rounded is-small modal-button action-preview" href="archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
+                         Förhandsgranska
+                    </a>
 
                     {{!-- File size info --}}
                     <button class="button is-outlined is-static is-rounded is-small" title="Filstorlek {{ archive.fileSize }}">
@@ -60,7 +64,7 @@
                     </button>
 
                     {{!-- Download button --}}
-                    <a class="button is-inverted is-link is-rounded is-small modal-button action-preview" href="{{ archive.path }}" title="Ladda ned arkiv">
+                    <a class="button is-inverted is-link is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">
                         {{ archive.fileName }}
                     </a>
                 </div>

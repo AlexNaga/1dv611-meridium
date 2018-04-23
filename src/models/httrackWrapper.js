@@ -14,7 +14,8 @@ const getUrls = require('get-urls');
  */
 function archive(settings, callback) {
     let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
-    let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/`);
+    let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
+    let previewFolderPath = path.join(__dirname + '/../../previews');
     let pathToFolder = '';
     let folderName = '';
 
@@ -24,7 +25,7 @@ function archive(settings, callback) {
         let hostname = new URL(settings.url).hostname;
         folderName = `${hostname}_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
-    
+
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
     } else if (parseInt(settings.typeOfSetting) === 1) {
@@ -37,12 +38,31 @@ function archive(settings, callback) {
 
     let urls = getUrls(command);
     urls = [...urls];
+    let previewUrl = urls[0];
+
     for (let i = 0; i < urls.length; i++) {
         urls[i] = urls[i].substring(urls[i].indexOf('//') + 2);
     }
 
     console.log(command);
 
+    const previewCommmand = `httrack ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O ${previewFolderPath}/${folderName}_original`;
+    console.log(previewCommmand);
+
+    // Run preview command
+    exec(previewCommmand, (error, stdout, stderr) => {
+        if (error) return callback(error);
+
+        if (fs.existsSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`)) {
+            fs.moveSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`, `${previewFolderPath}/${folderName}`);
+        }
+
+        fs.remove(`${previewFolderPath}/${folderName}_original`, error => {
+            if (error) return callback(error);
+        });
+    });
+
+    // Run archive command
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
@@ -81,13 +101,13 @@ function archive(settings, callback) {
 }
 
 function createCommand(settings, callback) {
-    let httrack     = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
-    let url         = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
-    let output      = '"' + settings.output + '"';
-    let include     = Array.isArray(settings.includeDomains) && settings.includeDomains.length > 0 ? settings.includeDomains.map(domain => `+*${domain}`) : '';
-    let exclude     = Array.isArray(settings.excludePaths) && settings.excludePaths.length > 0 ? settings.excludePaths.map(path => `-*${path}*`) : '';
-    let robots      = settings.robots;
-    let structure   = settings.structure;
+    let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
+    let url = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
+    let output = '"' + settings.output + '"';
+    let include = Array.isArray(settings.includeDomains) && settings.includeDomains.length > 0 ? settings.includeDomains.map(domain => `+*${domain}`) : '';
+    let exclude = Array.isArray(settings.excludePaths) && settings.excludePaths.length > 0 ? settings.excludePaths.map(path => `-*${path}*`) : '';
+    let robots = settings.robots;
+    let structure = settings.structure;
 
     let command = [
         httrack,

@@ -74,7 +74,7 @@ exports.createArchive = (req, res) => {
               <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
             };
 
-            //EmailModel.sendMail(emailSettings);
+            // EmailModel.sendMail(emailSettings);
         });
     }
 
@@ -86,14 +86,11 @@ exports.getArchive = (req, res) => {
 
     fs.stat(pathToFile, (err, stat) => {
         if (err == null) {
-            //Exist
+            // File exist
             return res.status(200).sendFile(pathToFile);
         } else {
-            // ENOENT = No such file
-            res.sendStatus(err.code === 'ENOENT' ? 404 : 400);
-            // .json({
-            //     error: err
-            // });
+            let notFound = 'ENOENT'; // ENOENT === No such file
+            res.sendStatus(err.code === notFound ? 404 : 400);
         }
     });
 };
@@ -151,30 +148,19 @@ exports.previewArchive = (req, res) => {
     let url = '';
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
-        .then((doc) => {
-            // Read a zip file
-            return new Promise((resolve, reject) => {
-                url = doc.fileName.split('_')[0]; // Get domain name from .zip-file
+        .then((data) => {
+            let fileName = data.fileName.substr(0, data.fileName.length - 4); // Remove .zip from file-name
+            let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
 
-                fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
-                    if (err) reject(err);
-                    resolve(data);
-                });
+            fs.stat(pathToFile, (err, stat) => {
+                if (err == null) {
+                    // File exist
+                    return res.status(200).sendFile(pathToFile);
+                } else {
+                    let notFound = 'ENOENT'; // ENOENT === No such file
+                    res.sendStatus(err.code === notFound ? 404 : 400);
+                }
             });
-        })
-        .then((data) => {
-            return JSZip.loadAsync(data);
-        })
-        .then((data) => {
-            data.file(`${url}/index.html`).async('string')
-                .then(result => {
-                    res.status(200).json({
-                        html: result
-                    });
-                })
-                .catch(err => {
-                    throw err;
-                });
         })
         .catch((err) => {
             req.session.flash = {
@@ -184,4 +170,40 @@ exports.previewArchive = (req, res) => {
 
             res.sendStatus(404);
         });
+
+
+    // Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
+    //     .then((doc) => {
+    //         // Read a zip file
+    //         return new Promise((resolve, reject) => {
+    //             url = doc.fileName.split('_')[0]; // Get domain name from .zip-file
+
+    //             fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
+    //                 if (err) reject(err);
+    //                 resolve(data);
+    //             });
+    //         });
+    //     })
+    //     .then((data) => {
+    //         return JSZip.loadAsync(data);
+    //     })
+    //     .then((data) => {
+    //         data.file(`${url}/index.html`).async('string')
+    //             .then(result => {
+    //                 res.status(200).json({
+    //                     html: result
+    //                 });
+    //             })
+    //             .catch(err => {
+    //                 throw err;
+    //             });
+    //     })
+    //     .catch((err) => {
+    //         req.session.flash = {
+    //             message: 'Något gick fel vid hämtning av förhandsgranskning.',
+    //             danger: true
+    //         };
+
+    //         res.sendStatus(404);
+    //     });
 };

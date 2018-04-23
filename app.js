@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(__dirname + '/public'));
 app.use('/archives', express.static('archives')); // Make archives folder accessible
+app.use('/previews', express.static('previews')); // Make previews folder accessible
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 // View engine

@@ -18,5 +18,4 @@ module.exports = (app, baseRoute) => {
 
     // Delete a specific archive
     app.delete(baseRoute + '/:id', isLoggedIn, ArchivesController.deleteArchive);
-
 };
