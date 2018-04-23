@@ -26,9 +26,6 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 * * * * *', () => {
                 }
             }
 
-            // shouldBeArchived = shouldBeArchived.filter(schedule => schedule.typeOfSetting === 0);
-            console.log(shouldBeArchived);
-
             for (let i = 0; i < shouldBeArchived.length; i++) {
                 httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
                     // TODO : skicka mail med ett bra felmeddelande

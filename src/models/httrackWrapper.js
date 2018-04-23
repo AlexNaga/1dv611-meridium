@@ -46,7 +46,7 @@ function archive(settings, callback) {
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error);
 
-        if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting === 1)) {
+        if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting) === 1) {
             for (let i = 0; i < urls.length; i++) {
                 if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
                     fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
@@ -62,20 +62,20 @@ function archive(settings, callback) {
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
             if (error) return callback(error);
 
-            // fs.remove(`${pathToFolder}`, error => {
-            //     if (error) return callback(error);
+            fs.remove(`${pathToFolder}`, error => {
+                if (error) return callback(error);
 
-            //     // Return everything thats needed for the calling method
-            //     // to save archive and send email
-            //     callback(null, {
-            //         ownerId: settings.ownerId,
-            //         zipFile: `${folderName}.zip`,
-            //         fileSize: fileSize,
-            //         path: zipDest,
-            //         url: settings.url,
-            //         email: settings.email
-            //     });
-            // });
+                // Return everything thats needed for the calling method
+                // to save archive and send email
+                callback(null, {
+                    ownerId: settings.ownerId,
+                    zipFile: `${folderName}.zip`,
+                    fileSize: fileSize,
+                    path: zipDest,
+                    url: settings.url,
+                    email: settings.email
+                });
+            });
         });
     });
 }
