@@ -21,7 +21,8 @@ exports.home = (req, res) => {
                     page: data.page,
                     pageCount: data.pages,
                 },
-                homePageActive: true
+                homePageActive: true,
+                loadArchiveScripts: true
             })
         )
         .catch((err) => {
