@@ -55,7 +55,7 @@ exports.createArchive = (req, res) => {
             });
             archive.save();
 
-            let downloadUrl = process.env.SERVER_DOMAIN + '/archives/' + response.zipFile;
+            let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {
                 email: response.email,
                 subject: 'Arkiveringen är klar ✔',
@@ -64,7 +64,7 @@ exports.createArchive = (req, res) => {
               <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
             };
 
-            EmailModel.sendMail(emailSettings);
+            //EmailModel.sendMail(emailSettings);
         });
     }
 
@@ -72,7 +72,7 @@ exports.createArchive = (req, res) => {
 
 
 exports.getArchive = (req, res) => {
-    let pathToFile = path.join(__dirname + '/../../archives/' + req.params.id);
+    let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
 
     fs.stat(pathToFile, (err, stat) => {
         if (err == null) {
@@ -114,7 +114,7 @@ exports.deleteArchive = (req, res) => {
     Archive.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
         .then((archive) => {
             archiveName = archive.fileName;
-            return deleteFile('archives/' + archive.fileName);
+            return deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
         })
         .then(() => {
             res.status(200).json({
@@ -123,6 +123,11 @@ exports.deleteArchive = (req, res) => {
         })
         .catch((err) => {
             // err.code ENOENT = No such file on disk, but removed entry removed from db.
+            req.session.flash = {
+                message: 'Något gick fel vid radering av arkiv.',
+                danger: true
+            };
+
             res.status(err.code === 'ENOENT' ? 404 : 400)
                 .json({
                     error: 'No such file'
@@ -136,9 +141,9 @@ exports.previewArchive = (req, res) => {
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((doc) => {
-            // read a zip file
+            // Read a zip file
             return new Promise((resolve, reject) => {
-                fs.readFile('archives/' + doc.fileName, (err, data) => {
+                fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
                     if (err) reject(err);
                     resolve(data);
                 });
@@ -159,6 +164,11 @@ exports.previewArchive = (req, res) => {
                 });
         })
         .catch((err) => {
+            req.session.flash = {
+                message: 'Något gick fel vid hämtning av förhandsgranskning.',
+                danger: true
+            };
+
             res.sendStatus(404);
         });
 };
