@@ -3,8 +3,8 @@ const validUrl = require('valid-url');
 
 exports.validateHttrackSettings = (body, ownerId) => {
     let url = body.url;
-    let includeDomains = body.includeDomains === undefined ? [] : body.includeDomains.replace(' ', '').split(',');
-    let excludePaths = body.excludePaths === undefined ? [] : body.excludePaths.replace(' ', '').split(',');
+    let includeDomains = body.includeDomains === '' || body.includeDomains === undefined ? [] : body.includeDomains.replace(' ', '').split(',');
+    let excludePaths = body.excludePaths === '' || body.excludePaths === undefined  ? [] : body.excludePaths.replace(' ', '').split(',');
     let robots = body.robots;
     let structure = body.structure;
     let email = body.email;
