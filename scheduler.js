@@ -4,7 +4,7 @@ const Schedule = require('./src/models/scheduledJobs');
 const Archive = require('./src/models/archive');
 const nodeSchedule = require('node-schedule');
 
-exports.nodeSchedule = nodeSchedule.scheduleJob('00 * * * * *', () => {
+exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
     Schedule.find({}).exec()
         .then((schedules) => {
             let everyDay = schedules.filter(schedule => schedule.typeOfSchedule === 1);
@@ -28,8 +28,17 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 * * * * *', () => {
 
             for (let i = 0; i < shouldBeArchived.length; i++) {
                 httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
-                    // TODO : skicka mail med ett bra felmeddelande
-                    if (error) return console.log(error);
+                    if (error) {
+                        let emailSettings = {
+                            email: response.email,
+                            subject: 'Din schemalagda arkivering kunde inte slutföras!',
+                            message: `<p><b>Din schemalagda arkivering av
+                          <a href="${response.url}">${response.url}</a> kunde inte slutföras.</b></p>`
+                        };
+    
+                        EmailModel.sendMail(emailSettings);
+                        return console.log(error);
+                    }
 
                     console.log(`Archive ${response.zipFile} was successful!`);
 

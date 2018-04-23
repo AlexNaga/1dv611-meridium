@@ -24,34 +24,39 @@ exports.listSchedule = (req, res) => {
 }
 
 exports.getSchedule = async (req, res) => {
-    if (req.session.user) {
-        Schedule.findOne({ _id: req.params.id }).exec()
-            .then((schedule) => {
-                Archive.find(
-                    {
-                        ownerId: req.session.user.id,
-                        fromSchedule: schedule._id
-                    })
-                    .sort({ createdAt: 'desc' })
-                    // .skip(page * itemsPerPage)
-                    // .limit(itemsPerPage)
-                    .then((archives) => {
-                        console.log('archives', archives);
+    Schedule.findOne({ _id: req.params.id }).exec()
+        .then((schedule) => {
+            let page = req.query.p || 1;
+            let itemsPerPage = 10;
 
-                        res.render('schedule/edit', { schedule, archives });
+            Archive.paginate(
+                {
+                    ownerId: req.session.user.id,
+                    fromSchedule: schedule._id
+                },
+                {
+                    sort: { createdAt: 'desc' },
+                    page: page,
+                    limit: itemsPerPage
+                })
+                .then(data =>
+                    res.render('schedule/edit', {
+                        schedule: schedule,
+
+                        // pagination below
+                        docs: data.docs,
+                        total: data.total,
+                        limit: data.limit,
+                        pagination: {
+                            page: data.page,
+                            pageCount: data.pages,
+                        }
                     })
-                    .catch((err) => {
-                        throw err;
-                    });
-            })
-            .catch((err) => {
-                res.status(400).json({
-                    error: err
+                )
+                .catch((err) => {
+                    throw err;
                 });
-            });
-    } else {
-        res.redirect('account/login')
-    }
+        });
 };
 
 exports.updateSchedule = async (req, res) => {
