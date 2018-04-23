@@ -15,9 +15,14 @@ exports.createArchive = (req, res) => {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }
-
-    req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
-    res.redirect('/');
+    
+    if (req.body.action == 0) {
+        req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        res.redirect('/');
+    } else if (req.body.action == 1) {
+        req.session.flash = { message: 'Arkiveringen är schemalagd. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        res.redirect('/');
+    }
 
     if (httrackSettings.isScheduled) {
         if (httrackSettings.typeOfSetting === '0') { // standard settings
