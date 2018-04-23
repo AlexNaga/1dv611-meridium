@@ -15,7 +15,7 @@ exports.createArchive = (req, res) => {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }
-    
+
     if (req.body.action == 0) {
         req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
         res.redirect('/');
@@ -68,7 +68,7 @@ exports.createArchive = (req, res) => {
                 fileSize: response.fileSize
             });
             archive.save();
-            
+
             let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {
                 email: response.email,
@@ -133,13 +133,14 @@ exports.deleteArchive = (req, res) => {
             });
         })
         .catch((err) => {
-            // err.code ENOENT = No such file on disk, but removed entry removed from db.
-            req.session.flash = {
-                message: 'Något gick fel vid radering av arkiv.',
-                danger: true
-            };
+            // req.session.flash = {
+            //     message: 'Något gick fel vid radering av arkiv.',
+            //     danger: true
+            // };
 
-            res.status(err.code === 'ENOENT' ? 404 : 400)
+            let notFound = 'ENOENT'; // ENOENT === No such file
+
+            res.status(err.code === notFound ? 404 : 400)
                 .json({
                     error: 'No such file'
                 });
@@ -149,7 +150,6 @@ exports.deleteArchive = (req, res) => {
 
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
-    let url = '';
 
     Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
         .then((data) => {
@@ -167,47 +167,11 @@ exports.previewArchive = (req, res) => {
             });
         })
         .catch((err) => {
-            req.session.flash = {
-                message: 'Något gick fel vid hämtning av förhandsgranskning.',
-                danger: true
-            };
+            // req.session.flash = {
+            //     message: 'Något gick fel vid hämtning av förhandsgranskning.',
+            //     danger: true
+            // };
 
             res.sendStatus(404);
         });
-
-
-    // Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
-    //     .then((doc) => {
-    //         // Read a zip file
-    //         return new Promise((resolve, reject) => {
-    //             url = doc.fileName.split('_')[0]; // Get domain name from .zip-file
-
-    //             fs.readFile(`./${process.env.ARCHIVES_FOLDER}/` + doc.fileName, (err, data) => {
-    //                 if (err) reject(err);
-    //                 resolve(data);
-    //             });
-    //         });
-    //     })
-    //     .then((data) => {
-    //         return JSZip.loadAsync(data);
-    //     })
-    //     .then((data) => {
-    //         data.file(`${url}/index.html`).async('string')
-    //             .then(result => {
-    //                 res.status(200).json({
-    //                     html: result
-    //                 });
-    //             })
-    //             .catch(err => {
-    //                 throw err;
-    //             });
-    //     })
-    //     .catch((err) => {
-    //         req.session.flash = {
-    //             message: 'Något gick fel vid hämtning av förhandsgranskning.',
-    //             danger: true
-    //         };
-
-    //         res.sendStatus(404);
-    //     });
 };
