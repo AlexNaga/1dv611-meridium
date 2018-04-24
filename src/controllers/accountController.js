@@ -114,8 +114,12 @@ exports.resetPassword = async (req, res) => {
 
             let emailSettings = {
                 email: email,
-                subject: 'Förfrågan om återställning av lösenord',
-                message: `Återställ ditt lösenord <a href="${resetLink}">här</a>`
+                subject: 'Återställ ditt lösenord',
+                message: `<p>Hej,</p>
+                          <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
+                          <a href="${resetLink}">Klicka på denna länk för att skapa ditt nya lösenord</a>
+                          <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p>`
+
             }
             EmailModel.sendMail(emailSettings);
             req.session.flash = {
