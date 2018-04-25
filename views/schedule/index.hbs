@@ -7,43 +7,36 @@
         <table class="table is-fullwidth is-striped">
             <thead>
                 <tr>
-                    <th>Webbplats</th>
-                    <th>Schemalagd</th>
-                    <th>Subdomän</th>
+                    <th>URL</th>
+                    <th>Sub-URL</th>
                     <th>Exkludera</th>
-                    <th>Robots</th>
-                    <th>Struktur</th>
-                    <th>Senast uppdaterad</th>
-                    <th>Skapad</th>
-                    <th></th>
-                    <th></th>
+                    <th>Schemalagd</th>
+                    <th colspan="2">Senast uppdaterad</th>
                 </tr>
             </thead>
             <tbody class="table-row-hover">
                 {{#each docs}}
                 <tr title="Ändra schemaläggning">
                     <td>{{url}}</td>
-                    <td>{{typeOfSchedule}}</td>
                     <td>{{includeDomains}}</td>
                     <td>{{excludePaths}}</td>
-                    <td>{{robots}}</td>
-                    <td>{{structure}}</td>
+                    <td>{{scheduleName}}</td>
                     <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>
-                    <td title="{{createdAt}}">{{timeSince createdAt}}</td>
                     <td>
-                        <a href="/schedules/edit/{{_id}}" class="button is-inverted is-rounded is-info">
-                            <span class="icon is-small">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                        </a>
-                        <td>
+                        <div class="field is-grouped">
+                            <a href="/schedules/edit/{{_id}}" class="button is-inverted is-rounded is-info">
+                                <span class="icon is-small">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            </a>
                             <a href="/schedules/delete/{{_id}}" class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmScheduleDel1"
                                 title="Radera schemaläggning">
                                 <span class="icon is-small">
                                     <i class="fas fa-times"></i>
                                 </span>
                             </a>
-                        </td>
+                        </div>
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -54,7 +47,7 @@
                 <span class="icon">
                     <i class="fas fa-arrow-left"></i>
                 </span>
-                <span>Föregåendes</span>
+                <span>Föregående</span>
             </a>
             {{/paginate}} {{#paginate pagination type="next"}}
             <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next" {{#if disabled}}disabled{{/if}}>

@@ -1,16 +1,44 @@
 const Schedule = require('../models/scheduledJobs');
 const Archive = require('../models/archive');
+const { URL } = require('url');
+const validUrl = require('valid-url');
+
+/**
+ * Makes the urls user friendly for viewing (removes "http://" etc)
+ * @param {[Schedule]} docs Array of Schedules
+ */
+function makeUserFriendlyUrls(docs) {
+    for (let i = 0; i < docs.length; i++) {
+        if (docs[i].typeOfSetting === 1) {
+            docs[i].url = docs[i].advancedSetting.split(' ')[0];
+        }
+    }
+    for (let i = 0; i < docs.length; i++) {
+        const x = docs[i];
+        x.url = (validUrl.isUri(x.url) ? new URL(x.url).hostname : x.url)
+
+        if (x.includeDomains) {
+            let subUrls = x.includeDomains.split(',');
+            for (let j = 0; j < subUrls.length; j++) {
+                subUrls[j] = (validUrl.isUri(subUrls[j]) ? new URL(subUrls[j]).hostname : subUrls[j])
+            }
+            x.includeDomains =subUrls.join(' ');
+        }
+    }
+}
 
 exports.listSchedule = (req, res) => {
     let page = req.query.p || 1;
     let itemsPerPage = 10;
-    Schedule.paginate({ ownerId: req.session.user.id, },
+    Schedule.paginate({ ownerId: req.session.user.id },
         {
             sort: { createdAt: 'desc' },
             page: page,
             limit: itemsPerPage
         })
         .then(data => {
+            makeUserFriendlyUrls(data.docs);
+
             res.render('schedule/index', {
                 schedulePageActive: true,
 

@@ -4,7 +4,7 @@ function validatePass() {
 
     let message = document.getElementById('confirmMessage');
 
-    //Set the colors we'll be using
+    // Set the colors we'll be using
     let passwordsMatch = '#23d160';
     let passwordDontMatch = '#ff3860';
 

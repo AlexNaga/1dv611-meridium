@@ -7,19 +7,19 @@
     height: 85%;
 }
 
-/* Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp */
 #navbar > .navbar {
     -webkit-transition: background-color 0.2s ease-in;
     -ms-transition: background-color 0.2s ease-in;
     transition: background-color 0.2s ease-in;
 }
+/* Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp */
 .sticky {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 5;
-
 }
+
 .sticky + .section {
     padding-top: 6.25rem; /* navbar min-height + section padding-top*/
 }

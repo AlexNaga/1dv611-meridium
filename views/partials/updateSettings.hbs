@@ -77,7 +77,7 @@
         </label>
         <div class="control has-icons-left">
             <div class="select">
-                <select name="schedule" id="schedule" required>
+                <select name="typeOfSchedule" id="schedule" required>
                     <option {{#eq schedule.typeOfSchedule 0}}selected="selected" {{/eq}} name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>
                     <option {{#eq schedule.typeOfSchedule 1}}selected="selected" {{/eq}} name="schedule" id="schedule-option-day" value="1">Varje dag</option>
                     <option {{#eq schedule.typeOfSchedule 2}}selected="selected" {{/eq}} name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
