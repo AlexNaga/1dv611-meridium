@@ -40,7 +40,7 @@ exports.createArchive = (req, res) => {
         } else { // advanced settings
             ScheduledJobs.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
-                advancedSetting: httrackSettings.rawDataInput,
+                advancedSetting: httrackSettings.advancedSetting,
                 email: httrackSettings.email,
                 ownerId: httrackSettings.ownerId,
                 typeOfSchedule: httrackSettings.typeOfSchedule

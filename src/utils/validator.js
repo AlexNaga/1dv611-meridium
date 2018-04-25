@@ -12,7 +12,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
     let typeOfSchedule = body.typeOfSchedule; // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
     let error = undefined;
     let typeOfSetting = body.setting;
-    let rawDataInput = body.rawDataInput;
+    let advancedSetting = body.advancedSetting;
 
     if (typeOfSetting === '0') { // standard setting
         if (url === undefined || !validUrl.isUri(url)) {
@@ -40,7 +40,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
         robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
         structure,      // 0 = default site structure.
         typeOfSetting,  // HTTrack uses this
-        rawDataInput,   // HTTrack uses this
+        advancedSetting,   // HTTrack uses this
         ownerId,        // just pass along, HTTrack does not use this
         email,          // just pass along
         typeOfSchedule,  // just pass along

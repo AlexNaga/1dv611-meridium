@@ -16,14 +16,14 @@
     </div>
 </div>
 
-<form action="/schedules" method="post" id="updateAdvancedSettings">
+<form action="/schedules/edit/{{schedule._id}}" method="post" id="updateAdvancedSettings">
     <input type="hidden" name="setting" value="1">
     <div class="field">
         <label class="label">Kommando
             <i class="far fa-question-circle"></i>
         </label>
         <p class="control has-icons-left">
-            <input class="input" id="rawDataInput" type="text" required name="rawDataInput" placeholder="Kommando" value={{ schedule.advancedSetting }}>
+            <input class="input" id="advancedSetting" type="text" required name="advancedSetting" placeholder="Kommando" value={{ schedule.advancedSetting }}>
             <span class="icon is-small is-left">
                 <i class="fas fa-code"></i>
             </span>

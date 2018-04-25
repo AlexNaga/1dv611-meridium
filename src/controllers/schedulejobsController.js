@@ -22,6 +22,7 @@ exports.listSchedule = (req, res) => {
 exports.getSchedule = async (req, res) => {
     Schedule.findOne({ _id: req.params.id }).exec()
         .then((schedule) => {
+            console.log(schedule);
             let page = req.query.p || 1;
             let itemsPerPage = 10;
 
@@ -56,34 +57,35 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.updateSchedule = async (req, res) => {
-        Schedule.findByIdAndUpdate({
-            _id: req.params.id
-        }, {
-                $set: {
-                    url: req.body.url,
-                    includeDomains: req.body.includeDomains,
-                    excludePaths: req.body.excludePaths,
-                    robots: req.body.robots,
-                    structure: req.body.structure,
-                    schedule: req.body.typeOfSchedule,
-                    email: req.body.email,
-                    action: req.body.typeOfSetting
-                }
-            })
-            .then(() => {
-                req.session.flash = {
-                    message: 'Schemaläggningen har uppdaterats!',
-                    success: true
-                };
-                return res.redirect('/schedules');
-            })
-            .catch((err) => {
-                console.log(err)
-                req.session.flash = {
-                    message: 'Vi kunde inte uppdatera schemainställningarna!',
-                    danger: true
-                }
-            })
+    let id = req.params.id;
+
+    Schedule.findByIdAndUpdate(id, {
+            $set: {
+                url: req.body.url,
+                advancedSetting: req.body.advancedSetting,
+                includeDomains: req.body.includeDomains,
+                excludePaths: req.body.excludePaths,
+                robots: req.body.robots,
+                structure: req.body.structure,
+                schedule: req.body.typeOfSchedule,
+                email: req.body.email,
+                action: req.body.typeOfSetting
+            }
+        })
+        .then(() => {
+            req.session.flash = {
+                message: 'Schemaläggningen har uppdaterats!',
+                success: true
+            };
+            return res.redirect('/schedules');
+        })
+        .catch((err) => {
+            console.log(err)
+            req.session.flash = {
+                message: 'Vi kunde inte uppdatera schemainställningarna!',
+                danger: true
+            }
+        })
 }
 
 exports.deleteSchedule = (req, res) => {
