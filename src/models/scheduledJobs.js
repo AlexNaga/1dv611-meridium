@@ -3,7 +3,7 @@ const timestamp = require('mongoose-timestamp');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const scheduledJobs = mongoose.Schema({
+const schema = mongoose.Schema({
     // 0 = standard, 1 = advanced
     typeOfSetting: { type: Number },
     // advanced settings-string
@@ -24,9 +24,10 @@ const scheduledJobs = mongoose.Schema({
     includeDomains: { type: String },
     excludePaths: { type: String },
     ownerId: { type: ObjectId },
-    email: { type: String }
+    shouldNotify: { type: Boolean, default: true },
+    email: { type: String },
 });
 
-scheduledJobs.plugin(timestamp);
+schema.plugin(timestamp);
 
-module.exports = mongoose.model('ScheduleJobs', scheduledJobs);
+module.exports = mongoose.model('ScheduleJobs', schema);

@@ -1,95 +1,74 @@
 <section id="navbar">
     <nav class="navbar">
-        <div class="navbar-brand"></div>
-        <div class="navbar-menu">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <a class="button is-link {{#if homePageActive}}activePage{{/if}}" href="/">
+                    <span class="icon">
+                        <i class="fas fa-home"></i>
+                    </span>
+                    <span>Hem</span>
+                </a>
+            </div>
+            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navMenu" class="navbar-menu">
             <div class="navbar-start">
+                {{#if user}}
                 <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link {{#if homePageActive}}activePage{{/if}}" href="/">
-                                <span class="icon">
-                                    <i class="fas fa-home"></i>
-                                </span>
-                                <span>Hem</span>
-                            </a>
-                        </p>
-                    </div>
+                    <a class="navbar-item button is-link {{#if schedulePageActive}}activePage{{/if}}" href="/schedules">
+                        <span class="icon">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                        <span>Schemaläggningar</span>
+                    </a>
                 </div>
-                {{!-- {{#if user}}
-                <div class="navbar-item">
-                    <p class="control">
-                        <span>Inloggad som, {{user.email}}</span>
-                    </p>
-                </div>
-                {{/if}} --}}
+                {{/if}}
             </div>
             {{#if user}}
             <div class="navbar-end">
+
                 <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link {{#if schedulePageActive}}activePage{{/if}}" href="/schedules">
-                                <span class="icon">
-                                    <i class="far fa-calendar-alt"></i>
-                                </span>
-                                <span>Schemaläggningar</span>
-                            </a>
-                        </p>
-                    </div>
+                    <a class="navbar-item button is-link {{#if profilePageActive}}activePage{{/if}}" href="/profile/edit">
+                        <span class="icon">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <span>Min profil</span>
+                    </a>
                 </div>
                 <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link {{#if profilePageActive}}activePage{{/if}}" href="/profile/edit">
-                                <span class="icon">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                                <span>Min profil</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link" href="/account/logout">
-                                <span class="icon">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                </span>
-                                <span>Logga ut</span>
-                            </a>
-                        </p>
-                    </div>
+                    <a class="navbar-item button is-link" href="/account/logout">
+                        <span class="icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span>Logga ut</span>
+                    </a>
                 </div>
             </div>
-            {{else}}
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link {{#if registerPageActive}}activePage{{/if}}" href="/account/register">
-                                <span class="icon">
-                                    <i class="fas fa-user"></i>
-                                </span>
-                                <span>Registrera</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-                        <p class="control">
-                            <a class="button is-link {{#if loginPageActive}}activePage{{/if}}" href="/account/login">
-                                <span class="icon">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </span>
-                                <span>Logga in</span>
-                            </a>
-                        </p>
-                    </div>
-                </div>
+        </div>
+        {{else}}
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <a class="navbar-item button is-link {{#if registerPageActive}}activePage{{/if}}" href="/account/register">
+                    <span class="icon">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    <span>Registrera</span>
+                </a>
             </div>
-            {{/if}}
+            <div class="navbar-item">
+                <a class="navbar-item button is-link {{#if loginPageActive}}activePage{{/if}}" href="/account/login">
+                    <span class="icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </span>
+                    <span>Logga in</span>
+                </a>
+            </div>
+        </div>
+        {{/if}}
         </div>
     </nav>
 </section>

@@ -57,37 +57,34 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.updateSchedule = async (req, res) => {
-    let id = req.params.id;
-
-    Schedule.findByIdAndUpdate(id, {
-            $set: {
-                url: req.body.url,
-                advancedSetting: req.body.advancedSetting,
-                includeDomains: req.body.includeDomains,
-                excludePaths: req.body.excludePaths,
-                robots: req.body.robots,
-                structure: req.body.structure,
-                schedule: req.body.typeOfSchedule,
-                email: req.body.email,
-                action: req.body.typeOfSetting
-                // Kan man skippa att skicka setting igen och bara uppdatera de fält som ändrats?
-                // Alltså de som syns för användaren, då slipper vi input hidden i html.
-            }
-        })
-        .then(() => {
-            req.session.flash = {
-                message: 'Schemaläggningen har uppdaterats!',
-                success: true
-            };
-            return res.redirect('/schedules');
-        })
-        .catch((err) => {
-            console.log(err)
-            req.session.flash = {
-                message: 'Vi kunde inte uppdatera schemainställningarna!',
-                danger: true
-            }
-        })
+        Schedule.findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+                $set: {
+                    url: req.body.url,
+                    includeDomains: req.body.includeDomains,
+                    excludePaths: req.body.excludePaths,
+                    robots: req.body.robots,
+                    structure: req.body.structure,
+                    schedule: req.body.typeOfSchedule,
+                    email: req.body.email,
+                    shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
+                }
+            })
+            .then(() => {
+                req.session.flash = {
+                    message: 'Schemaläggningen har uppdaterats!',
+                    success: true
+                };
+                return res.redirect('/schedules');
+            })
+            .catch((err) => {
+                console.log(err)
+                req.session.flash = {
+                    message: 'Vi kunde inte uppdatera schemainställningarna!',
+                    danger: true
+                }
+            })
 }
 
 exports.deleteSchedule = (req, res) => {
