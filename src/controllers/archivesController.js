@@ -49,6 +49,7 @@ exports.createArchive = (req, res) => {
     } else {
         httrackWrapper.archive(httrackSettings, (error, response) => {
             if (error) {
+                console.log(error);
                 let emailSettings = {
                     email: response.email,
                     subject: 'Din schemalagda arkivering kunde inte slutföras!',
@@ -57,7 +58,7 @@ exports.createArchive = (req, res) => {
                 };
 
                 EmailModel.sendMail(emailSettings);
-                return console.log(error);
+                return;
             }
 
             console.log(`Archive ${response.zipFile} was successful!`);
