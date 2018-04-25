@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
+const mongoosePaginate = require('mongoose-paginate');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -29,5 +30,6 @@ const schema = mongoose.Schema({
 });
 
 schema.plugin(timestamp);
+schema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('ScheduleJobs', schema);
