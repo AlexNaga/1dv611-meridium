@@ -7,23 +7,6 @@
     height: 85%;
 }
 
-.fade-out {
-    -webkit-animation: fadeout 0.5s linear forwards;
-    -webkit-animation-delay: 5s;
-    animation: fadeout 0.5s linear forwards;
-    animation-delay: 5s;
-}
-
-@-webkit-keyframes fadeout {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-@keyframes fadeout {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
 /* Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp */
 #navbar > .navbar {
     -webkit-transition: background-color 0.2s ease-in;
@@ -48,4 +31,40 @@
 
 .activePage {
     background-color: hsl(0, 0%, 29%) !important;
+}
+
+ /* The snackbar - position it at the bottom and in the middle of the screen */
+ #flash-notification {
+    max-width: 768px; /* Bulma mobile */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    top: 0; /* 30px from the top */
+    left: 50%; /* Center */
+    transform: translateX(-50%); /* Center */
+}
+
+.fade-in-out {
+    -webkit-animation: fadein 1s, fadeout 1s 2.5s linear forwards;
+    animation: fadein 1s, fadeout 1s 2.5s linear forwards;
+}
+
+/* Animations to fade the notification in and out */
+@-webkit-keyframes fadein {
+    from {top: -30px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {top: -30px; opacity: 0;}
+    to {top: 0; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {top: 0; opacity: 1;}
+    to {top: -30px; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {top: 0; opacity: 1;}
+    to {top: -30px; opacity: 0;}
 }

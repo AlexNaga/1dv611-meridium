@@ -1,13 +1,9 @@
 {{#if flash}}
-<div class="columns">
-    <div class="column is-4 is-offset-4">
-        <div class="notification fade-out has-text-centered
+<div id="flash-notification" class="notification fade-in-out has-text-centered
             {{#if flash.success}}is-success{{/if}}
             {{#if flash.danger}}is-danger{{/if}}
             {{#if flash.info}}is-info{{/if}}">
-            <button class="delete"></button>
-            {{ flash.message }}
-        </div>
-    </div>
+    <button class="delete"></button>
+    {{ flash.message }}
 </div>
 {{/if}}
