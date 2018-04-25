@@ -56,6 +56,7 @@ exports.getSchedule = async (req, res) => {
 };
 
 exports.updateSchedule = async (req, res) => {
+    console.log('uppdatera!!!')
         Schedule.findByIdAndUpdate({
             _id: req.params.id
         }, {
