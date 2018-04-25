@@ -1,12 +1,11 @@
 {{> confirmDelete }}
 
 <form action="/schedules/edit/{{schedule._id}}" method="post" id="updateAdvancedSettings">
-    <input type="hidden" name="setting" value="1">
     <div class="field">
         <label class="label">Kommando
             <i class="far fa-question-circle"></i>
         </label>
-        <p class="control has-icons-left">
+        <div class="control has-icons-left">
             <input class="input" id="advancedSetting" type="text" required name="advancedSetting" placeholder="Kommando" value={{ schedule.advancedSetting }}>
             <span class="icon is-small is-left">
                 <i class="fas fa-code"></i>

@@ -30,8 +30,8 @@
                             <td>{{excludePaths}}</td>
                             <td>{{robots}}</td>
                             <td>{{structure}}</td>
-                            <td>{{updatedAt}}</td>
-                            <td>{{createdAt}}</td>
+                            <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>
+                            <td title="{{createdAt}}">{{timeSince createdAt}}</td>
                             <td>
                                 <a href="/schedules/edit/{{_id}}" class="button is-inverted is-rounded is-info">
                                     <span class="icon is-small">

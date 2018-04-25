@@ -3,11 +3,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const exphbs = require('express-handlebars');
-const paginate = require('handlebars-paginate');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
+
+const timestampHelper = require('./timestampHelper');
+const paginate = require('handlebars-paginate');
 const helpers = require('handlebars-helpers')(['comparison']);
 
 mongoose.connect(
@@ -33,7 +35,8 @@ app.engine('.hbs', exphbs({
     partialsDir: path.resolve(__dirname, 'views/partials'),
     layoutsDir: path.resolve(__dirname, 'views/layout'),
     helpers: {
-        paginate: paginate
+        paginate: paginate,
+        timeSince: timestampHelper
     }
 }));
 app.set('view engine', 'hbs');
