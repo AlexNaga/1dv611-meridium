@@ -68,6 +68,8 @@ exports.updateSchedule = async (req, res) => {
                     schedule: req.body.typeOfSchedule,
                     email: req.body.email,
                     action: req.body.typeOfSetting
+                    // Kan man skippa att skicka setting igen och bara uppdatera de fält som ändrats?
+                    // Alltså de som syns för användaren, då slipper vi input hidden i html.
                 }
             })
             .then(() => {
