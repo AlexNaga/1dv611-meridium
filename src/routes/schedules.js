@@ -8,6 +8,7 @@ module.exports = (app, baseRoute) => {
 
     // Lists all schedules
     app.get(baseRoute + '/', isLoggedIn, ScheduleController.listSchedule);
+    app.post(baseRoute + '/', isLoggedIn, ScheduleController.listSchedule);
 
     // Edit a specific schedule
     app.post(baseRoute + '/:id', isLoggedIn, ScheduleController.updateSchedule);

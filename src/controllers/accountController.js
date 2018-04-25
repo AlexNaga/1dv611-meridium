@@ -88,53 +88,67 @@ exports.resetPassword = async (req, res) => {
     let user = await User.findOne({
         email: email
     });
+    if (user) {
+        let tempCode = crypto.randomBytes(20).toString('hex');
 
-    let tempCode = crypto.randomBytes(20).toString('hex');
+        const link = process.env.HOSTNAME || process.env.SERVER_DOMAIN;
+        let resetLink = link + '/account/reset-password/' + tempCode;
+        let tempValue = {
+            code: tempCode,
+            date: Date.now() / 1000
+        };
 
-    const link = process.env.HOSTNAME || process.env.SERVER_DOMAIN;
-    let resetLink = link + '/account/reset-password/' + tempCode;
-    console.log(resetLink);
-    console.log(link);
-    console.log(tempCode);
-    let tempValue = {
-        code: tempCode,
-        date: Date.now() / 1000
-    };
-
-    try {
-        if (user) {
-            let userTempCode = await User.findOneAndUpdate({
-                email: email
-            }, {
-                    $set: tempValue
+        try {
+            if (user) {
+                let userTempCode = await User.findOneAndUpdate({
+                    email: email
                 }, {
-                    new: true
-                });
-            await userTempCode.save();
+                        $set: tempValue
+                    }, {
+                        new: true
+                    });
+                await userTempCode.save();
 
-            let emailSettings = {
-                email: email,
-                subject: 'Återställ ditt lösenord',
-                message: `<p>Hej,</p>
+                let emailSettings = {
+                    email: email,
+                    subject: 'Återställ ditt lösenord',
+                    message: `<p>Hej,</p>
                           <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
                           <a href="${resetLink}">Klicka på denna länk för att skapa ditt nya lösenord</a>
                           <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p>`
 
+                }
+                EmailModel.sendMail(emailSettings);
+
+                req.session.flash = {
+                    message: 'Om den angivna e-postadressen finns i vårt system så har vi nu skickat en återställningslänk till den.',
+                    info: true
+                };
+                res.redirect('/');
             }
-            EmailModel.sendMail(emailSettings);
+        } catch (error) {
             req.session.flash = {
-                message: 'Återställningslänk skickad.',
-                info: true
+                message: error.message,
+                danger: true
             };
-            res.redirect('/');
+            return res.redirect('/account/login');
         }
-    } catch (error) {
+    } else {
+        console.log('not found!')
+        let emailSettings = {
+            email: email,
+            subject: 'Återställning av lösenord',
+            message: `Någon har försökt återställa ett lösenord till den här e-posten men vi har den inte registrerad hos oss på Arkivdium.se.`
+
+        }
+        EmailModel.sendMail(emailSettings);
         req.session.flash = {
-            message: error.message,
-            danger: true
+            message: 'Om den angivna e-postadressen finns i vårt system så har vi nu skickat en återställningslänk till den.',
+            info: true
         };
-        return res.redirect('/account/login');
+    res.redirect('/');
     }
+
 };
 
 exports.validateLink = async (req, res) => {
@@ -165,18 +179,15 @@ isValidCode = async (code) => {
 }
 
 disableCode = async (code) => {
-    console.log('COOOODDDDEEEEEE' + code);
     let updatedCode = {
         code: null
     }
 
     let user = await User.findOneAndUpdate({ code: code }, { $set: updatedCode }, { new: true });
-    console.log(code);
 }
 
 exports.updatePassword = async (req, res) => {
     const code = req.params.temporaryCode;
-    console.log(req.body);
 
     if (await !isValidCode(code)) {
         req.session.flash = {
