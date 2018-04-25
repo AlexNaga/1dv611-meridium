@@ -16,47 +16,57 @@
     </div>
 </div>
 
-<div class="field">
-    <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
+<section class="section">
+    <div class="container">
+        <div class="field">
+            <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
 
-    <div class="table-container">
-        <table class="table is-fullwidth is-striped">
-            <thead>
-                <tr>
-                    <th>Webbplats</th>
-                    <th>Schemalagd</th>
-                    <th>Subdomän</th>
-                    <th>Exkludera</th>
-                    <th>Robots</th>
-                    <th>Struktur</th>
-                    <th>Senast uppdaterad</th>
-                    <th>Skapad</th>
-                </tr>
-            </thead>
-            <tbody class="table-row-hover">
-                {{#each data}}
-                <tr>
-                    <td>{{url}}</td>
-                    <td>{{typeOfSchedule}}</td>
-                    <td>{{includeDomains}}</td>
-                    <td>{{excludePaths}}</td>
-                    <td>{{robots}}</td>
-                    <td>{{structure}}</td>
-                    <td>{{updatedAt}}</td>
-                    <td>{{createdAt}}</td>
-                    <td>
-                        <a href="/schedules/edit/{{_id}}"></a>
-                    </td>
-                    <td>
-                        <a href="/schedules/delete/{{_id}}" class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmScheduleDel1" title="Radera schemaläggning">
-                            <span class="icon is-small">
-                                <i class="fas fa-times"></i>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+            <div class="table-container">
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>Webbplats</th>
+                            <th>Schemalagd</th>
+                            <th>Subdomän</th>
+                            <th>Exkludera</th>
+                            <th>Robots</th>
+                            <th>Struktur</th>
+                            <th>Senast uppdaterad</th>
+                            <th>Skapad</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-row-hover">
+                        {{#each data}}
+                        <tr title="Ändra schemaläggning">
+                            <td>{{url}}</td>
+                            <td>{{typeOfSchedule}}</td>
+                            <td>{{includeDomains}}</td>
+                            <td>{{excludePaths}}</td>
+                            <td>{{robots}}</td>
+                            <td>{{structure}}</td>
+                            <td>{{updatedAt}}</td>
+                            <td>{{createdAt}}</td>
+                            <td>
+                                <a href="/schedules/edit/{{_id}}" class="button is-inverted is-rounded is-info">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                </a>
+                                <td>
+                                    <a href="/schedules/delete/{{_id}}" class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmScheduleDel1"
+                                        title="Radera schemaläggning">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
+</section>

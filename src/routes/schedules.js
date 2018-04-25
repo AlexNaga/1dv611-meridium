@@ -17,5 +17,4 @@ module.exports = (app, baseRoute) => {
 
     // Update a specific schedule 
     app.post(baseRoute + '/edit/:id', isLoggedIn, ScheduleController.updateSchedule);
-    app.post(baseRoute + '/:id', isLoggedIn, ScheduleController.listSchedule);
 };
