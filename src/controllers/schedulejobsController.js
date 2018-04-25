@@ -75,7 +75,7 @@ exports.getSchedule = async (req, res) => {
                 message: 'Något gick fel vid hämtning av den schemaläggningen!',
                 danger: true
             }
-            return res.redirect('/schedules', { schedulePageActive: true });
+            return res.redirect('/schedules');
         });
 };
 
@@ -101,7 +101,7 @@ exports.updateSchedule = async (req, res) => {
                 message: 'Schemaläggningen har uppdaterats!',
                 success: true
             };
-            return res.redirect('/schedules', { schedulePageActive: true });
+            return res.redirect('/schedules');
         })
         .catch((err) => {
             console.log(err)
@@ -109,7 +109,7 @@ exports.updateSchedule = async (req, res) => {
                 message: 'Vi kunde inte uppdatera schemainställningarna!',
                 danger: true
             }
-            return res.redirect('/schedules', { schedulePageActive: true });
+            return res.redirect('/schedules');
         })
 }
 
@@ -121,7 +121,7 @@ exports.deleteSchedule = (req, res) => {
                 success: true
             };
 
-            return res.redirect('/schedules', { schedulePageActive: true });
+            return res.redirect('/schedules');
         })
         .catch((err) => {
             console.log(err);
@@ -131,7 +131,7 @@ exports.deleteSchedule = (req, res) => {
                 danger: true
             };
 
-            return res.redirect('/schedules', { schedulePageActive: true });
+            return res.redirect('/schedules');
         });
 };
 
