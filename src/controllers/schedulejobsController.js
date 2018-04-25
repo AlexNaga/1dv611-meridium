@@ -62,6 +62,7 @@ exports.updateSchedule = async (req, res) => {
         }, {
                 $set: {
                     url: req.body.url,
+                    advancedSetting: req.body.advancedSetting,
                     includeDomains: req.body.includeDomains,
                     excludePaths: req.body.excludePaths,
                     robots: req.body.robots,
