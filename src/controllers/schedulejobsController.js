@@ -22,6 +22,7 @@ exports.listSchedule = (req, res) => {
 exports.getSchedule = async (req, res) => {
     Schedule.findOne({ _id: req.params.id }).exec()
         .then((schedule) => {
+            console.log(schedule);
             let page = req.query.p || 1;
             let itemsPerPage = 10;
 
@@ -62,6 +63,7 @@ exports.updateSchedule = async (req, res) => {
         }, {
                 $set: {
                     url: req.body.url,
+                    advancedSetting: req.body.advancedSetting,
                     includeDomains: req.body.includeDomains,
                     excludePaths: req.body.excludePaths,
                     robots: req.body.robots,
