@@ -25,6 +25,7 @@ exports.home = (req, res) => {
                     pageCount: data.pages,
                 },
                 homePageActive: true,
+                loadIndexScripts: true,
                 loadArchiveScripts: true
             })
         )

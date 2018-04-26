@@ -22,38 +22,8 @@ function setupEventHandlers() {
 
     for (let i = 0; i < list.length; i++) {
         let elem = list[i];
-        deleteBtn(elem);
         previewBtn(elem);
     } 
-}
-
-function deleteBtn(elem) {
-    let btn = elem.querySelector('.action-delete');
-    let archiveId = btn.getAttribute('data-id');
-
-    btn.addEventListener('click', () => {
-        // Clone elem to remove old event listeners
-        let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
-        let newElem = oldElem.cloneNode(true);
-        oldElem.parentNode.replaceChild(newElem, oldElem);
-
-        let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
-        modalRemoveBtn.addEventListener('click', () => {
-
-            fetchUrl('/archives/' + archiveId, {
-                method: 'DELETE'
-            })
-                .catch((err) => {
-                    // console.log('Something went wrong when trying to delete an archive');
-                    // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db
-                    console.log(err);
-                })
-                .finally(() => {
-                    btn.parentNode.parentNode.removeChild(btn.parentNode);
-                    modal.closeModals();
-                });
-        });
-    });
 }
 
 function previewBtn(elem) {
