@@ -33,38 +33,42 @@
     background-color: hsl(0, 0%, 29%) !important;
 }
 
+ .flash-container {
+    position: relative;
+ }
+
  /* The snackbar - position it at the bottom and in the middle of the screen */
  #flash-notification {
     max-width: 768px; /* Bulma mobile */
-    position: fixed; /* Sit on top of the screen */
+    position: absolute; /* Sit on top of the screen */
     z-index: 1; /* Add a z-index if needed */
-    top: 0; /* 30px from the top */
+    top: 10px; /* 30px from the top */
     left: 50%; /* Center */
     transform: translateX(-50%); /* Center */
 }
 
 .fade-in-out {
-    -webkit-animation: fadein 1s, fadeout 1s 3s linear forwards;
-    animation: fadein 1s, fadeout 1s 3s linear forwards;
+    -webkit-animation: fadein 1s, fadeout 1s 4s linear forwards;
+    animation: fadein 1s, fadeout 1s 4s linear forwards;
 }
 
 /* Animations to fade the notification in and out */
 @-webkit-keyframes fadein {
-    from {top: -30px; opacity: 0;}
-    to {top: 0; opacity: 1;}
+    from {top: -50px; opacity: 0;}
+    to {top: 10px; opacity: 1;}
 }
 
 @keyframes fadein {
-    from {top: -30px; opacity: 0;}
-    to {top: 0; opacity: 1;}
+    from {top: -50px; opacity: 0;}
+    to {top: 10px; opacity: 1;}
 }
 
 @-webkit-keyframes fadeout {
-    from {top: 0; opacity: 1;}
-    to {top: -30px; opacity: 0;}
+    from {top: 10px; opacity: 1;}
+    to {top: -70px; opacity: 0;}
 }
 
 @keyframes fadeout {
-    from {top: 0; opacity: 1;}
-    to {top: -30px; opacity: 0;}
+    from {top: 10px; opacity: 1;}
+    to {top: -70px; opacity: 0;}
 }
