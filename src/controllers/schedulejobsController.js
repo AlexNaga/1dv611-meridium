@@ -22,7 +22,7 @@ function makeUserFriendlyUrls(docs) {
             for (let j = 0; j < subUrls.length; j++) {
                 subUrls[j] = (validUrl.isUri(subUrls[j]) ? new URL(subUrls[j]).hostname : subUrls[j])
             }
-            x.includeDomains =subUrls.join(' ');
+            x.includeDomains = subUrls.join(' ');
         }
     }
 }
@@ -49,7 +49,7 @@ exports.listSchedule = (req, res) => {
                 docs: data.docs,
                 total: data.total,
                 limit: data.limit,
-                loadScheduleScripts: true,                
+                loadScheduleScripts: true,
                 pagination: {
                     page: data.page,
                     pageCount: data.pages,
@@ -133,21 +133,21 @@ exports.updateSchedule = async (req, res) => {
             shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
         }
     })
-    .then(() => {
-        req.session.flash = {
-            message: 'Schemaläggningen har uppdaterats!',
-            success: true
-        };
-        return res.redirect('/schedules');
-    })
-    .catch((err) => {
-        console.log(err)
-        req.session.flash = {
-            message: 'Vi kunde inte uppdatera schemainställningarna!',
-            danger: true
-        }
-        return res.redirect('/schedules');
-    });
+        .then(() => {
+            req.session.flash = {
+                message: 'Schemaläggningen har uppdaterats!',
+                success: true
+            };
+            return res.redirect('/schedules');
+        })
+        .catch((err) => {
+            console.log(err)
+            req.session.flash = {
+                message: 'Vi kunde inte uppdatera schemainställningarna!',
+                danger: true
+            }
+            return res.redirect('/schedules');
+        });
 }
 
 /**
@@ -155,13 +155,15 @@ exports.updateSchedule = async (req, res) => {
  */
 exports.deleteSchedule = (req, res) => {
     Schedule.findOneAndRemove({ _id: req.params.id }).exec()
-        .then(() => {
+        .then((schedule) => {
             req.session.flash = {
                 message: 'Schemaläggningen har tagits bort!',
                 success: true
             };
 
-            return res.redirect('/schedules');
+            res.status(200).json({
+                deleted: schedule.fileName
+            });
         })
         .catch((err) => {
             console.log(err);
