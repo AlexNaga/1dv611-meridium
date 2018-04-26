@@ -6,6 +6,23 @@ class Modal {
         this.modalCloses = Modal.getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
     }
 
+    /**
+    * @param {string} url The resource that you wish to fetch
+    * @param {Object} options An options object containing any custom settings that you want to apply to the request.
+    */
+    fetchUrl(url, options) {
+        let defaultOptions = {
+            credentials: 'same-origin' // send cookies for the current domain
+        };
+        Object.assign(defaultOptions, options); // sent options overrides defaultOptions
+        return fetch(url, defaultOptions)
+            .then(resp => {
+                if (resp.ok) return resp.json();
+
+                throw resp; // new Error('Something went wrong');
+            });
+    }
+
     addEventListener() {
         if (this.modalButtons.length > 0) {
             this.modalButtons.forEach((elem) => {
@@ -14,9 +31,36 @@ class Modal {
                     let target = document.getElementById(clickedElem);
                     this.rootElem.classList.add('is-clipped');
                     target.classList.add('is-active');
+                    deleteBtn(elem);
                 });
             });
         }
+
+        let deleteBtn = (elem) => {
+            // Clone elem to remove old event listeners, to prevent multiple deletes
+            let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            let newElem = oldElem.cloneNode(true);
+            oldElem.parentNode.replaceChild(newElem, oldElem);
+
+            let archiveId = elem.getAttribute('data-id');
+            let archiveRow = elem.parentNode.parentNode.parentNode;
+
+            let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            modalRemoveBtn.addEventListener('click', () => {
+                this.fetchUrl('/archives/delete/' + archiveId, {
+                    method: 'DELETE'
+                })
+                    .catch((err) => {
+                        // console.log('Something went wrong when trying to delete an archive');
+                        // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        archiveRow.parentNode.removeChild(archiveRow);
+                        this.closeModals();
+                    });
+            });
+        };
 
         if (this.modalCloses.length > 0) {
             this.modalCloses.forEach((elem) => {

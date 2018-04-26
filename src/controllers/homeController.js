@@ -25,6 +25,7 @@ exports.home = (req, res) => {
                     pageCount: data.pages,
                 },
                 homePageActive: true,
+                loadIndexScripts: true,
                 loadArchiveScripts: true
             })
         )
@@ -34,4 +35,10 @@ exports.home = (req, res) => {
             });
         });
     // res.render('home');
+};
+
+exports.getAboutPage = (req, res) => {
+    res.render('about/index', {
+        aboutPageActive: true
+    });
 };
