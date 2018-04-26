@@ -41,13 +41,13 @@
                 </p>
             </td>
             <td>
-                 <a class="button is-outlined is-primary is-rounded is-small button is-link is-outlined" href="/archives/preview/{{ archive.id }}"
-                target="_blank" title="Förhandsgranska arkiv">
-                Förhandsgranska
-            </a>
+                <a class="button is-link is-outlined is-rounded is-small modal-button action-preview"
+                    href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
+                    Förhandsgranska
+                </a>
             </td>
             <td>
-                <a class="button is-outlined is-primary is-rounded is-small modal-button action-preview" href="{{ archive.path }}" title="Ladda ned arkiv">
+                <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">
                     Ladda ner ({{ archive.fileSize}})
                 </a>
             </td>
