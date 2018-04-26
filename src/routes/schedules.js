@@ -1,4 +1,4 @@
-const ScheduleController = require('../controllers/schedulejobsController');
+const ScheduleController = require('../controllers/scheduleController');
 const isLoggedIn = require('../auth/isLoggedIn');
 
 module.exports = (app, baseRoute) => {

@@ -1,6 +1,6 @@
 const httrackWrapper = require('./src/models/httrackWrapper');
 const EmailModel = require('./src/models/emailModel');
-const Schedule = require('./src/models/scheduledJobs');
+const Schedule = require('./src/models/schedules');
 const Archive = require('./src/models/archive');
 const nodeSchedule = require('node-schedule');
 
@@ -59,7 +59,9 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
                       <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
                     };
 
-                    // EmailModel.sendMail(emailSettings);
+                    if (shouldBeArchived[i].shouldNotify) {
+                        EmailModel.sendMail(emailSettings);
+                    }
                 });
             }
         })

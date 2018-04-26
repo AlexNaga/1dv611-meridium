@@ -4,7 +4,7 @@ const validator = require('../utils/validator');
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
-const ScheduledJobs = require('../models/scheduledJobs');
+const Schedules = require('../models/schedules');
 
 /**
  * POST /archives/
@@ -29,7 +29,7 @@ exports.createArchive = (req, res) => {
 
     if (httrackSettings.isScheduled) {
         if (httrackSettings.typeOfSetting === '0') { // standard settings
-            ScheduledJobs.create({
+            Schedules.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
                 url: httrackSettings.url,
                 includeDomains: httrackSettings.includeDomains,
@@ -41,7 +41,7 @@ exports.createArchive = (req, res) => {
                 typeOfSchedule: httrackSettings.typeOfSchedule
             });
         } else { // advanced settings
-            ScheduledJobs.create({
+            Schedules.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
                 advancedSetting: httrackSettings.advancedSetting,
                 email: httrackSettings.email,

@@ -1,4 +1,4 @@
-const Schedule = require('../models/scheduledJobs');
+const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const { URL } = require('url');
 const validUrl = require('valid-url');
@@ -176,3 +176,9 @@ exports.deleteSchedule = (req, res) => {
             return res.redirect('/schedules');
         });
 };
+
+// POST /schedule/pause/:id
+exports.pauseSchedule = (req, res) => {
+    let id = req.params.id;
+
+}
