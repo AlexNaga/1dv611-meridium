@@ -1,6 +1,3 @@
-const modal = new Modal();
-modal.addEventListener();
-
 // Code for notifications
 function closeNotification() {
     let $notifications = getAll('.notification');

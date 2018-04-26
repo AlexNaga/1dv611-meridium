@@ -1,4 +1,3 @@
-const checkAuth = require('../auth/checkAuth');
 const ScheduleController = require('../controllers/schedulejobsController');
 const isLoggedIn = require('../auth/isLoggedIn');
 

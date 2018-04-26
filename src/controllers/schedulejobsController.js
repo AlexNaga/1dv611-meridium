@@ -49,6 +49,7 @@ exports.listSchedule = (req, res) => {
                 docs: data.docs,
                 total: data.total,
                 limit: data.limit,
+                loadScheduleScripts: true,                
                 pagination: {
                     page: data.page,
                     pageCount: data.pages,
