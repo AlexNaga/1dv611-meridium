@@ -51,20 +51,20 @@ function archive(settings, callback) {
 
     // Run preview command
     exec(previewCommmand, (error, stdout, stderr) => {
-        if (error) return callback(error);
+        if (error) return callback(error, { url: settings.url, email: settings.email });
 
         if (fs.existsSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`)) {
             fs.moveSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`, `${previewFolderPath}/${folderName}`);
         }
 
         fs.remove(`${previewFolderPath}/${folderName}_original`, error => {
-            if (error) return callback(error);
+            if (error) return callback(error, { url: settings.url, email: settings.email });
         });
     });
 
     // Run archive command
     exec(command, (error, stdout, stderr) => {
-        if (error) return callback(error);
+        if (true) return callback(true, { url: settings.url, email: settings.email });
 
         if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting) === 1) {
             for (let i = 0; i < urls.length; i++) {
@@ -80,10 +80,10 @@ function archive(settings, callback) {
 
         let zipDest = `${pathToFolder}.zip`;
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
-            if (error) return callback(error);
+            if (error) return callback(error, { url: settings.url, email: settings.email });
 
             fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error);
+                if (error) return callback(error, { url: settings.url, email: settings.email });
 
                 // Return everything thats needed for the calling method
                 // to save archive and send email
