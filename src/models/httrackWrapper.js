@@ -64,7 +64,7 @@ function archive(settings, callback) {
 
     // Run archive command
     exec(command, (error, stdout, stderr) => {
-        if (true) return callback(true, { url: settings.url, email: settings.email });
+        if (error) return callback(error, { url: settings.url, email: settings.email });
 
         if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting) === 1) {
             for (let i = 0; i < urls.length; i++) {
