@@ -2,7 +2,7 @@ const zipFolder = require('../utils/zipFolder');
 const { URL } = require('url');
 const { exec } = require('child_process');
 const fs = require('fs-extra');
-const moment = require('moment');
+const dayjs = require('dayjs');
 const path = require('path');
 const validUrl = require('valid-url');
 const getUrls = require('get-urls');
@@ -13,7 +13,7 @@ const getUrls = require('get-urls');
  * @param {function} callback Function to be called when archive is done.
  */
 function archive(settings, callback) {
-    let timestamp = moment().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
+    let timestamp = dayjs().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
     let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let previewFolderPath = path.join(__dirname + '/../../previews');
     let pathToFolder = '';

@@ -3,12 +3,14 @@ const fs = require('fs');
 const validator = require('../utils/validator');
 const JSZip = require('jszip');
 const getUrls = require('get-urls');
-
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 const ScheduledJobs = require('../models/scheduledJobs');
 
+/**
+ * POST /archives/
+ */
 exports.createArchive = (req, res) => {
     let {
         httrackSettings,
@@ -91,10 +93,11 @@ exports.createArchive = (req, res) => {
             // EmailModel.sendMail(emailSettings);
         });
     }
-
 };
 
-
+/**
+ * GET /archives/:id
+ */
 exports.getArchive = (req, res) => {
     let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
 
@@ -109,7 +112,9 @@ exports.getArchive = (req, res) => {
     });
 };
 
-
+/**
+ * GET /archives/
+ */
 exports.listArchives = (req, res) => {
     Archive.find({
         ownerId: req.session.user.id
@@ -145,7 +150,9 @@ exports.listArchives = (req, res) => {
         });
 };
 
-
+/**
+ * DELETE /archives/:id
+ */
 exports.deleteArchive = (req, res) => {
     let id = req.params.id;
     let archiveName = '';
@@ -179,7 +186,9 @@ exports.deleteArchive = (req, res) => {
         });
 };
 
-
+/**
+ * GET /archives/preview/:id
+ */
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
 

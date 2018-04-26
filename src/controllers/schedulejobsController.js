@@ -27,6 +27,9 @@ function makeUserFriendlyUrls(docs) {
     }
 }
 
+/**
+ * GET /schedules/
+ */
 exports.listSchedule = (req, res) => {
     let page = req.query.p || 1;
     let itemsPerPage = 10;
@@ -62,6 +65,9 @@ exports.listSchedule = (req, res) => {
         });
 }
 
+/**
+ * GET /schedules/edit/:id
+ */
 exports.getSchedule = async (req, res) => {
     Schedule.findOne({ _id: req.params.id }).exec()
         .then((schedule) => {
@@ -107,6 +113,9 @@ exports.getSchedule = async (req, res) => {
         });
 };
 
+/**
+ * POST /schedules/edit/:id
+ */
 exports.updateSchedule = async (req, res) => {
     console.log('uppdatera!!!')
     Schedule.findByIdAndUpdate({
@@ -141,6 +150,9 @@ exports.updateSchedule = async (req, res) => {
         })
 }
 
+/**
+ * POST/DELETE /schedules/delete/:id
+ */
 exports.deleteSchedule = (req, res) => {
     Schedule.findOneAndRemove({ _id: req.params.id }).exec()
         .then(() => {
@@ -161,9 +173,4 @@ exports.deleteSchedule = (req, res) => {
 
             return res.redirect('/schedules');
         });
-};
-
-exports.getEditPage = (req, res) => {
-    res.render('schedule/edit', { id: req.params.id });
-
 };
