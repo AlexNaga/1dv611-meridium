@@ -1,6 +1,11 @@
 const HomeController = require('../controllers/homeController');
 
 module.exports = (app, baseRoute) => {
-    // Startpage
+    // Startsida
     app.get(baseRoute, HomeController.home);
+
+    //Om oss
+    app.get(baseRoute + 'about',  HomeController.getAboutPage);
+
 };
+

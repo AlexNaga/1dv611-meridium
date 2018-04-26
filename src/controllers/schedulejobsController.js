@@ -49,6 +49,7 @@ exports.listSchedule = (req, res) => {
                 docs: data.docs,
                 total: data.total,
                 limit: data.limit,
+                loadScheduleScripts: true,                
                 pagination: {
                     page: data.page,
                     pageCount: data.pages,
@@ -84,7 +85,7 @@ exports.getSchedule = async (req, res) => {
                     page: page,
                     limit: itemsPerPage
                 })
-                .then(data =>
+                .then(data => {
                     res.render('schedule/edit', {
                         schedule: schedule,
                         schedulePageActive: true,
@@ -98,7 +99,7 @@ exports.getSchedule = async (req, res) => {
                             pageCount: data.pages,
                         }
                     })
-                )
+                })
                 .catch((err) => {
                     throw err;
                 });
@@ -117,37 +118,36 @@ exports.getSchedule = async (req, res) => {
  * POST /schedules/edit/:id
  */
 exports.updateSchedule = async (req, res) => {
-    console.log('uppdatera!!!')
-    Schedule.findByIdAndUpdate({
-        _id: req.params.id
-    }, {
-            $set: {
-                url: req.body.url,
-                advancedSetting: req.body.advancedSetting,
-                includeDomains: req.body.includeDomains,
-                excludePaths: req.body.excludePaths,
-                robots: req.body.robots,
-                structure: req.body.structure,
-                schedule: req.body.typeOfSchedule,
-                email: req.body.email,
-                shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
-            }
-        })
-        .then(() => {
-            req.session.flash = {
-                message: 'Schemaläggningen har uppdaterats!',
-                success: true
-            };
-            return res.redirect('/schedules');
-        })
-        .catch((err) => {
-            console.log(err)
-            req.session.flash = {
-                message: 'Vi kunde inte uppdatera schemainställningarna!',
-                danger: true
-            }
-            return res.redirect('/schedules');
-        })
+    let id = req.params.id;
+
+    Schedule.findByIdAndUpdate(id, {
+        $set: {
+            url: req.body.url,
+            advancedSetting: req.body.advancedSetting,
+            includeDomains: req.body.includeDomains,
+            excludePaths: req.body.excludePaths,
+            robots: req.body.robots,
+            structure: req.body.structure,
+            schedule: req.body.typeOfSchedule,
+            email: req.body.email,
+            shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
+        }
+    })
+    .then(() => {
+        req.session.flash = {
+            message: 'Schemaläggningen har uppdaterats!',
+            success: true
+        };
+        return res.redirect('/schedules');
+    })
+    .catch((err) => {
+        console.log(err)
+        req.session.flash = {
+            message: 'Vi kunde inte uppdatera schemainställningarna!',
+            danger: true
+        }
+        return res.redirect('/schedules');
+    });
 }
 
 /**

@@ -12,8 +12,12 @@
     <script defer src="/js/scripts.js"></script>
 
     {{#if user }}
-        {{#if loadArchiveScripts }}
+        {{#if loadIndexScripts }}
             <script defer src="/js/frontend-settings.js"></script>
+        {{/if}}
+
+        {{#if loadArchiveScripts }}
+            <script defer src="/js/archive-scripts.js"></script>
             <script defer src="/js/pagination-scripts.js"></script>
         {{/if}}
 
