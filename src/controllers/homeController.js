@@ -35,3 +35,9 @@ exports.home = (req, res) => {
         });
     // res.render('home');
 };
+
+exports.getAboutPage = (req, res) => {
+    res.render('about/index', {
+        aboutPageActive: true
+    });
+};
