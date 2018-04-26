@@ -18,20 +18,14 @@ exports.createArchive = (req, res) => {
     } = validator.validateHttrackSettings(req.body, req.session.user.id);
     if (error) {
         req.session.flash = error;
-        return res.redirect('/'); // return to not continue with archive/saving schedule
+        return res.status(400).redirect('/'); // return to not continue with archive/saving schedule
     }
 
-    if (req.body.action == 0) {
-        req.session.flash = {
-            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
-            info: true
-        };
+    if (!httrackSettings.isScheduled) {
+        req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
         res.redirect('/');
-    } else if (req.body.action == 1) {
-        req.session.flash = {
-            message: 'Arkiveringen är schemalagd. Du kommer notifieras via email när arkiveringen är klar.',
-            info: true
-        };
+    } else {
+        req.session.flash = { message: 'Arkiveringen är sparad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
         res.redirect('/');
     }
 
@@ -123,7 +117,7 @@ exports.listArchives = (req, res) => {
             for (let i = 0; i < archives.length; i++) {
                 archives[i].fileName = archives[i].fileName.substring(0, archives[i].fileName.indexOf('_'));
             }
-            for(let j = 0; j < archives.length; j++) {
+            for (let j = 0; j < archives.length; j++) {
                 archives[j].date = archives[j].createdAt.toLocaleString('sv-SE');
                 console.log(archives[j].date);
             }
@@ -131,6 +125,7 @@ exports.listArchives = (req, res) => {
             res.render('archive/index', {
                 archives: archives,
                 archivePageActive: true,
+                loadArchiveScripts: true,                
 
                 // pagination below
                 // docs: data.docs,
@@ -159,9 +154,9 @@ exports.deleteArchive = (req, res) => {
     const deleteFile = require('util').promisify(fs.unlink);
 
     Archive.findOneAndRemove({
-            _id: id,
-            ownerId: req.session.user.id
-        }).exec()
+        _id: id,
+        ownerId: req.session.user.id
+    }).exec()
         .then((archive) => {
             archiveName = archive.fileName;
             return deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
@@ -193,9 +188,9 @@ exports.previewArchive = (req, res) => {
     let id = req.params.id;
 
     Archive.findOne({
-            _id: id,
-            ownerId: req.session.user.id
-        }).exec()
+        _id: id,
+        ownerId: req.session.user.id
+    }).exec()
         .then((data) => {
             let fileName = data.fileName.substr(0, data.fileName.length - 4); // Remove .zip from file-name
             let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');

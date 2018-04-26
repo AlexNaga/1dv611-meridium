@@ -13,7 +13,8 @@ const getUrls = require('get-urls');
  * @param {function} callback Function to be called when archive is done.
  */
 function archive(settings, callback) {
-    let timestamp = dayjs().format('YYYY-MM-DD_HH-mm-ss-SS'); // 2018-03-29_22-29-21-42
+    let date = dayjs().toObject();
+    let timestamp = `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
     let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let previewFolderPath = path.join(__dirname + '/../../previews');
     let pathToFolder = '';
