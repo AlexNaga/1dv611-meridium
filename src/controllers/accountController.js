@@ -6,12 +6,21 @@ const checkPassword = require('../utils/passwordValidator');
 const User = require('../models/user');
 const EmailModel = require('../models/emailModel');
 
+/**
+ * 
+ * @param {*} status
+ * @param {*} message
+ */
 function throwError(status, message) {
     let error = new Error(message);
     error.status = status;
     throw error;
 }
-
+/**
+ * Validates the password against a set of rules, throws an error if not valid.
+ * @param {String} password
+ * @param {String} confirmPassword
+ */
 validatePassword = async (password, confirmPassword) => {
     let passwordHasError = checkPassword(password, confirmPassword, {
         minimumLength: 6
@@ -21,6 +30,33 @@ validatePassword = async (password, confirmPassword) => {
     }
 }
 
+/**
+ * Checks if the temporary reset-password code is valid
+ * @param {String} code
+ */
+isValidCode = async (code) => {
+    let user = await User.findOne({ resetPasswordCode: code }).exec();
+
+    if (user) {
+        if (Date.now() / 1000 < user.resetPasswordDate) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Makes a used reset-password code invalid
+ * @param {String} code
+ */
+disableCode = async (code) => {
+    await User.findOneAndUpdate({ resetPasswordCode: code },
+        { $set: { resetPasswordCode: null } }).exec();
+}
+
+/**
+ * POST /account/register
+ */
 exports.createUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password[0];
@@ -63,6 +99,9 @@ exports.createUser = async (req, res) => {
     }
 };
 
+/**
+ * POST /account/login
+ */
 exports.loginUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
@@ -97,6 +136,9 @@ exports.loginUser = async (req, res) => {
     }
 };
 
+/**
+ * POST /account/forgot-password
+ */
 exports.resetPassword = async (req, res) => {
     const email = req.body.email;
     let user = await User.findOne({ email: email }).exec();
@@ -154,6 +196,9 @@ exports.resetPassword = async (req, res) => {
     }
 };
 
+/**
+ * GET /account/reset-password/:temporaryCode
+ */
 exports.validateLink = async (req, res) => {
     if (await isValidCode(req.params.temporaryCode)) {
         return res.render('account/update-password', {
@@ -167,21 +212,9 @@ exports.validateLink = async (req, res) => {
     return res.redirect('/');
 };
 
-isValidCode = async (code) => {
-    let user = await User.findOne({ resetPasswordCode: code }).exec();
-
-    if (user) {
-        if (Date.now() / 1000 < user.resetPasswordDate) {
-            return true;
-        }
-    }
-    return false;
-}
-
-disableCode = async (code) => {
-    await User.findOneAndUpdate({ resetPasswordCode: code }, { $set: { resetPasswordCode: null } }).exec();
-}
-
+/**
+ * POST /account/reset-password/:temporaryCode
+ */
 exports.updatePassword = async (req, res) => {
     const code = req.params.temporaryCode;
 
@@ -217,6 +250,9 @@ exports.updatePassword = async (req, res) => {
     }
 };
 
+/**
+ * GET /account/logout
+ */
 exports.logoutUser = (req, res) => {
     req.session.user = null;
     req.session.flash = {
@@ -226,6 +262,9 @@ exports.logoutUser = (req, res) => {
     res.redirect('/');
 };
 
+/**
+ * GET /account/register
+ */
 exports.getRegisterPage = (req, res) => {
     res.render('account/register', {
         loadValidation: true,
@@ -233,10 +272,16 @@ exports.getRegisterPage = (req, res) => {
     });
 };
 
+/**
+ * GET /account/login
+ */
 exports.getLoginPage = (req, res) => {
     res.render('account/login', { loginPageActive: true });
 };
 
+/**
+ * GET /account/forgot-password
+ */
 exports.getPasswordResetPage = (req, res) => {
     res.render('account/forgot-password', {
         loadValidation: true

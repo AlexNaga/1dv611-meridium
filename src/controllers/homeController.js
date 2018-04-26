@@ -1,5 +1,8 @@
 const Archive = require('../models/archive');
 
+/**
+ * GET /
+ */
 exports.home = (req, res) => {
     if (!req.session.user) return res.render('home', { homePageActive: true });
 
