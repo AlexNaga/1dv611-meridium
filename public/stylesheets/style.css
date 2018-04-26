@@ -44,8 +44,8 @@
 }
 
 .fade-in-out {
-    -webkit-animation: fadein 1s, fadeout 1s 2.5s linear forwards;
-    animation: fadein 1s, fadeout 1s 2.5s linear forwards;
+    -webkit-animation: fadein 1s, fadeout 1s 3s linear forwards;
+    animation: fadein 1s, fadeout 1s 3s linear forwards;
 }
 
 /* Animations to fade the notification in and out */

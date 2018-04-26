@@ -2,6 +2,8 @@
  * Handlebars helper for converting unix timestamp in seconds to pretty date.
  * "25 seconds ago" / "3 minutes ago" / "2 hours ago" / "2 days ago" / "December 25"
  * https://gist.github.com/vigikaran/d138cdcef3881cbc82c1cb71cac8b8d6
+ *
+ * Translated into Swedish.
 @param {} utcTime - Utc timestamp in ms (probably also works fo unix timestamp as well)
 */
 module.exports = function (utcTime) {
@@ -19,21 +21,21 @@ module.exports = function (utcTime) {
 
     if (minutes < 1) {
         secs = Math.floor(secs % 60);
-        return secs + (secs > 1 ? ' seconds ago' : ' second ago');
+        return secs + (secs > 1 ? ' sekunder sedan' : ' sekund sedan');
     }
     if (hours < 1) {
         hours = Math.floor(minutes % 60);
-        return hours + (minutes > 1 ? ' minutes ago' : ' minute ago');
+        return hours + (minutes > 1 ? ' minuter sedan' : ' minut sedan');
     }
     if (days < 1) {
         hours = Math.floor(hours % 24);
-        return hours + (hours > 1 ? ' hours ago' : ' hour ago');
+        return hours + (hours > 1 ? ' timmar sedan' : ' timme sedan');
     } else if (days < 4) {
         days = Math.floor(days % 7);
-        return days + (days > 1 ? ' days ago' : ' day ago');
+        return days + (days > 1 ? ' dagar sedan' : ' dag sedan');
     } else {
         date = new Date(timestamp * 1000);
-        monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
         return monthNames[date.getMonth()] + ' ' + date.getDate();
     }
 
