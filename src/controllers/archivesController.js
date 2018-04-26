@@ -9,7 +9,7 @@ const Schedules = require('../models/schedules');
 /**
  * POST /archives/
  */
-exports.createArchive = (req, res) => {
+exports.createArchive = async (req, res) => {
     let {
         httrackSettings,
         error
@@ -71,7 +71,7 @@ exports.createArchive = (req, res) => {
                 ownerId: response.ownerId,
                 fileSize: response.fileSize
             });
-            archive.save();
+            await archive.save();
 
             let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {

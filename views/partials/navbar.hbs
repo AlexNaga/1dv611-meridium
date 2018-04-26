@@ -2,7 +2,7 @@
     <nav class="navbar flash-container">
         <div class="navbar-brand">
             <div class="navbar-item">
-                <a class="button is-link {{#if active.home}}activePage{{/if}}" href="/">
+                <a class="button is-link {{#if active.home}}active-page{{/if}}" href="/">
                     <span class="icon">
                         <i class="fas fa-home"></i>
                     </span>
@@ -18,7 +18,7 @@
         <div id="navMenu" class="navbar-menu">
             <div class="navbar-start">
                 <div class="navbar-item">
-                    <a class="navbar-item button is-link {{#if active.about}}activePage{{/if}}" href="/about">
+                    <a class="navbar-item button is-link {{#if active.about}}active-page{{/if}}" href="/about">
                         <span class="icon">
                             <i class="far fa-address-card"></i>
                         </span>
@@ -29,7 +29,7 @@
             {{#if user}}
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <a class="navbar-item button is-link {{#if active.schedule}}activePage{{/if}}" href="/schedules">
+                    <a class="navbar-item button is-link {{#if active.schedule}}active-page{{/if}}" href="/schedules">
                         <span class="icon">
                             <i class="far fa-calendar-alt"></i>
                         </span>
@@ -37,7 +37,7 @@
                     </a>
                 </div>
                   <div class="navbar-item">
-                    <a class="button is-link {{#if active.archive}}activePage{{/if}}" href="/archives">
+                    <a class="button is-link {{#if active.archive}}active-page{{/if}}" href="/archives">
                         <span class="icon">
                             <i class="far fa-file-archive"></i>
                         </span>
@@ -45,7 +45,7 @@
                     </a>
                 </div> 
                 <div class="navbar-item">
-                    <a class="navbar-item button is-link {{#if active.profile}}activePage{{/if}}" href="/profile/edit">
+                    <a class="navbar-item button is-link {{#if active.profile}}active-page{{/if}}" href="/profile/edit">
                         <span class="icon">
                             <i class="fas fa-user"></i>
                         </span>
@@ -65,7 +65,7 @@
         {{else}}
         <div class="navbar-end">
             <div class="navbar-item">
-                <a class="navbar-item button is-link {{#if active.register}}activePage{{/if}}" href="/account/register">
+                <a class="navbar-item button is-link {{#if active.register}}active-page{{/if}}" href="/account/register">
                     <span class="icon">
                         <i class="fas fa-user"></i>
                     </span>
@@ -73,7 +73,7 @@
                 </a>
             </div>
             <div class="navbar-item">
-                <a class="navbar-item button is-link {{#if active.login}}activePage{{/if}}" href="/account/login">
+                <a class="navbar-item button is-link {{#if active.login}}active-page{{/if}}" href="/account/login">
                     <span class="icon">
                         <i class="fas fa-sign-in-alt"></i>
                     </span>
