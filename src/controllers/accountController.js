@@ -178,7 +178,7 @@ exports.resetPassword = async (req, res) => {
                 message: error.message,
                 danger: true
             };
-            return res.status(error.status || 400).redirect('/account/login');
+            return res.status(error.status || 400).render('account/forgot-password');
         }
     } else {
         let emailSettings = {

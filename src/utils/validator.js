@@ -5,34 +5,33 @@ const validUrl = require('valid-url');
  * Checks if the value is between two numbers
  * @param {*} a
  * @param {*} b
- * @param {*} inclusive Include the specified numbers
  */
-Number.prototype.between = function (a, b, inclusive) {
+Number.prototype.between = function (a, b) {
     var min = Math.min(a, b),
         max = Math.max(a, b);
 
-    return inclusive ? this >= min && this <= max : this > min && this < max;
-}
+    return this >= min && this <= max;
+};
 
 exports.validateHttrackSettings = (body, ownerId) => {
     let url = body.url;
     let includeDomains = body.includeDomains === '' || body.includeDomains === undefined ? [] : body.includeDomains.replace(' ', '').split(',');
     let excludePaths = body.excludePaths === '' || body.excludePaths === undefined ? [] : body.excludePaths.replace(' ', '').split(',');
-    let robots = body.robots;
+    let robots = parseInt(body.robots);
     let structure = body.structure;
     let email = body.email;
     let error = undefined;
     let typeOfSetting = body.setting;
     let advancedSetting = body.advancedSetting;
-    let typeOfSchedule = body.typeOfSchedule; // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
+    let typeOfSchedule = parseInt(body.typeOfSchedule); // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
     let isScheduled = parseInt(body.action);
 
-    if (isScheduled.between(0, 1, true)) {
+    if (isScheduled.between(0, 1)) {
         isScheduled = isScheduled === 1; // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
     } else {
         error = { message: 'Felaktig metod, välj arkivera eller spara.', danger: true };
     }
-    if (typeOfSchedule === undefined || (typeOfSchedule > 3 || typeOfSchedule < 0)) {
+    if (!typeOfSchedule.between(0, 3)) {
         error = { message: 'Felaktig schemaläggning, kontrollera vald tid.', danger: true };
     }
     if (typeOfSetting === '0') { // standard setting
@@ -42,7 +41,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
         if (includeDomains[0] !== '' && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
             error = { message: 'Fel sub-url!', danger: true };
         }
-        if (robots > 2 && robots < 0) {
+        if (!robots.between(0, 2)) {
             error = { message: 'Fel robot-inställningar!', danger: true };
         }
         if (validEmail.validate(email) === false) {

@@ -23,7 +23,6 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "jsonwebtoken": "^8.2.0",
-    "jszip": "^3.1.5",
     "mongoose": "^5.0.12",
     "mongoose-paginate": "^5.0.3",
     "mongoose-timestamp": "^0.6.0",

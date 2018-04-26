@@ -1,8 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const validator = require('../utils/validator');
-const JSZip = require('jszip');
-const getUrls = require('get-urls');
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
@@ -18,7 +16,7 @@ exports.createArchive = (req, res) => {
     } = validator.validateHttrackSettings(req.body, req.session.user.id);
     if (error) {
         req.session.flash = error;
-        return res.status(400).redirect('/'); // return to not continue with archive/saving schedule
+        return res.redirect('/'); // return to not continue with archive/saving schedule
     }
 
     if (!httrackSettings.isScheduled) {
@@ -117,7 +115,7 @@ exports.listArchives = (req, res) => {
             for (let i = 0; i < archives.length; i++) {
                 archives[i].fileName = archives[i].fileName.substring(0, archives[i].fileName.indexOf('_'));
             }
-            for(let j = 0; j < archives.length; j++) {
+            for (let j = 0; j < archives.length; j++) {
                 archives[j].date = archives[j].createdAt.toLocaleString('sv-SE');
                 console.log(archives[j].date);
             }
@@ -153,9 +151,9 @@ exports.deleteArchive = (req, res) => {
     const deleteFile = require('util').promisify(fs.unlink);
 
     Archive.findOneAndRemove({
-            _id: id,
-            ownerId: req.session.user.id
-        }).exec()
+        _id: id,
+        ownerId: req.session.user.id
+    }).exec()
         .then((archive) => {
             archiveName = archive.fileName;
             return deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
@@ -187,9 +185,9 @@ exports.previewArchive = (req, res) => {
     let id = req.params.id;
 
     Archive.findOne({
-            _id: id,
-            ownerId: req.session.user.id
-        }).exec()
+        _id: id,
+        ownerId: req.session.user.id
+    }).exec()
         .then((data) => {
             let fileName = data.fileName.substr(0, data.fileName.length - 4); // Remove .zip from file-name
             let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
