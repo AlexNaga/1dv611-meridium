@@ -122,7 +122,7 @@ exports.listArchives = (req, res) => {
 
             res.render('archive/index', {
                 archives: archives,
-                archivePageActive: true,
+                active: { archive: true },
                 loadArchiveScripts: true,                
 
                 // pagination below

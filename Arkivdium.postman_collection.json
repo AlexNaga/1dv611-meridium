@@ -1,0 +1,990 @@
+{
+	"info": {
+		"_postman_id": "121166ac-8bd1-4d11-8164-b2c81ed47b82",
+		"name": "Arkivdium",
+		"description": "All test will run a pre-request script that will try to authenticate with the website.\nFill out the collection variables for this to work.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get \"not logged in\" pages",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "923b3c27-8a74-4345-ab0f-925260b67844",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Logga in\";",
+									"let stringToCheck2 = \"Ange din email och lösenord\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck2);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/account/login",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eebe00cd-4d36-4153-bef5-acf94abe8434",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Registrera användare\";",
+									"let stringToCheck2 = \"Ange din email och lösenord\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck2);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/account/register",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6e8cdb1a-40cc-4807-be8c-07cef862adb7",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Återställ lösenord\";",
+									"let stringToCheck2 = \"Ange din email så skickar vi en återställningslänk\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck2);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/account/forgot-password",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "25c6d8c3-f33b-40d8-91c9-392536e813de",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "63639533-7d2d-4902-a1dc-a053a6652893",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Logged in stuff",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8adc8867-d0ca-4b7c-9e6c-a469b3efc40a",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Logga ut\";",
+									"let stringToCheck1 = \"Logga in\";",
+									"let stringToCheck2 = \"Registrera\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body does not contain string '\"+ stringToCheck1 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(stringToCheck1);",
+									"});",
+									"",
+									"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{USER_EMAIL}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{USER_PASSWORD}}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/login",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List archives NOT UPDATED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f1a40da1-9fd5-4956-a883-4b91073cdc7e",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Response contains an array of archives\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.archives.length).to.be.above(0);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/archives?page=0",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_NOW}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an advanced archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_NOW}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a saved archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a8afc2e-66a5-4bb6-ae34-edd24efa5b68",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är sparad\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_SAVE}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a daily schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a8afc2e-66a5-4bb6-ae34-edd24efa5b68",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är sparad\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_SAVE}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_DAILY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a weekly schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1c82401e-56fc-481c-8bfd-ead8d4fd22d7",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är sparad\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_SAVE}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_WEEKLY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a monthly schedule",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54df3812-e332-4728-83c6-1a6d4e578064",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är sparad\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"setting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"action\": \"{{ACTION_ARCHIVE_SAVE}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_MONTHLY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forgot/Reset password",
+			"description": "",
+			"item": [
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5dfed046-8e1c-4c56-b22a-1a54f5220357",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Logga in\";",
+									"let stringToCheck1 = \"Registrera\";",
+									"let stringToCheck2 = \"Logga ut\";",
+									"let stringToCheck3 = \"Du har blivit utloggad\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck1 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck1);",
+									"});",
+									"",
+									"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
+									"});",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck3 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck3);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/account/logout",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a00fe2fb-5b04-48dc-9030-26261cceee00",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Om den angivna e-postadressen\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{USER_EMAIL}}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/forgot-password",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "de7d311c-d2de-403f-a218-6d475fa3ef3e",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Uppdatera lösenord\";",
+									"let stringToCheck2 = \"Länken har utgått\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{APP_URL}}/account/reset-password/{{RESET_PASSWORD_CODE}}",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"reset-password",
+								"{{RESET_PASSWORD_CODE}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "917d545f-7848-4623-a0b1-362c843ad4f7",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Lösenordet har uppdaterats\";",
+									"let stringToCheck2 = \"Lösenordet måste\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});",
+									"",
+									"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "resetPassword",
+									"value": "{{USER_PASSWORD_RESET}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "{{USER_PASSWORD_RESET}}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/reset-password/{{RESET_PASSWORD_CODE}}",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"reset-password",
+								"{{RESET_PASSWORD_CODE}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "881c88cc-cf49-4ac6-92f5-6fffee6246a9",
+						"type": "text/javascript",
+						"exec": [
+							"let stringToCheck = \"Kontot har skapats.\";",
+							"",
+							"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{USER_EMAIL}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password[0]",
+							"value": "{{USER_PASSWORD}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password[1]",
+							"value": "{{USER_PASSWORD}}",
+							"description": "Second one is needed to \"confirm\" the password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APP_URL}}/account/register",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"account",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "27557311-8474-4dec-a7a3-911eae6d1d56",
+				"type": "text/javascript",
+				"exec": [
+					"pm.test('Test-collection: Necessary app variables are set', function () {",
+					"    pm.expect(pm.variables.get('APP_URL')).to.not.equal('');",
+					"",
+					"});",
+					"pm.test('Test-collection: Necessary user variables are set', function () {",
+					"    pm.expect(pm.variables.get('USER_EMAIL')).to.not.equal('');",
+					"    pm.expect(pm.variables.get('USER_PASSWORD')).to.not.equal('');",
+					"});",
+					"//pm.sendRequest({",
+					"//  url:  pm.variables.get(\"APP_URL\")+\"account/login\", ",
+					"//  method: 'POST',",
+					"//  header: {",
+					"//    'Accept': 'text/html',",
+					"//    'Content-Type': 'application/x-www-form-urlencoded'",
+					"//  },",
+					"//  body: {",
+					"//      mode: 'urlencoded',",
+					"//      urlencoded: [",
+					"//        {key: \"email\", value: pm.variables.get(\"USER_EMAIL\")},",
+					"//        {key: \"password\", value: pm.variables.get(\"USER_PASSWORD\")}",
+					"//    ]",
+					"//  }",
+					"//});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "924c54a6-53c2-45be-95a9-43b876a367fb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "1f2e49dd-ebdb-42e7-a4f4-b2eb46f37ddd",
+			"key": "USER_EMAIL",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "a3ece914-65e3-4d5d-bcd0-286ece665ec1",
+			"key": "USER_PASSWORD",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "9336597b-ae76-4030-817e-77e93886e0fc",
+			"key": "USER_PASSWORD_RESET",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "4c336fb4-15ef-4162-8ccd-95385e1cc518",
+			"key": "APP_URL",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "b5004992-a2fa-4b8c-87f5-abe5f7a539e8",
+			"key": "URL_TO_ARCHIVE",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "d10de0c9-e8ca-493f-9fbf-469d566e5f24",
+			"key": "INCLUDE_DOMAINS_TO_ARCHIVE",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "c96ad1b3-f610-421e-b277-6391950e8c2c",
+			"key": "EXCLUDE_PATHS_TO_ARCHIVE",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "3d7372c9-5957-4360-98a8-59816da11f99",
+			"key": "ROBOTS_TO_ARCHIVE",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "b60f9e25-cd1f-48ea-9311-fbd811bc1c47",
+			"key": "STRUCTURE_TO_ARCHIVE",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "ac17ab42-0e55-44e6-92ea-52020d5c747c",
+			"key": "RAW_DATA_INPUT",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "f9a4b17f-8dfa-457f-81b3-ccdc51a56a74",
+			"key": "RESET_PASSWORD_CODE",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "6d80975c-92df-4902-9ed0-7ffa462de37a",
+			"key": "STANDARD_SETTING",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "b1f39819-fd2f-42c7-8d66-0f2825e3c10a",
+			"key": "ADVANCED_SETTING",
+			"value": "1",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "ee86309a-f65d-4f4e-8843-cfa0e2ed600a",
+			"key": "ACTION_ARCHIVE_NOW",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "2961284b-a238-443d-b22b-5684fbcb1edd",
+			"key": "ACTION_ARCHIVE_SAVE",
+			"value": "1",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "166f6092-41c2-438d-b7cc-b70d268667c7",
+			"key": "SCHEDULE_NONE",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "9131ef02-5e96-44f8-ae94-3418d036f0a0",
+			"key": "SCHEDULE_DAILY",
+			"value": "1",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "8cd0ce6c-430e-4836-8b6f-b83230d1a86f",
+			"key": "SCHEDULE_WEEKLY",
+			"value": "2",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "f26cf1eb-58b1-418d-bcd9-0a4591bc1095",
+			"key": "SCHEDULE_MONTHLY",
+			"value": "3",
+			"type": "string",
+			"description": ""
+		}
+	]
+}

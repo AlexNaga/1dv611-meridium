@@ -13,6 +13,7 @@ const getUrls = require('get-urls');
  * @param {function} callback Function to be called when archive is done.
  */
 function archive(settings, callback) {
+    let errorResponse = { url: settings.url, email: settings.email };
     let date = dayjs().toObject();
     let timestamp = `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
     let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
@@ -51,20 +52,20 @@ function archive(settings, callback) {
 
     // Run preview command
     exec(previewCommmand, (error, stdout, stderr) => {
-        if (error) return callback(error, { url: settings.url, email: settings.email });
+        if (error) return callback(error, errorResponse);
 
         if (fs.existsSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`)) {
             fs.moveSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`, `${previewFolderPath}/${folderName}`);
         }
 
         fs.remove(`${previewFolderPath}/${folderName}_original`, error => {
-            if (error) return callback(error, { url: settings.url, email: settings.email });
+            if (error) return callback(error, errorResponse);
         });
     });
 
     // Run archive command
     exec(command, (error, stdout, stderr) => {
-        if (error) return callback(error, { url: settings.url, email: settings.email });
+        if (error) return callback(error, errorResponse);
 
         if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting) === 1) {
             for (let i = 0; i < urls.length; i++) {
@@ -80,10 +81,10 @@ function archive(settings, callback) {
 
         let zipDest = `${pathToFolder}.zip`;
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
-            if (error) return callback(error, { url: settings.url, email: settings.email });
+            if (error) return callback(error, errorResponse);
 
             fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error, { url: settings.url, email: settings.email });
+                if (error) return callback(error, errorResponse);
 
                 // Return everything thats needed for the calling method
                 // to save archive and send email

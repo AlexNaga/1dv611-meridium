@@ -4,7 +4,7 @@ const Archive = require('../models/archive');
  * GET /
  */
 exports.home = (req, res) => {
-    if (!req.session.user) return res.render('home', { homePageActive: true });
+    if (!req.session.user) return res.render('home', { active: { home: true }, });
 
     let page = req.query.p || 1;
     let itemsPerPage = 10;
@@ -24,7 +24,7 @@ exports.home = (req, res) => {
                     page: data.page,
                     pageCount: data.pages,
                 },
-                homePageActive: true,
+                active: { home: true },
                 loadIndexScripts: true,
                 loadArchiveScripts: true
             })
@@ -39,6 +39,6 @@ exports.home = (req, res) => {
 
 exports.getAboutPage = (req, res) => {
     res.render('about/index', {
-        aboutPageActive: true
+        active: { about: true },
     });
 };

@@ -57,6 +57,6 @@ exports.editUser = async (req, res) => {
 exports.getEditPage = (req, res) => {
     res.render('profile/edit', {
         loadValidation: true,
-        profilePageActive: true
+        active: { profile: true },
     });
 };

@@ -43,7 +43,7 @@ exports.listSchedule = (req, res) => {
             makeUserFriendlyUrls(data.docs);
 
             res.render('schedule/index', {
-                schedulePageActive: true,
+                active: { schedule: true },
 
                 // pagination below
                 docs: data.docs,
@@ -88,7 +88,7 @@ exports.getSchedule = async (req, res) => {
                 .then(data => {
                     res.render('schedule/edit', {
                         schedule: schedule,
-                        schedulePageActive: true,
+                        active: { schedule: true },
 
                         // pagination below
                         docs: data.docs,
