@@ -3,24 +3,35 @@ const fs = require('fs');
 const validator = require('../utils/validator');
 const JSZip = require('jszip');
 const getUrls = require('get-urls');
-
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 const ScheduledJobs = require('../models/scheduledJobs');
 
+/**
+ * POST /archives/
+ */
 exports.createArchive = (req, res) => {
-    let { httrackSettings, error } = validator.validateHttrackSettings(req.body, req.session.user.id);
+    let {
+        httrackSettings,
+        error
+    } = validator.validateHttrackSettings(req.body, req.session.user.id);
     if (error) {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }
 
     if (req.body.action == 0) {
-        req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        req.session.flash = {
+            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
+            info: true
+        };
         res.redirect('/');
     } else if (req.body.action == 1) {
-        req.session.flash = { message: 'Arkiveringen är schemalagd. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        req.session.flash = {
+            message: 'Arkiveringen är schemalagd. Du kommer notifieras via email när arkiveringen är klar.',
+            info: true
+        };
         res.redirect('/');
     }
 
@@ -82,10 +93,11 @@ exports.createArchive = (req, res) => {
             // EmailModel.sendMail(emailSettings);
         });
     }
-
 };
 
-
+/**
+ * GET /archives/:id
+ */
 exports.getArchive = (req, res) => {
     let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
 
@@ -100,16 +112,37 @@ exports.getArchive = (req, res) => {
     });
 };
 
-
+/**
+ * GET /archives/
+ */
 exports.listArchives = (req, res) => {
-    let page = req.query.page || 0;
-    let itemsPerPage = 10;
+    Archive.find({
+        ownerId: req.session.user.id
+    }).exec()
+        .then((archives) => {
+            for (let i = 0; i < archives.length; i++) {
+                archives[i].fileName = archives[i].fileName.substring(0, archives[i].fileName.indexOf('_'));
+            }
+            for(let j = 0; j < archives.length; j++) {
+                archives[j].date = archives[j].createdAt.toLocaleString('sv-SE');
+                console.log(archives[j].date);
+            }
 
-    Archive.find({ ownerId: req.session.user.id })
-        .sort({ createdAt: 'desc' })
-        .skip(page * itemsPerPage)
-        .limit(itemsPerPage)
-        .then(data => res.json({ archives: data }))
+            res.render('archive/index', {
+                archives: archives,
+                archivePageActive: true,
+
+                // pagination below
+                // docs: data.docs,
+                // total: data.total,
+                page: 1,
+                limit: 10,
+                pagination: {
+                    page: 1,
+                    pageCount: 1,
+                }
+            });
+        })
         .catch((err) => {
             res.status(400).json({
                 error: err
@@ -117,13 +150,18 @@ exports.listArchives = (req, res) => {
         });
 };
 
-
+/**
+ * DELETE /archives/:id
+ */
 exports.deleteArchive = (req, res) => {
     let id = req.params.id;
     let archiveName = '';
     const deleteFile = require('util').promisify(fs.unlink);
 
-    Archive.findOneAndRemove({ _id: id, ownerId: req.session.user.id }).exec()
+    Archive.findOneAndRemove({
+            _id: id,
+            ownerId: req.session.user.id
+        }).exec()
         .then((archive) => {
             archiveName = archive.fileName;
             return deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
@@ -148,11 +186,16 @@ exports.deleteArchive = (req, res) => {
         });
 };
 
-
+/**
+ * GET /archives/preview/:id
+ */
 exports.previewArchive = (req, res) => {
     let id = req.params.id;
 
-    Archive.findOne({ _id: id, ownerId: req.session.user.id }).exec()
+    Archive.findOne({
+            _id: id,
+            ownerId: req.session.user.id
+        }).exec()
         .then((data) => {
             let fileName = data.fileName.substr(0, data.fileName.length - 4); // Remove .zip from file-name
             let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');

@@ -15,55 +15,82 @@
     </div>
 </div>
 
-<div class="field">
-    <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
-    <p>WORK IN PROGRESS/ FRIDA</p>
-    <div id="recent-list" class="control">
-        <ul>
-            {{#each docs as |archive|}}
-            <li>
-                <div class="archive buttons">
+<h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
 
-                    {{!-- Namn --}}
-                    <a class="button is-inverted is-link is-rounded is-small" title="Arkivets namn">
-                        {{ archive.fileName }}
-                    </a>
-
-                     {{!-- Tid --}}
-                    <a class="button is-inverted is-link is-rounded is-small" title="Arkivets namn">
-                        DATUM
-                    </a>
-
-
-                    {{!-- Förhandsgranskning FUNKAR EJ - öppnar ny flik --}}
-                    {{!-- <a class="button is-outlined is-primary is-rounded is-small button is-link is-outlined" href="archives/preview/{{ archive.id }}"
-                        target="_blank" title="Förhandsgranska arkiv">
-                        Förhandsgranska
-                    </a> --}}
-
-                    {{!-- Förhandsgranskning FUNKAR EJ - öppnar ruta på samma sida --}}
-                    <button class="button is-outlined is-primary is-rounded is-small button is-link is-outlined  action-preview" data-target="previewArchive"
-                        data-id="{{ archive.id }}" title="Förhandsgranska arkiv">
-                        Förhandsgranska
-                    </button>
-
-                    {{!-- Ladda ner --}}
-                    <a class="button is-outlined is-primary is-rounded is-small modal-button action-preview" href="{{ archive.path }}" title="Ladda ned arkiv">
-                        Ladda ner ({{ archive.fileSize}})
-                    </a>
-
-                    {{!-- Delete button --}}
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel"
+<table class="table is-fullwidth is-striped">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Datum</th>
+            <th>Förhandsgranska</th>
+            <th>Ladda ner</th>
+            <th>Radera</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each archives as |archive|}}
+        <tr title="Ändra schemaläggning">
+            <td>
+                <p title="Arkivets namn">
+                    {{ archive.fileName }}
+                </p>
+            </td>
+            <td>
+                <p title="Arkivets namn">
+                    {{ archive.date }}
+                </p>
+            </td>
+            <td>
+                 <a class="button is-outlined is-primary is-rounded is-small button is-link is-outlined" href="/archives/preview/{{ archive.id }}"
+                target="_blank" title="Förhandsgranska arkiv">
+                Förhandsgranska
+            </a>
+            </td>
+            <td>
+                <a class="button is-outlined is-primary is-rounded is-small modal-button action-preview" href="{{ archive.path }}" title="Ladda ned arkiv">
+                    Ladda ner ({{ archive.fileSize}})
+                </a>
+            </td>
+            <td>
+                <div class="field is-grouped">
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel"
                         data-id="{{ archive.id }}" title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>
                         </span>
                     </button>
                 </div>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+ <br>
+<nav class="pagination" role="navigation" aria-label="pagination">
+    {{#paginate pagination type="previous"}}
+    <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous" {{#if disabled}}disabled{{/if}}>
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Föregående</span>
+    </a>
+    {{/paginate}} {{#paginate pagination type="next"}}
+    <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next" {{#if disabled}}disabled{{/if}}>
+        <span>Nästa</span>
+        <span class="icon">
+            <i class="fas fa-arrow-right"></i>
+        </span>
+    </a>
+    {{/paginate}}
+</nav>
+
+
+            {{!-- Förhandsgranskning FUNKAR EJ - öppnar ny flik --}} {{!--
+            <a class="button is-outlined is-primary is-rounded is-small button is-link is-outlined" href="archives/preview/{{ archive.id }}"
+                target="_blank" title="Förhandsgranska arkiv">
+                Förhandsgranska
+            </a> --}} {{!-- </div>
+       
     <br>
     <nav class="pagination" role="navigation" aria-label="pagination">
         {{#paginate pagination type="previous"}}
@@ -82,4 +109,4 @@
         </a>
         {{/paginate}}
     </nav>
-</div>
+</div>--}}
