@@ -8,8 +8,8 @@ const EmailModel = require('../models/emailModel');
 
 /**
  * 
- * @param {*} status
- * @param {*} message
+ * @param {Number} status HTTP Status code
+ * @param {String} message Message to be displayed on the website
  */
 function throwError(status, message) {
     let error = new Error(message);
@@ -91,7 +91,7 @@ exports.createUser = async (req, res) => {
             danger: true
         };
 
-        return res.render('account/register', {
+        return res.status(error.status || 400).render('account/register', {
             loadValidation: true,
             registerPageActive: true,
             email
@@ -108,10 +108,10 @@ exports.loginUser = async (req, res) => {
 
     try {
         let user = await User.findOne({ email: email }).exec();
-        if (user === false) throwError(401, 'Felaktiga inloggningsuppgifter.');
+        if (!user) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
-        let result = await bcrypt.compare(password, user.password);
-        if (result === false) throwError(401, 'Felaktiga inloggningsuppgifter.');
+        let success = await bcrypt.compare(password, user.password);
+        if (!success) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
         req.session.user = {
             email: email,
@@ -129,7 +129,7 @@ exports.loginUser = async (req, res) => {
             danger: true
         };
 
-        return res.render('account/login', {
+        return res.status(error.status || 400).render('account/login', {
             loginPageActive: true,
             email
         });
@@ -178,7 +178,7 @@ exports.resetPassword = async (req, res) => {
                 message: error.message,
                 danger: true
             };
-            return res.redirect('/account/login');
+            return res.status(error.status || 400).redirect('/account/login');
         }
     } else {
         let emailSettings = {
@@ -223,15 +223,14 @@ exports.updatePassword = async (req, res) => {
             message: 'Länken har utgått!',
             danger: true
         };
-        return res.redirect('/');
+        return res.status(400).redirect('/');
     }
     const password = req.body.resetPassword;
     const confirmPassword = req.body.confirmPassword;
-    await validatePassword(password, confirmPassword);
-
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
+        // await validatePassword(password, confirmPassword);
+        const hashedPassword = await bcrypt.hash(password, 10);
         await User.findOneAndUpdate({ resetPasswordCode: code }, { $set: { password: hashedPassword } }).exec();
         await disableCode(code);
 
@@ -246,7 +245,7 @@ exports.updatePassword = async (req, res) => {
             message: error.message,
             danger: true
         };
-        return res.redirect('/account/reset-password/' + code);
+        return res.status(error.status || 400).render('account/forgot-password');
     }
 };
 
