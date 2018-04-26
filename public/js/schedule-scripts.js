@@ -1,6 +1,3 @@
-const modal = new Modal();
-modal.addEventListener();
-
 // function listArchivedList() {
 //     fetchUrl('/schedules/?page=' + 0)
 //         .then((data) => {

@@ -1,0 +1,17 @@
+{{!-- Confirm deletion modal--}}
+<div id="confirmDel" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <p class="has-text-weight-bold is-size-5">Vill du verkligen radera detta arkiv?</p>
+            <br>
+            <button class="button is-danger hideModal" value="{{archive._id}}">
+                    <span class="icon">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span>Radera</span>
+            </button>
+            <button class="button hideModal">Avbryt</button>
+        </div>
+    </div>
+</div>

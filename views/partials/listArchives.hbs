@@ -1,3 +1,4 @@
+{{> confirmDeleteArchive }}
 {{!-- Preview archive modal --}}
 <div id="previewArchive" class="modal">
     <div class="modal-background"></div>
@@ -13,25 +14,6 @@
         </section>
     </div>
 </div>
-
-{{!-- Confirm deletion modal--}}
-<div id="confirmArchiveDel" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-        <div class="box">
-            <p class="has-text-weight-bold is-size-5">Vill du verkligen radera detta arkiv?</p>
-            <br>
-            <button class="button is-danger hideModal">
-                <span class="icon">
-                    <i class="fas fa-times"></i>
-                </span>
-                <span>Radera</span>
-            </button>
-            <button class="button hideModal">Avbryt</button>
-        </div>
-    </div>
-</div>
-
 
 <div class="field">
     <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
@@ -71,7 +53,7 @@
                     </a>
 
                     {{!-- Delete button --}}
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmArchiveDel"
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel"
                         data-id="{{ archive.id }}" title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>

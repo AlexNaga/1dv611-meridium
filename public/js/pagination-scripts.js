@@ -1,5 +1,3 @@
-const modal = new Modal();
-
 let page = parseInt(getQueryString('page')) || 0;
 
 /**
@@ -26,8 +24,7 @@ function setupEventHandlers() {
         let elem = list[i];
         deleteBtn(elem);
         previewBtn(elem);
-    }
-    modal.addEventListener();    
+    } 
 }
 
 function deleteBtn(elem) {
@@ -36,20 +33,16 @@ function deleteBtn(elem) {
 
     btn.addEventListener('click', () => {
         // Clone elem to remove old event listeners
-        let oldElem = document.querySelector('#confirmArchiveDel > div.modal-content > div > button.button.is-danger');
+        let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         let newElem = oldElem.cloneNode(true);
         oldElem.parentNode.replaceChild(newElem, oldElem);
 
-        let modalRemoveBtn = document.querySelector('#confirmArchiveDel > div.modal-content > div > button.button.is-danger');
+        let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
         modalRemoveBtn.addEventListener('click', () => {
 
             fetchUrl('/archives/' + archiveId, {
                 method: 'DELETE'
             })
-                // .then(() => {
-                //     btn.parentNode.parentNode.removeChild(btn.parentNode);
-                //     closeModals();
-                // })
                 .catch((err) => {
                     // console.log('Something went wrong when trying to delete an archive');
                     // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db

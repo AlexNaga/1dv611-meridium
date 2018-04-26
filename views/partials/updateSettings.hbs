@@ -1,4 +1,4 @@
-{{> confirmDelete }}
+{{> confirmDeleteSchedule }}
 
 <form action="/schedules/edit/{{schedule._id}}" method="post" id="updateSettings">
     <div class="field">
@@ -108,7 +108,7 @@
     </div>
     <div class="field is-grouped">
         <div class="control">
-            <a name="action" value="0" class="button is-danger modal-button" data-target="confirmScheduleDel" title="Radera schemaläggning">
+            <a name="action" value="0" class="button is-danger modal-button" data-target="confirmDel" title="Radera schemaläggning">
                 <span class="icon is-small">
                     <i class="fas fa-times"></i>
                 </span>
@@ -121,5 +121,6 @@
                 <span>Spara</span>
             </button>
         </div>
+
     </div>
 </form>
