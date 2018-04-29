@@ -7,6 +7,22 @@
                 {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings }} {{/eq}}
             </div>
             <div class="column is-two-thirds">
+                    <button id="pause" class="pause-state button is-warning{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">
+                        <span class="icon is-small">
+                            <i class="fas fa-pause"></i>
+                            <i class="fas fa-spinner fa-pulse hidden"></i>
+                            <i class="fas fa-exclamation-triangle hidden"></i>
+                        </span>
+                        <span>Pausa</span>
+                    </button>
+                    <button id="start" class="pause-state button is-success{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">
+                        <span class="icon is-small">
+                            <i class="fas fa-play"></i>
+                            <i class="fas fa-spinner fa-pulse hidden"></i>
+                            <i class="fas fa-exclamation-triangle hidden"></i>
+                        </span>
+                        <span>Starta</span>
+                    </button>
                 {{> listArchives }}
             </div>
             {{else}}

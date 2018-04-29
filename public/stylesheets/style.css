@@ -33,6 +33,10 @@
     background-color: hsl(0, 0%, 29%) !important;
 }
 
+.hidden {
+    display: none;
+}
+
  .flash-container {
     position: relative;
  }

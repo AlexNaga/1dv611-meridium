@@ -71,7 +71,7 @@ exports.createArchive = async (req, res) => {
                 ownerId: response.ownerId,
                 fileSize: response.fileSize
             });
-            await archive.save();
+            archive.save();
 
             let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
             let emailSettings = {

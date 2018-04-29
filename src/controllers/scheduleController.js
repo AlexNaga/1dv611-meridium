@@ -44,12 +44,12 @@ exports.listSchedule = (req, res) => {
 
             res.render('schedule/index', {
                 active: { schedule: true },
+                loadScheduleScripts: true,
 
                 // pagination below
                 docs: data.docs,
                 total: data.total,
                 limit: data.limit,
-                loadScheduleScripts: true,
                 pagination: {
                     page: data.page,
                     pageCount: data.pages,
@@ -89,6 +89,7 @@ exports.getSchedule = async (req, res) => {
                     res.render('schedule/edit', {
                         schedule: schedule,
                         active: { schedule: true },
+                        loadScheduleScripts: true,
 
                         // pagination below
                         docs: data.docs,
@@ -180,5 +181,15 @@ exports.deleteSchedule = (req, res) => {
 // POST /schedule/pause/:id
 exports.pauseSchedule = (req, res) => {
     let id = req.params.id;
-
+    Schedule.findById(id)
+        .then((schedule) => {
+            schedule.isPaused = !schedule.isPaused;
+            return schedule.save();
+        })
+        .then((doc) => {
+                res.json({ success: true });
+        })
+        .catch((err) => {
+            res.json({ success: false, message: err });
+        });
 }

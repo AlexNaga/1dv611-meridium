@@ -66,3 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+/**
+ * @param {string} url The resource that you wish to fetch
+ * @param {Object} options An options object containing any custom settings that you want to apply to the request.
+ */
+function fetchUrl(url, options) {
+    let defaultOptions = {
+        credentials: 'same-origin' // send cookies for the current domain
+    };
+    Object.assign(defaultOptions, options); // sent options overrides defaultOptions
+    return fetch(url, defaultOptions)
+        .then(resp => {
+            if (resp.ok) return resp.json();
+
+            throw resp; // new Error('Something went wrong');
+        });
+}
