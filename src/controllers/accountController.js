@@ -145,7 +145,7 @@ exports.resetPassword = async (req, res) => {
     if (user) {
         let tempCode = crypto.randomBytes(20).toString('hex');
 
-        const link = process.env.HOSTNAME || process.env.SERVER_DOMAIN;
+        const link = process.env.SERVER_DOMAIN;
         let resetLink = link + '/account/reset-password/' + tempCode;
         let duration = 60 * 60 * 2; // seconds = 2 hours
         let tempValue = {
