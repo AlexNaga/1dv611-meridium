@@ -93,7 +93,7 @@ exports.createUser = async (req, res) => {
 
         return res.status(error.status || 400).render('account/register', {
             loadValidation: true,
-            registerPageActive: true,
+            active: { register: true },
             email
         });
     }
@@ -130,7 +130,7 @@ exports.loginUser = async (req, res) => {
         };
 
         return res.status(error.status || 400).render('account/login', {
-            loginPageActive: true,
+            active: { login: true },
             email
         });
     }
@@ -178,7 +178,7 @@ exports.resetPassword = async (req, res) => {
                 message: error.message,
                 danger: true
             };
-            return res.status(error.status || 400).redirect('/account/login');
+            return res.status(error.status || 400).render('account/forgot-password');
         }
     } else {
         let emailSettings = {
@@ -267,7 +267,7 @@ exports.logoutUser = (req, res) => {
 exports.getRegisterPage = (req, res) => {
     res.render('account/register', {
         loadValidation: true,
-        registerPageActive: true
+        active: { register: true },
     });
 };
 
@@ -275,7 +275,7 @@ exports.getRegisterPage = (req, res) => {
  * GET /account/login
  */
 exports.getLoginPage = (req, res) => {
-    res.render('account/login', { loginPageActive: true });
+    res.render('account/login', { active: { login: true }, });
 };
 
 /**

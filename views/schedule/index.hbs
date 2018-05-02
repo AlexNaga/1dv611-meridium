@@ -1,4 +1,4 @@
-{{> confirmDeleteArchive }}
+{{> confirmDeleteSchedule }}
 
 <section class="section">
     <div class="container">
@@ -23,18 +23,18 @@
                     <td>{{scheduleName}}</td>
                     <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>
                     <td>
-                        <div class="field is-grouped">
-                            <a href="/schedules/edit/{{_id}}" class="button is-inverted is-rounded is-info">
-                                <span class="icon is-small">
+                        <div class="field is-grouped is-pulled-right">
+                            <a href="/schedules/edit/{{_id}}" class="">
+                                {{!-- <span class="icon is-small">
                                     <i class="fas fa-edit"></i>
-                                </span>
+                                </span> --}}
                             </a>
-                            <a href="/schedules/delete/{{_id}}" class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmDel"
+                            <button class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmDel" data-id="{{ _id }}"
                                 title="Radera schemaläggning">
                                 <span class="icon is-small">
                                     <i class="fas fa-times"></i>
                                 </span>
-                            </a>
+                            </button>
                         </div>
                     </td>
                 </tr>

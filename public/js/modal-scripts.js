@@ -23,7 +23,7 @@ class Modal {
             });
     }
 
-    addEventListener() {
+    addEventListener(path) {
         if (this.modalButtons.length > 0) {
             this.modalButtons.forEach((elem) => {
                 elem.addEventListener('click', () => {
@@ -31,23 +31,23 @@ class Modal {
                     let target = document.getElementById(clickedElem);
                     this.rootElem.classList.add('is-clipped');
                     target.classList.add('is-active');
-                    deleteBtn(elem);
+                    deleteBtn(path, elem);
                 });
             });
         }
 
-        let deleteBtn = (elem) => {
+        let deleteBtn = (path, elem) => {
             // Clone elem to remove old event listeners, to prevent multiple deletes
             let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
             let newElem = oldElem.cloneNode(true);
             oldElem.parentNode.replaceChild(newElem, oldElem);
 
-            let archiveId = elem.getAttribute('data-id');
-            let archiveRow = elem.parentNode.parentNode.parentNode;
+            let id = elem.getAttribute('data-id');
+            let elemRow = elem.parentNode.parentNode.parentNode;
 
             let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
             modalRemoveBtn.addEventListener('click', () => {
-                this.fetchUrl('/archives/delete/' + archiveId, {
+                this.fetchUrl(`/${path}/delete/` + id, {
                     method: 'DELETE'
                 })
                     .catch((err) => {
@@ -56,7 +56,7 @@ class Modal {
                         console.log(err);
                     })
                     .finally(() => {
-                        archiveRow.parentNode.removeChild(archiveRow);
+                        elemRow.parentNode.removeChild(elemRow);
                         this.closeModals();
                     });
             });

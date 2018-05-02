@@ -1,5 +1,4 @@
-const checkAuth = require('../auth/checkAuth');
-const ScheduleController = require('../controllers/schedulejobsController');
+const ScheduleController = require('../controllers/scheduleController');
 const isLoggedIn = require('../auth/isLoggedIn');
 
 module.exports = (app, baseRoute) => {
@@ -14,4 +13,7 @@ module.exports = (app, baseRoute) => {
 
     // Delete a specific schedule
     app.delete(baseRoute + '/delete/:id', isLoggedIn, ScheduleController.deleteSchedule);
+
+    // Toggle pause on a specific schedule
+    app.post(baseRoute + '/pause/:id', ScheduleController.pauseSchedule);
 };

@@ -27,6 +27,7 @@ const schema = mongoose.Schema({
     ownerId: { type: ObjectId },
     shouldNotify: { type: Boolean, default: true },
     email: { type: String },
+    isPaused: { type: Boolean, default: false },
 });
 
 schema.plugin(timestamp);
@@ -39,4 +40,4 @@ schema.post('init', (doc) => {
     if (doc.typeOfSchedule === 3) doc.scheduleName = 'Månadsvis';
 });
 
-module.exports = mongoose.model('ScheduleJobs', schema);
+module.exports = mongoose.model('Schedules', schema);

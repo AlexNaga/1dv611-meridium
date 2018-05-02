@@ -1,24 +1,22 @@
 const path = require('path');
 const fs = require('fs');
 const validator = require('../utils/validator');
-const JSZip = require('jszip');
-const getUrls = require('get-urls');
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
-const ScheduledJobs = require('../models/scheduledJobs');
+const Schedules = require('../models/schedules');
 
 /**
  * POST /archives/
  */
-exports.createArchive = (req, res) => {
+exports.createArchive = async (req, res) => {
     let {
         httrackSettings,
         error
     } = validator.validateHttrackSettings(req.body, req.session.user.id);
     if (error) {
         req.session.flash = error;
-        return res.status(400).redirect('/'); // return to not continue with archive/saving schedule
+        return res.redirect('/'); // return to not continue with archive/saving schedule
     }
 
     if (!httrackSettings.isScheduled) {
@@ -31,7 +29,7 @@ exports.createArchive = (req, res) => {
 
     if (httrackSettings.isScheduled) {
         if (httrackSettings.typeOfSetting === '0') { // standard settings
-            ScheduledJobs.create({
+            Schedules.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
                 url: httrackSettings.url,
                 includeDomains: httrackSettings.includeDomains,
@@ -43,7 +41,7 @@ exports.createArchive = (req, res) => {
                 typeOfSchedule: httrackSettings.typeOfSchedule
             });
         } else { // advanced settings
-            ScheduledJobs.create({
+            Schedules.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
                 advancedSetting: httrackSettings.advancedSetting,
                 email: httrackSettings.email,
@@ -124,7 +122,7 @@ exports.listArchives = (req, res) => {
 
             res.render('archive/index', {
                 archives: archives,
-                archivePageActive: true,
+                active: { archive: true },
                 loadArchiveScripts: true,                
 
                 // pagination below

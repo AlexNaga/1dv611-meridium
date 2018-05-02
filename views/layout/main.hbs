@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-tooltip@0.1.1/bulma-tooltip.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <script defer src="/js/modal-scripts.js"></script>
     <script defer src="/js/scripts.js"></script>
+    <script defer src="/js/modal-scripts.js"></script>
 
     {{#if user }}
         {{#if loadIndexScripts }}
@@ -18,6 +18,7 @@
         {{/if}}
 
         {{#if loadArchiveScripts }}
+            <script defer src="/js/archive-scripts.js"></script>
             <script defer src="/js/pagination-scripts.js"></script>
         {{/if}}
 

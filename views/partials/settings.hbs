@@ -5,37 +5,36 @@
         <label class="label">Huvuddomän att arkivera
             <button class="tooltip invisbleButton" disabled data-tooltip="Webbplats att arkivera"><i class="far fa-question-circle"></i></button>
         </label>
-        <p class="control has-icons-left">
+        <div class="control has-icons-left">
             <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
             <span class="icon is-small is-left">
                 <i class="fas fa-link"></i>
             </span>
-        </p>
+        </div>
     </div>
     <div class="field">
         <label class="label">Subdomän att arkivera
              <button class="tooltip invisbleButton" disabled data-tooltip="Webbplatsens subdomäner"><i class="far fa-question-circle"></i></button>
         </label>
-        <p class="control has-icons-left">
+        <div class="control has-icons-left">
             <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="https://sub.vecka.nu, https://sub2.vecka.nu">
             <span class="icon is-small is-left">
                 <i class="fas fa-link"></i>
             </span>
-        </p>
+        </div>
     </div>
     <div class="field">
         <label class="label">Sidor att exkludera
              <button class="tooltip invisbleButton" disabled data-tooltip="Sidor som inte ska arkiveras"><i class="far fa-question-circle"></i></button>
         </label>
-        <p class="control has-icons-left">
+        <div class="control has-icons-left">
             <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="/fredag, /torsdag, /onsdag">
             <span class="icon is-small is-left">
                 <i class="fas fa-unlink"></i>
             </span>
-        </p>
-    </div>
-    <div class="field">
-        <p>
+            </p>
+        </div>
+        <div class="field">
             <div class="control">
                 <label class="label">Följ robots.txt och meta-taggar
                      <button class="tooltip invisbleButton" disabled data-tooltip="ÄNDRA, Fråga Meridium!!"><i class="far fa-question-circle"></i></button>
@@ -50,6 +49,7 @@
                     <input type="radio" id="metaTags2" name="robots" value="2"> Nej
                 </label>
             </div>
+<<<<<<< HEAD
         </p>
     </div>
     <div class="field">
@@ -57,21 +57,29 @@
              <button class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sparas i denna struktur"><i class="far fa-question-circle"></i></button>
         </label>
         <p>
+=======
+        </div>
+        <div class="field">
+            <label class="label">Mappstruktur
+                <i class="far fa-question-circle"></i>
+            </label>
+>>>>>>> 54d227b02ec340afdf6388c34fb59def9f6802ac
             <div class="control has-icons-left">
                 <div class="select">
                     <select name="structure" id="structure" required>
                         <option selected="selected" name="structure" id="s0" value="0">Spegla mappstrukturen från källan (standard)</option>
-                        <option name="structure" id="s1" value="1">HTML i /, bilder/övrigt i /images/</option>
-                        <option name="structure" id="s2" value="2">HTML i /HTML/, bilder/övrigt i /images/</option>
-                        <option name="structure" id="s3" value="3">HTML i /, bilder/övrigt i /</option>
-                        <option name="structure" id="s4" value="4">HTML i /, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
-                        <option name="structure" id="s5" value="5">HTML i /HTML/, bilder/övrigt i /xxx/ (där xxx är filändelse)</option>
+                        <option name="structure" id="s1" value="1">HTML i /, bilder & övrigt i /images/</option>
+                        <option name="structure" id="s2" value="2">HTML i /HTML/, bilder & övrigt i /images/</option>
+                        <option name="structure" id="s3" value="3">HTML i /, bilder & övrigt i /</option>
+                        <option name="structure" id="s4" value="4">HTML i /, bilder & övrigt i /xxx/ (där xxx är filändelse)</option>
+                        <option name="structure" id="s5" value="5">HTML i /HTML/, bilder & övrigt i /xxx/ (där xxx är filändelse)</option>
                     </select>
                     <div class="icon is-small is-left">
                         <i class="fas fa-folder"></i>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
         </p>
     </div>
     <div class="field">
@@ -79,6 +87,13 @@
              <button class="tooltip invisbleButton" disabled data-tooltip="Webbplatsen arkiveras automatiskt vid valda tillfällen"><i class="far fa-question-circle"></i></button>
         </label>
         <p>
+=======
+        </div>
+        <div class="field">
+            <label class="label">Schemaläggning
+                <i class="far fa-question-circle"></i>
+            </label>
+>>>>>>> 54d227b02ec340afdf6388c34fb59def9f6802ac
             <div class="control has-icons-left">
                 <div class="select">
                     <select name="typeOfSchedule" id="schedule" required>
@@ -92,32 +107,31 @@
                     </div>
                 </div>
             </div>
-        </p>
-    </div>
-    <div class="field">
-        <label class="label">E-post</label>
-        <p class="control has-icons-left">
-            <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
-        </p>
-        <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
-    </div>
-    <div class="field">
-        <p class="control">
-            <button type="submit" name="action" value="0" class="button is-info">
-                <span class="icon is-small">
-                    <i class="fas fa-cloud-download-alt"></i>
+        </div>
+        <div class="field">
+            <label class="label">E-post</label>
+            <div class="control has-icons-left">
+                <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
                 </span>
-                <span>Arkivera</span>
-            </button>
-            <button type="submit" name="action" value="1" class="button is-success">
-                <span class="icon is-small">
-                    <i class="fas fa-save"></i>
-                </span>
-                <span>Spara</span>
-            </button>
-        </p>
-    </div>
+            </div>
+            <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button type="submit" name="action" value="0" class="button is-info">
+                    <span class="icon is-small">
+                        <i class="fas fa-cloud-download-alt"></i>
+                    </span>
+                    <span>Arkivera</span>
+                </button>
+                <button type="submit" name="action" value="1" class="button is-success">
+                    <span class="icon is-small">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    <span>Spara</span>
+                </button>
+            </div>
+        </div>
 </form>

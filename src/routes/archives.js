@@ -1,4 +1,3 @@
-const checkAuth = require('../auth/checkAuth');
 const ArchivesController = require('../controllers/archivesController');
 const isLoggedIn = require('../auth/isLoggedIn');
 

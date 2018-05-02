@@ -1,6 +1,5 @@
 const ProfileController = require('../controllers/profileController');
 const isLoggedIn = require('../auth/isLoggedIn');
-const checkAuth = require('../auth/checkAuth');
 
 module.exports = (app, baseRoute) => {
     // Views
