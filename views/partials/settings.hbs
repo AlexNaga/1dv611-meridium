@@ -3,7 +3,7 @@
 
     <div class="field">
         <label class="label">Huvuddomän att arkivera
-            <i class="far fa-question-circle"></i>
+            <button class="tooltip invisbleButton" disabled data-tooltip="Webbplats att arkivera"><i class="far fa-question-circle"></i></button>
         </label>
         <p class="control has-icons-left">
             <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
@@ -14,7 +14,7 @@
     </div>
     <div class="field">
         <label class="label">Subdomän att arkivera
-            <i class="far fa-question-circle"></i>
+             <button class="tooltip invisbleButton" disabled data-tooltip="Webbplatsens subdomäner"><i class="far fa-question-circle"></i></button>
         </label>
         <p class="control has-icons-left">
             <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="https://sub.vecka.nu, https://sub2.vecka.nu">
@@ -25,7 +25,7 @@
     </div>
     <div class="field">
         <label class="label">Sidor att exkludera
-            <i class="far fa-question-circle"></i>
+             <button class="tooltip invisbleButton" disabled data-tooltip="Sidor som inte ska arkiveras"><i class="far fa-question-circle"></i></button>
         </label>
         <p class="control has-icons-left">
             <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="/fredag, /torsdag, /onsdag">
@@ -38,7 +38,7 @@
         <p>
             <div class="control">
                 <label class="label">Följ robots.txt och meta-taggar
-                    <i class="far fa-question-circle"></i>
+                     <button class="tooltip invisbleButton" disabled data-tooltip="ÄNDRA, Fråga Meridium!!"><i class="far fa-question-circle"></i></button>
                 </label>
                 <label class="radio">
                     <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
@@ -54,7 +54,7 @@
     </div>
     <div class="field">
         <label class="label">Mappstruktur
-            <i class="far fa-question-circle"></i>
+             <button class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sparas i denna struktur"><i class="far fa-question-circle"></i></button>
         </label>
         <p>
             <div class="control has-icons-left">
@@ -76,7 +76,7 @@
     </div>
     <div class="field">
         <label class="label">Schemaläggning
-            <i class="far fa-question-circle"></i>
+             <button class="tooltip invisbleButton" disabled data-tooltip="Webbplatsen arkiveras automatiskt vid valda tillfällen"><i class="far fa-question-circle"></i></button>
         </label>
         <p>
             <div class="control has-icons-left">
