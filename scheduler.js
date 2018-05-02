@@ -14,13 +14,14 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
             let shouldBeArchived = everyDay;
 
             let today = new Date().getDay();
+            // Run weekly schedules on mondays
             if (today === 1) {
                 shouldBeArchived.push(...everyWeek);
 
                 let d = new Date();
                 let yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
                 let weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-
+                // Run monthly schedules on the last week of the months
                 if (weekNo % 4 === 0) {
                     shouldBeArchived.push(...everyMonth);
                 }
