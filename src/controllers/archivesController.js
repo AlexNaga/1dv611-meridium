@@ -59,7 +59,6 @@ exports.createArchive = async (req, res) => {
     } else {
         httrackWrapper.archive(httrackSettings, (err, response) => {
             if (err) {
-                console.log(err);
                 let emailSettings = {
                     email: response.email,
                     subject: 'Din schemalagda arkivering kunde inte slutföras!',
