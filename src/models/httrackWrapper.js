@@ -6,6 +6,7 @@ const dayjs = require('dayjs');
 const path = require('path');
 const validUrl = require('valid-url');
 const getUrls = require('get-urls');
+const Setting = require('../models/enums').setting;
 
 /**
  *
@@ -23,14 +24,14 @@ function archive(settings, callback) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
-    if (parseInt(settings.typeOfSetting) === 0) {
+    if (settings.typeOfSetting === Setting.STANDARD) {
         let hostname = new URL(settings.url).hostname;
         folderName = `${hostname}_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
-    } else if (parseInt(settings.typeOfSetting) === 1) {
+    } else if (settings.typeOfSetting === Setting.ADVANCED) {
         folderName = `hostname_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
@@ -67,7 +68,7 @@ function archive(settings, callback) {
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error, errorResponse);
 
-        if (parseInt(settings.structure) === 0 || parseInt(settings.typeOfSetting) === 1) {
+        if (parseInt(settings.structure) === 0 || settings.typeOfSetting === Setting.ADVANCED) {
             for (let i = 0; i < urls.length; i++) {
                 if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
                     fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);

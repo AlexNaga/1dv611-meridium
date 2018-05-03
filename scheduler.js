@@ -3,13 +3,14 @@ const EmailModel = require('./src/models/emailModel');
 const Schedules = require('./src/models/schedules');
 const Archive = require('./src/models/archive');
 const nodeSchedule = require('node-schedule');
+const Schedule = require('./src/models/enums').schedule;
 
 exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
     Schedules.find({ isPaused: false }).exec()
         .then((schedules) => {
-            let everyDay = schedules.filter(s => s.typeOfSchedule === 1);
-            let everyWeek = schedules.filter(s => s.typeOfSchedule === 2);
-            let everyMonth = schedules.filter(s => s.typeOfSchedule === 3);
+            let everyDay = schedules.filter(s => s.typeOfSchedule === Schedule.DAILY);
+            let everyWeek = schedules.filter(s => s.typeOfSchedule === Schedule.WEEKLY);
+            let everyMonth = schedules.filter(s => s.typeOfSchedule === Schedule.MONTHLY);
 
             let shouldBeArchived = everyDay;
 
