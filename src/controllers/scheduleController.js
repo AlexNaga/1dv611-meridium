@@ -32,15 +32,15 @@ exports.listSchedule = async (req, res) => {
                 page: schedule.page,
                 pageCount: schedule.pages,
             }
-        })
+        });
     } catch (err) {
         req.session.flash = {
             message: 'Kunde inte lista sparade schemalagda arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
-}
+};
 
 /**
  * GET /schedules/edit/:id
@@ -79,12 +79,12 @@ exports.getSchedule = async (req, res) => {
                 page: archives.page,
                 pageCount: archives.pages,
             }
-        })
+        });
     } catch (err) {
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
             danger: true
-        }
+        };
         return res.redirect('/schedules');
     }
 };
@@ -118,10 +118,10 @@ exports.updateSchedule = async (req, res) => {
         req.session.flash = {
             message: 'Vi kunde inte uppdatera schemainställningarna!',
             danger: true
-        }
+        };
         return res.redirect('/schedules');
     }
-}
+};
 
 /**
  * POST/DELETE /schedules/delete/:id
@@ -168,4 +168,4 @@ exports.pauseSchedule = async (req, res) => {
                 message: err
             });
         });
-}
+};

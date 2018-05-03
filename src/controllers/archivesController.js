@@ -148,7 +148,7 @@ exports.listArchives = async (req, res) => {
         req.session.flash = {
             message: 'Kunde inte lista dina arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
 };

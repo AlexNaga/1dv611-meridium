@@ -59,7 +59,7 @@ function archive(settings, callback) {
             fs.moveSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`, `${previewFolderPath}/${ARCHIVE_ID}`);
         }
 
-        fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, error => {
+        fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, err => {
             if (err) return callback(err, errorResponse);
         });
     });
@@ -85,7 +85,7 @@ function archive(settings, callback) {
         zipFolder(`${pathToFolder}/folderToZip`, zipDest, (err, fileSize) => {
             if (err) return callback(err, errorResponse);
 
-            fs.remove(`${pathToFolder}`, error => {
+            fs.remove(`${pathToFolder}`, err => {
                 if (err) return callback(err, errorResponse);
 
                 // Return everything thats needed for the calling method

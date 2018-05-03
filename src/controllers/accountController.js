@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const mongoose = require('mongoose');
 const checkPassword = require('../utils/passwordValidator');
 
 const User = require('../models/user');
@@ -12,20 +11,20 @@ const throwError = require('../utils/error');
  * @param {String} password
  * @param {String} confirmPassword
  */
-validatePassword = async (password, confirmPassword) => {
+let validatePassword = async (password, confirmPassword) => {
     let passwordHasError = checkPassword(password, confirmPassword, {
         minimumLength: 6
-    })
+    });
     if (passwordHasError) {
-        throwError(400, passwordHasError.sentence)
+        throwError(400, passwordHasError.sentence);
     }
-}
+};
 
 /**
  * Checks if the temporary reset-password code is valid
  * @param {String} code
  */
-isValidCode = async (code) => {
+let isValidCode = async (code) => {
     let user = await User.findOne({
         resetPasswordCode: code
     }).exec();
@@ -36,21 +35,21 @@ isValidCode = async (code) => {
         }
     }
     return false;
-}
+};
 
 /**
  * Makes a used reset-password code invalid
  * @param {String} code
  */
-disableCode = async (code) => {
+let disableCode = async (code) => {
     await User.findOneAndUpdate({
         resetPasswordCode: code
     }, {
-        $set: {
-            resetPasswordCode: null
-        }
-    }).exec();
-}
+            $set: {
+                resetPasswordCode: null
+            }
+        }).exec();
+};
 
 /**
  * POST /account/register
@@ -93,7 +92,7 @@ exports.createUser = async (req, res) => {
         return res.redirect('/');
     } catch (err) {
         req.session.flash = {
-            message: error.message,
+            message: err.message,
             danger: true
         };
 
@@ -129,7 +128,7 @@ exports.loginUser = async (req, res) => {
         return res.redirect('/');
     } catch (err) {
         req.session.flash = {
-            message: error.message,
+            message: err.message,
             danger: true
         };
 
@@ -161,8 +160,8 @@ exports.resetPassword = async (req, res) => {
                 await User.findOneAndUpdate({
                     email: email
                 }, {
-                    $set: tempValue
-                }).exec();
+                        $set: tempValue
+                    }).exec();
 
                 let emailSettings = {
                     email: email,
@@ -171,7 +170,7 @@ exports.resetPassword = async (req, res) => {
                           <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
                           <a href="${resetLink}">Klicka på denna länk för att skapa ditt nya lösenord</a>
                           <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p>`
-                }
+                };
 
                 EmailModel.sendMail(emailSettings);
                 req.session.flash = {
@@ -183,7 +182,7 @@ exports.resetPassword = async (req, res) => {
             }
         } catch (err) {
             req.session.flash = {
-                message: error.message,
+                message: err.message,
                 danger: true
             };
             return res.status(err.status || 400).render('account/forgot-password');
@@ -192,8 +191,8 @@ exports.resetPassword = async (req, res) => {
         let emailSettings = {
             email: email,
             subject: 'Återställning av lösenord',
-            message: `Någon har försökt återställa ett lösenord till den här e-posten men vi har den inte registrerad hos oss på Arkivdium.se.`
-        }
+            message: 'Någon har försökt återställa ett lösenord till den här e-posten men vi har den inte registrerad hos oss på Arkivdium.se.'
+        };
 
         EmailModel.sendMail(emailSettings);
         req.session.flash = {
@@ -212,7 +211,8 @@ exports.validateLink = async (req, res) => {
         return res.render('account/update-password', {
             loadValidation: true
         });
-    };
+    }
+
     req.session.flash = {
         message: 'Länken har utgått!',
         danger: true
@@ -242,10 +242,10 @@ exports.updatePassword = async (req, res) => {
         await User.findOneAndUpdate({
             resetPasswordCode: code
         }, {
-            $set: {
-                password: hashedPassword
-            }
-        }).exec();
+                $set: {
+                    password: hashedPassword
+                }
+            }).exec();
         await disableCode(code);
 
         req.session.flash = {
@@ -256,7 +256,7 @@ exports.updatePassword = async (req, res) => {
     } catch (err) {
         console.log(err);
         req.session.flash = {
-            message: error.message,
+            message: err.message,
             danger: true
         };
         return res.status(err.status || 400).render('account/forgot-password');
