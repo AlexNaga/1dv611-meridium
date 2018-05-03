@@ -8,15 +8,12 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const timestampHelper = require('./timestampHelper');
-const countdownHelper = require('./countdownHelper');
+const timestampHelper = require('./src/utils/timestampHelper');
+const countdownHelper = require('./src/utils/countdownHelper');
 const paginate = require('handlebars-paginate');
 const helpers = require('handlebars-helpers')(['comparison']);
 
-mongoose.connect(
-    'mongodb://admin:' + process.env.MONGODB_ATLAS_PASSWORD +
-    '@meridium-shard-00-00-na4xb.mongodb.net:27017,meridium-shard-00-01-na4xb.mongodb.net:27017,meridium-shard-00-02-na4xb.mongodb.net:27017/test?ssl=true&replicaSet=meridium-shard-0&authSource=admin'
-);
+mongoose.connect(process.env.MONGODB);
 mongoose.Promise = global.Promise;
 
 app.use(logger('dev'));
@@ -65,13 +62,7 @@ require('./scheduler').nodeSchedule;
 require('./src/routes')(app);
 
 app.use((req, res, next) => {
-    // res.sendStatus(404);
+    req.session.flash = { message: '404', danger: true };
     res.status(404).redirect('/');
-    // console.log('err',err);
-    // res.status(err.status || 404).json({
-    //     error: {
-    //         message: err.message
-    //     }
-    // });
 });
 module.exports = app;

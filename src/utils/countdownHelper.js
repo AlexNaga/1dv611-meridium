@@ -1,5 +1,5 @@
 const dayjs = require('dayjs');
-const ScheduleSetting = require('./src/models/enums').schedule;
+const ScheduleSetting = require('../models/enums').schedule;
 
 /**
  * Handlebars helper for calculating when a schedule is supposed to run.
@@ -7,15 +7,15 @@ const ScheduleSetting = require('./src/models/enums').schedule;
  *
  * @param {Schedule} schedule
  */
-module.exports = function (schedule) {
+module.exports = (schedule) => {
     if (schedule.typeOfSchedule === ScheduleSetting.NONE) {
         return false;
     }
     let endtime = getDiffBetweenDates(schedule);
-    var t = Date.parse(endtime) - Date.parse(new Date());
-    var minutes = Math.floor((t / 1000 / 60) % 60);
-    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+    let t = Date.parse(endtime) - Date.parse(new Date());
+    let minutes = Math.floor((t / 1000 / 60) % 60);
+    let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    let days = Math.floor(t / (1000 * 60 * 60 * 24));
 
     if (hours < 1) {
         hours = Math.floor(minutes % 60);
@@ -37,7 +37,7 @@ module.exports = function (schedule) {
 function getDiffBetweenDates(schedule) {
     // Predefined settings, has to match the ones decided in scheduler.js
     // TODO : config file?
-    let hourToRun = 12; // what hour of the day.
+    let hourToRun = 3; // what hour of the day.
     let weekdayToRun = 1; // Sunday = 0, Monday = 1..
     let weekToRun = 4; // Last week in month
 
@@ -52,8 +52,7 @@ function getDiffBetweenDates(schedule) {
         diff = daily.diff(base);
     } else if (schedule.typeOfSchedule === ScheduleSetting.WEEKLY) {
         diff = weekly.diff(base);
-    } else if
-    (schedule.typeOfSchedule === ScheduleSetting.MONTHLY) {
+    } else if (schedule.typeOfSchedule === ScheduleSetting.MONTHLY) {
         diff = monthly.diff(base);
     }
 
@@ -62,4 +61,3 @@ function getDiffBetweenDates(schedule) {
 
     return timeUntil.toDate();
 }
-

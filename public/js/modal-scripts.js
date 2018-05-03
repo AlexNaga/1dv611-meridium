@@ -6,23 +6,6 @@ class Modal {
         this.modalCloses = Modal.getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
     }
 
-    /**
-    * @param {string} url The resource that you wish to fetch
-    * @param {Object} options An options object containing any custom settings that you want to apply to the request.
-    */
-    fetchUrl(url, options) {
-        let defaultOptions = {
-            credentials: 'same-origin' // send cookies for the current domain
-        };
-        Object.assign(defaultOptions, options); // sent options overrides defaultOptions
-        return fetch(url, defaultOptions)
-            .then(resp => {
-                if (resp.ok) return resp.json();
-
-                throw resp; // new Error('Something went wrong');
-            });
-    }
-
     addEventListener(path) {
         if (this.modalButtons.length > 0) {
             this.modalButtons.forEach((elem) => {
@@ -48,7 +31,7 @@ class Modal {
 
             let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
             modalRemoveBtn.addEventListener('click', () => {
-                this.fetchUrl(`/${path}/delete/` + id, {
+                fetchUrl(`/${path}/delete/` + id, {
                     method: 'DELETE'
                 })
                     .catch((err) => {

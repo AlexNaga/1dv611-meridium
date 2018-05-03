@@ -5,17 +5,8 @@ const checkPassword = require('../utils/passwordValidator');
 
 const User = require('../models/user');
 const EmailModel = require('../models/emailModel');
+const throwError = require('../utils/error');
 
-/**
- * 
- * @param {Number} status HTTP Status code
- * @param {String} message Message to be displayed on the website
- */
-function throwError(status, message) {
-    let error = new Error(message);
-    error.status = status;
-    throw error;
-}
 /**
  * Validates the password against a set of rules, throws an error if not valid.
  * @param {String} password
@@ -35,7 +26,9 @@ validatePassword = async (password, confirmPassword) => {
  * @param {String} code
  */
 isValidCode = async (code) => {
-    let user = await User.findOne({ resetPasswordCode: code }).exec();
+    let user = await User.findOne({
+        resetPasswordCode: code
+    }).exec();
 
     if (user) {
         if (Date.now() / 1000 < user.resetPasswordDate) {
@@ -50,8 +43,13 @@ isValidCode = async (code) => {
  * @param {String} code
  */
 disableCode = async (code) => {
-    await User.findOneAndUpdate({ resetPasswordCode: code },
-        { $set: { resetPasswordCode: null } }).exec();
+    await User.findOneAndUpdate({
+        resetPasswordCode: code
+    }, {
+        $set: {
+            resetPasswordCode: null
+        }
+    }).exec();
 }
 
 /**
@@ -63,33 +61,35 @@ exports.createUser = async (req, res) => {
     const confirmPassword = req.body.password[1];
 
     try {
-        let user = await User.findOne({ email: email });
+        let user = await User.findOne({
+            email: email
+        });
         if (user) {
             req.session.flash = {
                 message: 'Du kan inte skapa ett konto med den här epostadressen',
                 danger: true
             };
             return res.redirect('/account/register');
-            
+
         } else {
-        await validatePassword(password, confirmPassword);
+            await validatePassword(password, confirmPassword);
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        let newUser = new User({
-            email: email,
-            password: hashedPassword
-        });
-        await newUser.save();
+            const hashedPassword = await bcrypt.hash(password, 10);
+            let newUser = new User({
+                email: email,
+                password: hashedPassword
+            });
+            await newUser.save();
 
-        req.session.user = {
-            email: email,
-            id: newUser._id
-        };
-        req.session.flash = {
-            message: 'Kontot har skapats.',
-            success: true
-        };
-    }
+            req.session.user = {
+                email: email,
+                id: newUser._id
+            };
+            req.session.flash = {
+                message: 'Kontot har skapats.',
+                success: true
+            };
+        }
         return res.redirect('/');
     } catch (error) {
         req.session.flash = {
@@ -97,11 +97,7 @@ exports.createUser = async (req, res) => {
             danger: true
         };
 
-        return res.status(error.status || 400).render('account/register', {
-            loadValidation: true,
-            active: { register: true },
-            email
-        });
+        return res.redirect('/account/register');
     }
 };
 
@@ -113,7 +109,9 @@ exports.loginUser = async (req, res) => {
     const password = req.body.password;
 
     try {
-        let user = await User.findOne({ email: email }).exec();
+        let user = await User.findOne({
+            email: email
+        }).exec();
         if (!user) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
         let success = await bcrypt.compare(password, user.password);
@@ -144,13 +142,15 @@ exports.loginUser = async (req, res) => {
  */
 exports.resetPassword = async (req, res) => {
     const email = req.body.email;
-    let user = await User.findOne({ email: email }).exec();
+    let user = await User.findOne({
+        email: email
+    }).exec();
     if (user) {
         let tempCode = crypto.randomBytes(20).toString('hex');
 
         const link = process.env.SERVER_DOMAIN;
         let resetLink = link + '/account/reset-password/' + tempCode;
-        let duration = 60 * 60 * 2; // seconds = 2 hours
+        let duration = 60 * 60 * 2; // duration in seconds (2 hours)
         let tempValue = {
             resetPasswordCode: tempCode,
             resetPasswordDate: Date.now() / 1000 + duration
@@ -158,7 +158,11 @@ exports.resetPassword = async (req, res) => {
 
         try {
             if (user) {
-                await User.findOneAndUpdate({ email: email }, { $set: tempValue }).exec();
+                await User.findOneAndUpdate({
+                    email: email
+                }, {
+                    $set: tempValue
+                }).exec();
 
                 let emailSettings = {
                     email: email,
@@ -235,7 +239,13 @@ exports.updatePassword = async (req, res) => {
     try {
         // await validatePassword(password, confirmPassword);
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.findOneAndUpdate({ resetPasswordCode: code }, { $set: { password: hashedPassword } }).exec();
+        await User.findOneAndUpdate({
+            resetPasswordCode: code
+        }, {
+            $set: {
+                password: hashedPassword
+            }
+        }).exec();
         await disableCode(code);
 
         req.session.flash = {
@@ -257,7 +267,6 @@ exports.updatePassword = async (req, res) => {
  * POST /account/logout
  */
 exports.logoutUser = (req, res) => {
-    console.log('hejheje');
     req.session.user = null;
     req.session.flash = {
         message: 'Du har blivit utloggad.',
@@ -272,7 +281,9 @@ exports.logoutUser = (req, res) => {
 exports.getRegisterPage = (req, res) => {
     res.render('account/register', {
         loadValidation: true,
-        active: { register: true },
+        active: {
+            register: true
+        },
     });
 };
 
@@ -280,7 +291,11 @@ exports.getRegisterPage = (req, res) => {
  * GET /account/login
  */
 exports.getLoginPage = (req, res) => {
-    res.render('account/login', { active: { login: true }, });
+    res.render('account/login', {
+        active: {
+            login: true
+        },
+    });
 };
 
 /**

@@ -1,9 +1,10 @@
 <form action="/archives" method="post" id="settings">
     <input type="hidden" name="setting" value="0">
-
     <div class="field">
         <label class="label">Huvuddomän att arkivera
-            <span class="tooltip invisbleButton" disabled data-tooltip="Webbplats att arkivera"><i class="far fa-question-circle"></i></span>
+            <span class="tooltip invisbleButton" disabled data-tooltip="Webbplats att arkivera">
+                <i class="far fa-question-circle"></i>
+            </span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="https://vecka.nu">
@@ -14,7 +15,9 @@
     </div>
     <div class="field">
         <label class="label">Subdomän att arkivera
-             <span class="tooltip invisbleButton" disabled data-tooltip="Webbplatsens subdomäner"><i class="far fa-question-circle"></i></span>
+            <span class="tooltip invisbleButton" disabled data-tooltip="Webbplatsens subdomäner">
+                <i class="far fa-question-circle"></i>
+            </span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="https://sub.vecka.nu, https://sub2.vecka.nu">
@@ -25,7 +28,9 @@
     </div>
     <div class="field">
         <label class="label">Sidor att exkludera
-             <span class="tooltip invisbleButton" disabled data-tooltip="Sidor som inte ska arkiveras"><i class="far fa-question-circle"></i></span>
+            <span class="tooltip invisbleButton" disabled data-tooltip="Sidor som inte ska arkiveras">
+                <i class="far fa-question-circle"></i>
+            </span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="/fredag, /torsdag, /onsdag">
@@ -36,7 +41,9 @@
         <div class="field">
             <div class="control">
                 <label class="label">Följ robots.txt och meta-taggar
-                     <span class="tooltip invisbleButton" disabled data-tooltip="ÄNDRA, Fråga Meridium!!"><i class="far fa-question-circle"></i></span>
+                    <span class="tooltip invisbleButton" disabled data-tooltip="ÄNDRA, Fråga Meridium!!">
+                        <i class="far fa-question-circle"></i>
+                    </span>
                 </label>
                 <label class="radio">
                     <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
@@ -52,7 +59,9 @@
     </div>
     <div class="field">
         <label class="label">Mappstruktur
-             <span class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sparas i denna struktur"><i class="far fa-question-circle"></i></span>
+            <span class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sparas i denna struktur">
+                <i class="far fa-question-circle"></i>
+            </span>
         </label>
         <div class="control has-icons-left">
             <div class="select">
@@ -72,7 +81,9 @@
     </div>
     <div class="field">
         <label class="label">Schemaläggning
-             <span class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen"><i class="far fa-question-circle"></i></span>
+            <span class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen">
+                <i class="far fa-question-circle"></i>
+            </span>
         </label>
         <div class="control has-icons-left">
             <div class="select">

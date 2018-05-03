@@ -1,6 +1,5 @@
 function showSettings() {
     let settingsDiv = document.getElementById('settings');
-    let advancedSettingsDiv = document.getElementById('advancedSettings');
 
     if (settingsDiv.style.display === 'none') {
         document.querySelector('#settings-li').classList.add('is-active');

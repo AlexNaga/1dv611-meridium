@@ -1,6 +1,5 @@
 {{> confirmDeleteArchive }}
 
-{{!-- Preview archive modal --}}
 <div id="previewArchive" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -15,9 +14,7 @@
         </section>
     </div>
 </div>
-
 <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
-
 <table class="table is-fullwidth is-striped">
     <thead>
         <tr>
@@ -37,13 +34,13 @@
                 </p>
             </td>
             <td>
-                <p title="Arkivets namn">
+                <p title="Arkivets datum">
                     {{ archive.date }}
                 </p>
             </td>
             <td>
-                <a class="button is-link is-outlined is-rounded is-small modal-button action-preview"
-                    href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
+                <a class="button is-link is-outlined is-rounded is-small modal-button action-preview" href="/archives/preview/{{ archive.id }}"
+                    target="_blank" title="Förhandsgranska arkiv">
                     Förhandsgranska
                 </a>
             </td>
@@ -54,8 +51,8 @@
             </td>
             <td>
                 <div class="field">
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel"
-                        data-id="{{ archive.id }}" title="Radera arkiv">
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel" data-id="{{ archive.id }}"
+                        title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>
                         </span>
@@ -66,7 +63,7 @@
         {{/each}}
     </tbody>
 </table>
- <br>
+<br>
 <nav class="pagination" aria-label="pagination">
     {{#paginate pagination type="previous"}}
     <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous" {{#if disabled}}disabled{{/if}}>
@@ -84,30 +81,3 @@
     </a>
     {{/paginate}}
 </nav>
-
-
-            {{!-- Förhandsgranskning FUNKAR EJ - öppnar ny flik --}} {{!--
-            <a class="button is-outlined is-primary is-rounded is-small button is-link is-outlined" href="archives/preview/{{ archive.id }}"
-                target="_blank" title="Förhandsgranska arkiv">
-                Förhandsgranska
-            </a> --}} {{!-- </div>
-       
-    <br>
-    <nav class="pagination" aria-label="pagination">
-        {{#paginate pagination type="previous"}}
-        <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous" {{#if disabled}}disabled{{/if}}>
-            <span class="icon">
-                <i class="fas fa-arrow-left"></i>
-            </span>
-            <span>Föregående</span>
-        </a>
-        {{/paginate}} {{#paginate pagination type="next"}}
-        <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next" {{#if disabled}}disabled{{/if}}>
-            <span>Nästa</span>
-            <span class="icon">
-                <i class="fas fa-arrow-right"></i>
-            </span>
-        </a>
-        {{/paginate}}
-    </nav>
-</div>--}}

@@ -20,7 +20,7 @@ schema.post('init', (doc) => {
     doc.fileSize = prettyFileSize(doc.fileSize);
     doc.path = `/${process.env.ARCHIVES_FOLDER}/` + doc.fileName;
     doc.date = doc.createdAt.toLocaleString('sv-SE');
-    doc.prettyName= doc.fileName.substring(0, doc.fileName.indexOf('_'));
+    doc.prettyName = doc.fileName.substring(0, doc.fileName.indexOf('_'));
 });
 
 module.exports = mongoose.model('Archive', schema);

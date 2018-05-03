@@ -1,45 +1,40 @@
 <section class="section">
     <div class="container">
         <div class="columns">
-            <div class="column"></div>
-
-            <div class="column">
+            <div class="column is-4 is-offset-4">
                 <h1 class="title">Logga in</h1>
                 <h2 class="subtitle">Ange din email och lösenord</h2>
-
                 <form action="/account/login" method="post">
                     <div class="field">
-                        <p class="control has-icons-left">
+                        <div class="control has-icons-left">
                             <input class="input" type="email" required name="email" placeholder="Email" value="{{email}}">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-envelope"></i>
                             </span>
-                        </p>
+                        </div>
                     </div>
                     <div class="field">
-                        <p class="control has-icons-left">
+                        <div class="control has-icons-left">
                             <input class="input" type="password" required name="password" placeholder="Lösenord">
                             <span class="icon is-small is-left">
                                 <i class="fas fa-key"></i>
                             </span>
-                        </p>
+                        </div>
                     </div>
                     <a class="help" href="/account/forgot-password">Glömt lösenord?</a>
                     <br>
                     <div class="field">
-                        <p class="control">
+                        <div class="control">
                             <button type="submit" class="button is-info">
                                 <span class="icon is-small">
                                     <i class="fas fa-sign-in-alt"></i>
                                 </span>
                                 <span>Logga in</span>
                             </button>
-                        </p>
+                        </div>
                     </div>
                 </form>
             </div>
-
-            <div class="column"></div>
         </div>
     </div>
 </section>

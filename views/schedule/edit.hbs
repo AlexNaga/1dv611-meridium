@@ -42,22 +42,13 @@
             {{/unlessEq}}
         </div>
         <div class="columns">
-            {{#if user}}
-                <div class="column is-one-third">
-                    {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
-                    {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings }} {{/eq}}
-                </div>
-                <div class="column is-two-thirds">
-                    {{> listArchives }}
-                </div>
-            {{else}}
-                <div class="column"></div>
-                <div class="column">
-                    <h1 class="title">Hem</h1>
-                    <h2 class="subtitle">Ej inloggad</h2>
-                </div>
-                <div class="column"></div>
-            {{/if}}
+            <div class="column is-one-third">
+                {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}} {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings
+                }} {{/eq}}
+            </div>
+            <div class="column is-two-thirds">
+                {{> listArchives }}
+            </div>
         </div>
     </div>
 </section>

@@ -2,9 +2,8 @@
     <div class="container">
         <div class="columns is-mobile is-centered">
             {{#if user}}
-            <div class="column is-one-third">
-                {{#if true}}
-                <div class="tabs is-medium">
+            <div class="column is-half">
+                <div class="tabs is-fullwidth">
                     <ul>
                         <li class="is-active" id="settings-li" onClick="showSettings();">
                             <a>Inställningar</a>
@@ -14,21 +13,13 @@
                         </li>
                     </ul>
                 </div>
-                {{/if}}
-                {{> settings }}
-                {{!-- Visa ifall användaren är admin --}}
-                {{#if true}}
-                {{> advancedSettings }}
-                {{/if}}
+                {{> settings }} {{> advancedSettings }}
             </div>
-            
             {{else}}
-            <div class="column"></div>
-            <div class="column">
+            <div class="column has-text-centered">
                 <h1 class="title">Hem</h1>
                 <h2 class="subtitle">Ej inloggad</h2>
             </div>
-            <div class="column"></div>
             {{/if}}
         </div>
     </div>

@@ -1,12 +1,7 @@
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const User = require('../models/user');
-
-function throwError(status, message) {
-    let error = new Error(message);
-    error.status = status;
-    throw error;
-}
+const throwError = require('../utils/error');
 
 /**
  * POST /profile/edit
@@ -15,11 +10,13 @@ exports.editUser = async (req, res) => {
     const email = req.session.user.email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    const updateParams = { password: hashedPassword };
-
     try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const updateParams = {
+            password: hashedPassword
+        };
+
         let user = await User.findOne({
             email: email
         });
@@ -29,10 +26,10 @@ exports.editUser = async (req, res) => {
         let updateUser = await User.findOneAndUpdate({
             email: email
         }, {
-                $set: updateParams
-            }, {
-                new: true
-            });
+            $set: updateParams
+        }, {
+            new: true
+        });
         await updateUser.save();
 
         req.session.flash = {
@@ -57,6 +54,8 @@ exports.editUser = async (req, res) => {
 exports.getEditPage = (req, res) => {
     res.render('profile/edit', {
         loadValidation: true,
-        active: { profile: true },
+        active: {
+            profile: true
+        },
     });
 };

@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const validator = require('../utils/validator');
+const validator = require('../utils/validateHttrackSettings');
 const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
@@ -21,10 +21,16 @@ exports.createArchive = async (req, res) => {
     }
 
     if (!httrackSettings.isScheduled) {
-        req.session.flash = { message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        req.session.flash = {
+            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
+            info: true
+        };
         res.redirect('/');
     } else {
-        req.session.flash = { message: 'Arkiveringen är sparad. Du kommer notifieras via email när arkiveringen är klar.', info: true };
+        req.session.flash = {
+            message: 'Arkiveringen är sparad. Du kommer notifieras via email när arkiveringen är klar.',
+            info: true
+        };
         res.redirect('/');
     }
 
@@ -108,105 +114,95 @@ exports.getArchive = (req, res) => {
 /**
  * GET /archives/
  */
-exports.listArchives = (req, res) => {
-    let page = req.query.p || 1;
-    let itemsPerPage = 10;
-    Archive.paginate({ ownerId: req.session.user.id },
-        {
-            sort: { createdAt: 'desc' },
+exports.listArchives = async (req, res) => {
+    try {
+        let page = req.query.p || 1;
+        let itemsPerPage = 10;
+
+        let archives = await Archive.paginate({
+            ownerId: req.session.user.id
+        }, {
+            sort: {
+                createdAt: 'desc'
+            },
             page: page,
             limit: itemsPerPage
-        })
-        .then((archives) => {
-            res.render('archive/index', {
-                active: { archive: true },
-                loadArchiveScripts: true,               
-
-                archives: archives.docs,
-                total: archives.total,
-                limit: archives.limit,
-                pagination: {
-                    page: archives.page,
-                    pageCount: archives.pages
-                }
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-            req.session.flash = {
-                message: 'Kunde ej lista dina arkiveringar!',
-                danger: true
-            }
-            return res.redirect('/');
         });
+
+        res.render('archive/index', {
+            active: {
+                archive: true
+            },
+            loadArchiveScripts: true,
+
+            archives: archives.docs,
+            total: archives.total,
+            limit: archives.limit,
+            pagination: {
+                page: archives.page,
+                pageCount: archives.pages
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        req.session.flash = {
+            message: 'Kunde inte lista dina arkiveringar!',
+            danger: true
+        }
+        return res.redirect('/');
+    }
 };
 
 /**
  * DELETE /archives/:id
  */
-exports.deleteArchive = (req, res) => {
-    let id = req.params.id;
-    let archiveName = '';
-    const deleteFile = require('util').promisify(fs.unlink);
+exports.deleteArchive = async (req, res) => {
+    try {
+        let archiveName = '';
+        const deleteFile = require('util').promisify(fs.unlink);
 
-    Archive.findOneAndRemove({
-        _id: id,
-        ownerId: req.session.user.id
-    }).exec()
-        .then((archive) => {
-            archiveName = archive.fileName;
-            return deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
-        })
-        .then(() => {
-            res.status(200).json({
-                deleted: archiveName
-            });
-        })
-        .catch((err) => {
-            // req.session.flash = {
-            //     message: 'Något gick fel vid radering av arkiv.',
-            //     danger: true
-            // };
+        let archive = await Archive.findOneAndRemove({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
 
-            let notFound = 'ENOENT'; // ENOENT === No such file
-
-            res.status(err.code === notFound ? 404 : 400)
-                .json({
-                    error: 'No such file'
-                });
+        archiveName = archive.fileName;
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
+        res.status(200).json({
+            deleted: archiveName
         });
+    } catch (err) {
+        let notFound = 'ENOENT'; // ENOENT === No such file
+        res.status(err.code === notFound ? 404 : 400)
+            .json({
+                error: 'No such file'
+            });
+    }
 };
 
 /**
  * GET /archives/preview/:id
  */
-exports.previewArchive = (req, res) => {
-    let id = req.params.id;
+exports.previewArchive = async (req, res) => {
+    try {
+        let archive = await Archive.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+        let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
+        let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
 
-    Archive.findOne({
-        _id: id,
-        ownerId: req.session.user.id
-    }).exec()
-        .then((data) => {
-            let fileName = data.fileName.substr(0, data.fileName.length - 4); // Remove .zip from file-name
-            let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
-
-            fs.stat(pathToFile, (err, stat) => {
-                if (err == null) {
-                    // File exist
-                    return res.status(200).sendFile(pathToFile);
-                } else {
-                    let notFound = 'ENOENT'; // ENOENT === No such file
-                    res.sendStatus(err.code === notFound ? 404 : 400);
-                }
-            });
-        })
-        .catch((err) => {
-            // req.session.flash = {
-            //     message: 'Något gick fel vid hämtning av förhandsgranskning.',
-            //     danger: true
-            // };
-
-            res.sendStatus(404);
+        fs.stat(pathToFile, (err, stat) => {
+            if (err == null) {
+                // File exist
+                return res.status(200).sendFile(pathToFile);
+            } else {
+                let notFound = 'ENOENT'; // ENOENT === No such file
+                res.sendStatus(err.code === notFound ? 404 : 400);
+            }
         });
+
+    } catch (error) {
+        res.sendStatus(404);
+    }
 };

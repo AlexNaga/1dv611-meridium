@@ -6,7 +6,7 @@
  * Translated into Swedish.
 @param {} utcTime - Utc timestamp in ms (probably also works fo unix timestamp as well)
 */
-module.exports = function (utcTime) {
+module.exports = (utcTime) => {
     let timestamp = new Date(utcTime).getTime()/ 1000;
 
     let date,
@@ -38,5 +38,4 @@ module.exports = function (utcTime) {
         monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
         return monthNames[date.getMonth()] + ' ' + date.getDate();
     }
-
 };

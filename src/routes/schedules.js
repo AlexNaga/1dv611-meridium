@@ -11,9 +11,9 @@ module.exports = (app, baseRoute) => {
     // Update a specific schedule
     app.post(baseRoute + '/edit/:id', isLoggedIn, ScheduleController.updateSchedule);
 
+    // Toggle pause on a specific schedule
+    app.post(baseRoute + '/pause/:id', isLoggedIn, ScheduleController.pauseSchedule);
+    
     // Delete a specific schedule
     app.delete(baseRoute + '/delete/:id', isLoggedIn, ScheduleController.deleteSchedule);
-
-    // Toggle pause on a specific schedule
-    app.post(baseRoute + '/pause/:id', ScheduleController.pauseSchedule);
 };

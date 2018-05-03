@@ -5,7 +5,7 @@
  * Translated into Swedish.
  * @param {String} pw
  * @param {String} confirm
- * @param {*} rules 
+ * @param {*} rules Overrides default rules
  */
 module.exports = function (pw, confirmPw, rules) {
     var issues = [];

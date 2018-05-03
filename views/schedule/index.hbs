@@ -14,44 +14,44 @@
             </thead>
             <tbody class="table-row-hover">
                 {{#each docs}}
-                    <tr title="Ändra schemaläggning" data-id="{{ _id }}" class="scheduleRow">
-                        <td>{{url}}</td>
-                        <td>{{includeDomains}}</td>
-                        <td>{{excludePaths}}</td>
-                        <td>{{scheduleName}}</td>
-                        <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>
-                        <td>
-                            <div class="field is-grouped is-pulled-right">
-                                <a href="/schedules/edit/{{_id}}"></a>
-                                <button class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmDel" data-id="{{ _id }}"
-                                    title="Radera schemaläggning">
-                                    <span class="icon is-small">
-                                        <i class="fas fa-times"></i>
-                                    </span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                <tr title="Ändra schemaläggning" data-id="{{ _id }}" class="scheduleRow">
+                    <td>{{url}}</td>
+                    <td>{{includeDomains}}</td>
+                    <td>{{excludePaths}}</td>
+                    <td>{{scheduleName}}</td>
+                    <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>
+                    <td>
+                        <div class="field is-grouped is-pulled-right">
+                            <a href="/schedules/edit/{{_id}}"></a>
+                            <button class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="confirmDel" data-id="{{ _id }}"
+                                title="Radera schemaläggning">
+                                <span class="icon is-small">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 {{/each}}
             </tbody>
         </table>
         <nav class="pagination" aria-label="pagination">
             {{#paginate pagination type="previous" }}
-                <a {{#unless disabled}} href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous" {{#if disabled}}
-                    disabled {{/if}}>
-                    <span class="icon">
-                        <i class="fas fa-arrow-left"></i>
-                    </span>
-                    <span>Föregående</span>
-                </a>
-            {{/paginate}}
-            {{#paginate pagination type="next" }}
-                <a {{#unless disabled}} href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next" {{#if disabled}} disabled {{/if}}>
-                    <span>Nästa</span>
-                    <span class="icon">
-                        <i class="fas fa-arrow-right"></i>
-                    </span>
-                </a>
+            <a {{#unless disabled}} href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous" {{#if disabled}}
+                disabled {{/if}}>
+                <span class="icon">
+                    <i class="fas fa-arrow-left"></i>
+                </span>
+                <span>Föregående</span>
+            </a>
+            {{/paginate}} {{#paginate pagination type="next" }}
+            <a {{#unless disabled}} href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next" {{#if disabled}} disabled
+                {{/if}}>
+                <span>Nästa</span>
+                <span class="icon">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </a>
             {{/paginate}}
         </nav>
     </div>
