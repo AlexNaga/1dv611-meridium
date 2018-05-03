@@ -15,7 +15,7 @@ exports.createArchive = async (req, res) => {
         httrackSettings,
         error
     } = validator.validateHttrackSettings(req.body, req.session.user.id);
-    if (error) {
+    if (err) {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }
@@ -57,9 +57,9 @@ exports.createArchive = async (req, res) => {
             });
         }
     } else {
-        httrackWrapper.archive(httrackSettings, (error, response) => {
-            if (error) {
-                console.log(error);
+        httrackWrapper.archive(httrackSettings, (err, response) => {
+            if (err) {
+                console.log(err);
                 let emailSettings = {
                     email: response.email,
                     subject: 'Din schemalagda arkivering kunde inte slutföras!',
@@ -202,7 +202,7 @@ exports.previewArchive = async (req, res) => {
             }
         });
 
-    } catch (error) {
+    } catch (err) {
         res.sendStatus(404);
     }
 };

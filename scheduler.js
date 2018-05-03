@@ -29,8 +29,8 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
             }
 
             for (let i = 0; i < shouldBeArchived.length; i++) {
-                httrackWrapper.archive(shouldBeArchived[i], (error, response) => {
-                    if (error) {
+                httrackWrapper.archive(shouldBeArchived[i], (err, response) => {
+                    if (err) {
                         let emailSettings = {
                             email: response.email,
                             subject: 'Din schemalagda arkivering kunde inte slutföras!',
@@ -39,7 +39,7 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
                         };
 
                         EmailModel.sendMail(emailSettings);
-                        return console.log(error);
+                        return console.log(err);
                     }
 
                     console.log(`Archive ${response.zipFile} was successful!`);

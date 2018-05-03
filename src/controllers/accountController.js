@@ -91,7 +91,7 @@ exports.createUser = async (req, res) => {
             };
         }
         return res.redirect('/');
-    } catch (error) {
+    } catch (err) {
         req.session.flash = {
             message: error.message,
             danger: true
@@ -127,7 +127,7 @@ exports.loginUser = async (req, res) => {
         };
 
         return res.redirect('/');
-    } catch (error) {
+    } catch (err) {
         req.session.flash = {
             message: error.message,
             danger: true
@@ -181,12 +181,12 @@ exports.resetPassword = async (req, res) => {
                 };
                 res.redirect('/');
             }
-        } catch (error) {
+        } catch (err) {
             req.session.flash = {
                 message: error.message,
                 danger: true
             };
-            return res.status(error.status || 400).render('account/forgot-password');
+            return res.status(err.status || 400).render('account/forgot-password');
         }
     } else {
         let emailSettings = {
@@ -253,13 +253,13 @@ exports.updatePassword = async (req, res) => {
             success: true
         };
         return res.redirect('/');
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
         req.session.flash = {
             message: error.message,
             danger: true
         };
-        return res.status(error.status || 400).render('account/forgot-password');
+        return res.status(err.status || 400).render('account/forgot-password');
     }
 };
 

@@ -52,21 +52,21 @@ function archive(settings, callback) {
     console.log('previewCommmand', previewCommmand);
 
     // Run preview command
-    exec(previewCommmand, (error, stdout, stderr) => {
-        if (error) return callback(error, errorResponse);
+    exec(previewCommmand, (err, stdout, stderr) => {
+        if (err) return callback(err, errorResponse);
 
         if (fs.existsSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`)) {
             fs.moveSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`, `${previewFolderPath}/${ARCHIVE_ID}`);
         }
 
         fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, error => {
-            if (error) return callback(error, errorResponse);
+            if (err) return callback(err, errorResponse);
         });
     });
 
     // Run archive command
-    exec(command, (error, stdout, stderr) => {
-        if (error) return callback(error, errorResponse);
+    exec(command, (err, stdout, stderr) => {
+        if (err) return callback(err, errorResponse);
 
         urls.forEach(url => {
             if (fs.existsSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`)) {
@@ -82,11 +82,11 @@ function archive(settings, callback) {
         }
 
         let zipDest = `${pathToFolder}.zip`;
-        zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
-            if (error) return callback(error, errorResponse);
+        zipFolder(`${pathToFolder}/folderToZip`, zipDest, (err, fileSize) => {
+            if (err) return callback(err, errorResponse);
 
             fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error, errorResponse);
+                if (err) return callback(err, errorResponse);
 
                 // Return everything thats needed for the calling method
                 // to save archive and send email

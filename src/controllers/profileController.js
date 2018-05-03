@@ -38,7 +38,7 @@ exports.editUser = async (req, res) => {
         };
 
         return res.redirect('/');
-    } catch (error) {
+    } catch (err) {
         req.session.flash = {
             message: error.message,
             danger: true

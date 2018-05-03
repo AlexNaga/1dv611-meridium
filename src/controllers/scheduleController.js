@@ -81,8 +81,8 @@ exports.getSchedule = async (req, res) => {
                 pageCount: archives.pages,
             }
         })
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.log(err);
         
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
@@ -116,7 +116,7 @@ exports.updateSchedule = async (req, res) => {
             success: true
         };
         return res.redirect('/schedules');
-    } catch (error) {
+    } catch (err) {
 
         req.session.flash = {
             message: 'Vi kunde inte uppdatera schemainställningarna!',
@@ -143,7 +143,7 @@ exports.deleteSchedule = async (req, res) => {
         res.status(200).json({
             deleted: schedule.fileName
         });
-    } catch (error) {
+    } catch (err) {
         // err.code ENOENT = No such file on disk, but entry removed from db.
         req.session.flash = {
             message: 'Vi kunde inte ta bort schemainställningen!',
