@@ -1,5 +1,3 @@
-const Archive = require('../models/archive');
-
 /**
  * GET /
  */

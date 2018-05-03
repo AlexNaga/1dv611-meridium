@@ -16,13 +16,12 @@ function setupPauseListener() {
                     .then((data) => {
                         if (data.success) {
                             for (let b of pausePlayButtons) {
-                                b.classList.toggle('hidden'); // the whole button
+                                b.classList.toggle('hidden'); // switch buttons
                             }
+                            toggleLoadingSpinner(icons);
                         } else {
-                            alert(data.message);
                             toggleError(icons);
                         }
-                        toggleLoadingSpinner(icons);
                     });
             });
         }
@@ -30,18 +29,20 @@ function setupPauseListener() {
 }
 
 function toggleLoadingSpinner(target) {
-    if (target.children[2].classList.contains('hidden')) { // if exclamation icon is hidden
-        target.children[0].classList.toggle('hidden'); // pause/play icon
+    if (!target.parentElement.classList.contains('is-danger')) {
+        target.children[0].classList.toggle('hidden');      // toggle pause/play icon
     }
-    target.children[1].classList.toggle('hidden'); // spinner
-    target.parentNode.classList.remove('is-danger'); // whole button
-    target.children[2].classList.add('hidden'); // exclamation icon
+    target.children[2].classList.add('hidden');             // hide exclamation icon
+    target.parentElement.classList.remove('is-danger');     // remove red button color
+    target.children[1].classList.toggle('hidden');          // toggle spinner
 }
 
 function toggleError(target) {
-    target.children[0].classList.add('hidden'); // pause/play icon
-    target.children[2].classList.remove('hidden'); // exclamation icon
-    target.parentNode.classList.add('is-danger'); // whole button
+    target.parentElement.classList.add('is-danger');    // show red button color
+    target.children[2].classList.remove('hidden');      // show exclamation icon
+    target.children[0].classList.add('hidden');         // hide pause/play icon
+    target.children[1].classList.add('hidden');         // hide spinner
+
 }
 
 setupPauseListener();
