@@ -24,5 +24,18 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
     ARCHIVES_FOLDER="archives"
   }' > .env
   ```
+  or create a file `.env` with the following content
+  ``` js
+  {
+    EMAIL_USER="YOUR_EMAIL"
+    EMAIL_PASS="YOUR_EMAIL_PASSWORD"
+    IS_RUNNING_LINUX_OS="true"
+    JWT_SECRET="A_RANDOM_SECRET"
+    MONGODB_ATLAS_PASSWORD="YOUR_MONGODB_PASSWORD"
+    SERVER_DOMAIN="http://localhost:3000"
+    SESSION_SECRET="A_RANDOM_SECRET"
+    ARCHIVES_FOLDER="archives"
+  }
+  ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
   5. The application is now running at [http://localhost:3000](http://localhost:3000)

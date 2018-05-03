@@ -4,33 +4,33 @@ modal.addEventListener('schedules');
 /**
  * Pause / Start scheduled archive
  */
-function setupListeners() {
-    let pause = document.getElementsByClassName('pause-state');
-    if (pause.length > 0) {
-        for (let button of pause) {
+function setupPauseListener() {
+    let pausePlayButtons = document.getElementsByClassName('pause-state-buttons');
+    if (pausePlayButtons.length > 0) {
+        for (let button of pausePlayButtons) {
             button.addEventListener('click', (e) => {
                 let icons = e.target.children[0];
                 let id = e.target.getAttribute('data-id');
-                toggleSpinner(icons);
+                toggleLoadingSpinner(icons);
                 fetchUrl('/schedules/pause/' + id, { method: 'POST' })
                     .then((data) => {
                         if (data.success) {
-                            for (let b of pause) {
+                            for (let b of pausePlayButtons) {
                                 b.classList.toggle('hidden'); // the whole button
                             }
                         } else {
                             alert(data.message);
                             toggleError(icons);
                         }
-                        toggleSpinner(icons);
+                        toggleLoadingSpinner(icons);
                     });
             });
         }
     }
 }
 
-function toggleSpinner(target) {
-    if (target.children[2].classList.contains('hidden')) { // exclamation icon
+function toggleLoadingSpinner(target) {
+    if (target.children[2].classList.contains('hidden')) { // if exclamation icon is hidden
         target.children[0].classList.toggle('hidden'); // pause/play icon
     }
     target.children[1].classList.toggle('hidden'); // spinner
@@ -44,4 +44,4 @@ function toggleError(target) {
     target.parentNode.classList.add('is-danger'); // whole button
 }
 
-setupListeners();
+setupPauseListener();

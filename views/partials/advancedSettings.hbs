@@ -2,7 +2,7 @@
     <input type="hidden" name="setting" value="1">
     <div class="field">
         <label class="label">Kommando
-            <i class="far fa-question-circle"></i>
+           <span class="tooltip invisbleButton" disabled data-tooltip="Webbplats och webbplatsens subdomäner som ska arkiveras"><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <input class="input" id="advancedSetting" type="text" required name="advancedSetting" placeholder="Kommando">
@@ -13,15 +13,15 @@
     </div>
     <div class="field">
         <label class="label">Schemaläggning
-            <i class="far fa-question-circle"></i>
+             <span class="tooltip invisbleButton" disabled data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen"><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <div class="select">
                 <select name="typeOfSchedule" id="schedule" required>
-                    <option selected="selected" name="schedule" id="schedule-option-none" value="0">Ingen schemaläggning</option>
-                    <option name="schedule" id="schedule-option-day" value="1">Varje dag</option>
-                    <option name="schedule" id="schedule-option-week" value="2">Varje vecka</option>
-                    <option name="schedule" id="schedule-option-month" value="3">Varje månad</option>
+                    <option selected="selected" value="0">Ingen schemaläggning</option>
+                    <option value="1">Varje dag</option>
+                    <option value="2">Varje vecka</option>
+                    <option value="3">Varje månad</option>
                 </select>
                 <div class="icon is-small is-left">
                     <i class="far fa-calendar-alt"></i>

@@ -1,4 +1,4 @@
-<section id="navbar">
+<div id="navbar">
     <nav class="navbar flash-container">
         <div class="navbar-brand">
             <div class="navbar-item">
@@ -27,62 +27,61 @@
                 </div>
             </div>
             {{#if user}}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a class="navbar-item button is-link {{#if active.schedule}}active-page{{/if}}" href="/schedules">
+                            <span class="icon">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                            <span>Schemaläggningar</span>
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="button is-link {{#if active.archive}}active-page{{/if}}" href="/archives">
+                            <span class="icon">
+                                <i class="far fa-file-archive"></i>
+                            </span>
+                            <span>Arkiveringar</span>
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="navbar-item button is-link {{#if active.profile}}active-page{{/if}}" href="/profile/edit">
+                            <span class="icon">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <span>Min profil</span>
+                        </a>
+                    </div>
+                    <div class="navbar-item">
+                        <a class="navbar-item button is-link" href="/account/logout">
+                            <span class="icon">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </span>
+                            <span>Logga ut</span>
+                        </a>
+                    </div>
+                </div>
+        </div>
+        {{else}}
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <a class="navbar-item button is-link {{#if active.schedule}}active-page{{/if}}" href="/schedules">
-                        <span class="icon">
-                            <i class="far fa-calendar-alt"></i>
-                        </span>
-                        <span>Schemaläggningar</span>
-                    </a>
-                </div>
-                  <div class="navbar-item">
-                    <a class="button is-link {{#if active.archive}}active-page{{/if}}" href="/archives">
-                        <span class="icon">
-                            <i class="far fa-file-archive"></i>
-                        </span>
-                        <span>Arkiveringar</span>
-                    </a>
-                </div> 
-                <div class="navbar-item">
-                    <a class="navbar-item button is-link {{#if active.profile}}active-page{{/if}}" href="/profile/edit">
+                    <a class="navbar-item button is-link {{#if active.register}}active-page{{/if}}" href="/account/register">
                         <span class="icon">
                             <i class="fas fa-user"></i>
                         </span>
-                        <span>Min profil</span>
+                        <span>Registrera</span>
                     </a>
                 </div>
                 <div class="navbar-item">
-                    <a class="navbar-item button is-link" href="/account/logout">
+                    <a class="navbar-item button is-link {{#if active.login}}active-page{{/if}}" href="/account/login">
                         <span class="icon">
-                            <i class="fas fa-sign-out-alt"></i>
+                            <i class="fas fa-sign-in-alt"></i>
                         </span>
-                        <span>Logga ut</span>
+                        <span>Logga in</span>
                     </a>
                 </div>
             </div>
-        </div>
-        {{else}}
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <a class="navbar-item button is-link {{#if active.register}}active-page{{/if}}" href="/account/register">
-                    <span class="icon">
-                        <i class="fas fa-user"></i>
-                    </span>
-                    <span>Registrera</span>
-                </a>
-            </div>
-            <div class="navbar-item">
-                <a class="navbar-item button is-link {{#if active.login}}active-page{{/if}}" href="/account/login">
-                    <span class="icon">
-                        <i class="fas fa-sign-in-alt"></i>
-                    </span>
-                    <span>Logga in</span>
-                </a>
-            </div>
-        </div>
-        {{/if}}
-        </div>
-        <div id="flash-container">{{> flash }} </div>
+            {{/if}}
+            <div id="flash-container">{{> flash }} </div>
     </nav>
-</section>
+</div>

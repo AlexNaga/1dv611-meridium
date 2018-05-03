@@ -63,8 +63,8 @@ require('./scheduler').nodeSchedule;
 require('./src/routes')(app);
 
 app.use((req, res, next) => {
-    res.sendStatus(404);
-    // res.status(404).redirect('/');
+    // res.sendStatus(404);
+    res.status(404).redirect('/');
     // console.log('err',err);
     // res.status(err.status || 404).json({
     //     error: {

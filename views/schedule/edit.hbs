@@ -1,13 +1,17 @@
 <section class="section">
     <div class="container">
-        <div class="columns">
-            {{#if user}}
-            <div class="column is-one-third">
-                {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
-                {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings }} {{/eq}}
-            </div>
-            <div class="column is-two-thirds">
-                    <button id="pause" class="pause-state button is-warning{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">
+        <div class="box">
+            <nav class="level">
+                <div class="level-item">
+                    <button type="submit" name="action" class="button is-info">
+                        <span class="icon is-small">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </span>
+                        <span>Arkivera nu</span>
+                    </button>
+                </div>
+                <div class="level-item">
+                    <button id="pause" class="pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">
                         <span class="icon is-small">
                             <i class="fas fa-pause"></i>
                             <i class="fas fa-spinner fa-pulse hidden"></i>
@@ -15,7 +19,7 @@
                         </span>
                         <span>Pausa</span>
                     </button>
-                    <button id="start" class="pause-state button is-success{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">
+                    <button id="start" class="pause-state-buttons button is-success{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">
                         <span class="icon is-small">
                             <i class="fas fa-play"></i>
                             <i class="fas fa-spinner fa-pulse hidden"></i>
@@ -23,15 +27,33 @@
                         </span>
                         <span>Starta</span>
                     </button>
-                {{> listArchives }}
-            </div>
+                </div>
+                <div class="level-item">
+                    <a class="button is-danger modal-button" data-target="confirmDel" title="Radera schemaläggning">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        <span>Radera</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <div class="columns">
+            {{#if user}}
+                <div class="column is-one-third">
+                    {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
+                    {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings }} {{/eq}}
+                </div>
+                <div class="column is-two-thirds">
+                    {{> listArchives }}
+                </div>
             {{else}}
-            <div class="column"></div>
-            <div class="column">
-                <h1 class="title">Hem</h1>
-                <h2 class="subtitle">Ej inloggad</h2>
-            </div>
-            <div class="column"></div>
+                <div class="column"></div>
+                <div class="column">
+                    <h1 class="title">Hem</h1>
+                    <h2 class="subtitle">Ej inloggad</h2>
+                </div>
+                <div class="column"></div>
             {{/if}}
         </div>
     </div>

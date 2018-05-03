@@ -1,3 +1,9 @@
+.invisbleButton {
+    background: transparent;
+    border: none !important;
+    color: black;
+}
+
 #recent-list ul li {
     margin-bottom: 10px;
 }
