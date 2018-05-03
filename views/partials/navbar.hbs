@@ -53,12 +53,14 @@
                         </a>
                     </div>
                     <div class="navbar-item">
-                        <a class="navbar-item button is-link" href="/account/logout">
-                            <span class="icon">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </span>
-                            <span>Logga ut</span>
-                        </a>
+                        <form action="/account/logout" method="POST">
+                            <button class="navbar-item button is-link" style="padding-top:5px;">
+                                <span class="icon">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </span>
+                                <span>Logga ut</span>
+                            </button>
+                        </form>
                     </div>
                 </div>
         </div>

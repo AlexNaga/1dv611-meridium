@@ -254,9 +254,10 @@ exports.updatePassword = async (req, res) => {
 };
 
 /**
- * GET /account/logout
+ * POST /account/logout
  */
 exports.logoutUser = (req, res) => {
+    console.log('hejheje');
     req.session.user = null;
     req.session.flash = {
         message: 'Du har blivit utloggad.',
