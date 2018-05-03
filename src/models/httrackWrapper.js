@@ -23,14 +23,14 @@ function archive(settings, callback) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
-    if (parseInt(settings.typeOfSetting) === 0) {
+    if (parseInt(settings.typeOfSetting) === 0) { // standard settings
         let hostname = new URL(settings.url).hostname;
         folderName = `${hostname}_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
-    } else if (parseInt(settings.typeOfSetting) === 1) {
+    } else if (parseInt(settings.typeOfSetting) === 1) { // advanced settings
         folderName = `hostname_${timestamp}`;
         pathToFolder = `${archivesFolderPath}/${folderName}`;
 
