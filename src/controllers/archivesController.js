@@ -109,38 +109,35 @@ exports.getArchive = (req, res) => {
  * GET /archives/
  */
 exports.listArchives = (req, res) => {
-    Archive.find({
-        ownerId: req.session.user.id
-    }).exec()
+    let page = req.query.p || 1;
+    let itemsPerPage = 10;
+    Archive.paginate({ ownerId: req.session.user.id },
+        {
+            sort: { createdAt: 'desc' },
+            page: page,
+            limit: itemsPerPage
+        })
         .then((archives) => {
-            for (let i = 0; i < archives.length; i++) {
-                archives[i].fileName = archives[i].fileName.substring(0, archives[i].fileName.indexOf('_'));
-            }
-            for (let j = 0; j < archives.length; j++) {
-                archives[j].date = archives[j].createdAt.toLocaleString('sv-SE');
-                console.log(archives[j].date);
-            }
-
             res.render('archive/index', {
-                archives: archives,
                 active: { archive: true },
-                loadArchiveScripts: true,                
+                loadArchiveScripts: true,               
 
-                // pagination below
-                // docs: data.docs,
-                // total: data.total,
-                page: 1,
-                limit: 10,
+                archives: archives.docs,
+                total: archives.total,
+                limit: archives.limit,
                 pagination: {
-                    page: 1,
-                    pageCount: 1,
+                    page: archives.page,
+                    pageCount: archives.pages
                 }
             });
         })
         .catch((err) => {
-            res.status(400).json({
-                error: err
-            });
+            console.log(err);
+            req.session.flash = {
+                message: 'Kunde ej lista dina arkiveringar!',
+                danger: true
+            }
+            return res.redirect('/');
         });
 };
 

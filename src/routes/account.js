@@ -20,5 +20,5 @@ module.exports = (app, baseRoute) => {
     app.post(baseRoute + '/reset-password/:temporaryCode', AccountController.updatePassword);
 
     // Destroy a user session
-    app.get(baseRoute + '/logout', AccountController.logoutUser);
+    app.post(baseRoute + '/logout', AccountController.logoutUser);
 };
