@@ -9,8 +9,8 @@ function setupPauseListener() {
     if (pausePlayButtons.length > 0) {
         for (let button of pausePlayButtons) {
             button.addEventListener('click', (e) => {
-                let icons = e.target.children[0];
-                let id = e.target.getAttribute('data-id');
+                let icons = e.currentTarget.children[0];
+                let id = e.currentTarget.getAttribute('data-id');
                 toggleLoadingSpinner(icons);
                 fetchUrl('/schedules/pause/' + id, { method: 'POST' })
                     .then((data) => {
