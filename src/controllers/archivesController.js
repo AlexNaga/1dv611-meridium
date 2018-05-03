@@ -118,10 +118,6 @@ exports.listArchives = (req, res) => {
             limit: itemsPerPage
         })
         .then((archives) => {
-            //Flytta till modell
-            for (let i = 0; i < archives.docs.length; i++) {
-                archives.docs[i].fileName = archives.docs[i].fileName.substring(0, archives.docs[i].fileName.indexOf('_'));
-            }
             res.render('archive/index', {
                 active: { archive: true },
                 loadArchiveScripts: true,               
