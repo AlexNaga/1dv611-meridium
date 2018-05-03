@@ -26,7 +26,8 @@ class Modal {
     addEventListener(path) {
         if (this.modalButtons.length > 0) {
             this.modalButtons.forEach((elem) => {
-                elem.addEventListener('click', () => {
+                elem.addEventListener('click', (event) => {
+                    event.stopPropagation();
                     let clickedElem = elem.dataset.target;
                     let target = document.getElementById(clickedElem);
                     this.rootElem.classList.add('is-clipped');
