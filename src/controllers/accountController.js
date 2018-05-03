@@ -64,8 +64,14 @@ exports.createUser = async (req, res) => {
 
     try {
         let user = await User.findOne({ email: email });
-        if (user) throwError(409, 'Kontot existerar redan.');
-
+        if (user) {
+            req.session.flash = {
+                message: 'Du kan inte skapa ett konto med den här epostadressen',
+                danger: true
+            };
+            return res.redirect('/account/register');
+            
+        } else {
         await validatePassword(password, confirmPassword);
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -83,7 +89,7 @@ exports.createUser = async (req, res) => {
             message: 'Kontot har skapats.',
             success: true
         };
-
+    }
         return res.redirect('/');
     } catch (error) {
         req.session.flash = {
@@ -129,10 +135,7 @@ exports.loginUser = async (req, res) => {
             danger: true
         };
 
-        return res.status(error.status || 400).render('account/login', {
-            active: { login: true },
-            email
-        });
+        return res.redirect('/account/login');
     }
 };
 

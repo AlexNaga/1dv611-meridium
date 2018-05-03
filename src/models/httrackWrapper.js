@@ -6,6 +6,7 @@ const dayjs = require('dayjs');
 const path = require('path');
 const validUrl = require('valid-url');
 const getUrls = require('get-urls');
+const Setting = require('../models/enums').setting;
 
 /**
  *
@@ -23,14 +24,14 @@ function archive(settings, callback) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
-    if (parseInt(settings.typeOfSetting) === 0) { // standard settings
+    if (settings.typeOfSetting === Setting.STANDARD) {
         let hostname = new URL(settings.url).hostname;
         ARCHIVE_ID = `${hostname}_${timestamp}`;
         pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
-    } else if (parseInt(settings.typeOfSetting) === 1) { // advanced settings
+    } else if (settings.typeOfSetting === Setting.ADVANCED) {
         ARCHIVE_ID = `hostname_${timestamp}`;
         pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 

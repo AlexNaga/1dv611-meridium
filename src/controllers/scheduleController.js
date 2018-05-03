@@ -2,6 +2,7 @@ const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const { URL } = require('url');
 const validUrl = require('valid-url');
+const Setting = require('../models/enums').setting;
 
 /**
  * Makes the urls user friendly for viewing (removes "http://" etc)
@@ -9,7 +10,7 @@ const validUrl = require('valid-url');
  */
 function makeUserFriendlyUrls(docs) {
     for (let i = 0; i < docs.length; i++) {
-        if (docs[i].typeOfSetting === 1) {
+        if (docs[i].typeOfSetting === Setting.ADVANCED) {
             docs[i].url = docs[i].advancedSetting.split(' ')[0];
         }
     }
@@ -70,11 +71,11 @@ exports.listSchedule = (req, res) => {
  * GET /schedules/edit/:id
  */
 exports.getSchedule = async (req, res) => {
+    let page = req.query.p || 1;
+    let itemsPerPage = 10;
+
     Schedule.findOne({ _id: req.params.id }).exec()
         .then((schedule) => {
-            let page = req.query.p || 1;
-            let itemsPerPage = 10;
-
             Archive.paginate(
                 {
                     ownerId: req.session.user.id,
@@ -108,7 +109,7 @@ exports.getSchedule = async (req, res) => {
         .catch((err) => {
             console.log(err)
             req.session.flash = {
-                message: 'Något gick fel vid hämtning av den schemaläggningen!',
+                message: 'Något gick fel vid hämtning av schemaläggningen!',
                 danger: true
             }
             return res.redirect('/schedules');
@@ -187,7 +188,7 @@ exports.pauseSchedule = (req, res) => {
             return schedule.save();
         })
         .then((doc) => {
-                res.json({ success: true });
+            res.json({ success: true });
         })
         .catch((err) => {
             res.json({ success: false, message: err });
