@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 const timestampHelper = require('./timestampHelper');
+const countdownHelper = require('./countdownHelper');
 const paginate = require('handlebars-paginate');
 const helpers = require('handlebars-helpers')(['comparison']);
 
@@ -36,7 +37,8 @@ app.engine('.hbs', exphbs({
     layoutsDir: path.resolve(__dirname, 'views/layout'),
     helpers: {
         paginate: paginate,
-        timeSince: timestampHelper
+        timeSince: timestampHelper,
+        countDown: countdownHelper
     }
 }));
 app.set('view engine', 'hbs');

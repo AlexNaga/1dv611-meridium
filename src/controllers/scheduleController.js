@@ -86,19 +86,18 @@ exports.getSchedule = async (req, res) => {
                     page: page,
                     limit: itemsPerPage
                 })
-                .then(data => {
+                .then(archives => {
                     res.render('schedule/edit', {
                         schedule: schedule,
                         active: { schedule: true },
                         loadScheduleScripts: true,
-
                         // pagination below
-                        docs: data.docs,
-                        total: data.total,
-                        limit: data.limit,
+                        docs: archives.docs,
+                        total: archives.total,
+                        limit: archives.limit,
                         pagination: {
-                            page: data.page,
-                            pageCount: data.pages,
+                            page: archives.page,
+                            pageCount: archives.pages,
                         }
                     })
                 })
@@ -130,7 +129,7 @@ exports.updateSchedule = async (req, res) => {
             excludePaths: req.body.excludePaths,
             robots: req.body.robots,
             structure: req.body.structure,
-            schedule: req.body.typeOfSchedule,
+            typeOfSchedule: req.body.typeOfSchedule,
             email: req.body.email,
             shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
         }
