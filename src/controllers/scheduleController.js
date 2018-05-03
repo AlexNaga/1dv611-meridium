@@ -11,12 +11,12 @@ exports.listSchedule = async (req, res) => {
         let schedule = await Schedule.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('schedule/index', {
             active: {
@@ -59,12 +59,12 @@ exports.getSchedule = async (req, res) => {
             ownerId: req.session.user.id,
             fromSchedule: schedule._id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('schedule/edit', {
             schedule: schedule,
@@ -83,7 +83,7 @@ exports.getSchedule = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
-        
+
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
             danger: true
@@ -155,22 +155,19 @@ exports.deleteSchedule = async (req, res) => {
 };
 
 // POST /schedule/pause/:id
-exports.pauseSchedule = (req, res) => {
-    let id = req.params.id;
-    Schedule.findById(id)
-        .then((schedule) => {
-            schedule.isPaused = !schedule.isPaused;
-            return schedule.save();
-        })
-        .then((doc) => {
-            res.json({
-                success: true
-            });
-        })
-        .catch((err) => {
-            res.json({
-                success: false,
-                message: err
-            });
+exports.pauseSchedule = async (req, res) => {
+    try {
+        let schedule = await Schedule.findById(req.params.id).exec();
+        schedule.isPaused = !schedule.isPaused;
+        await schedule.save();
+
+        res.json({
+            success: true
         });
+    } catch (error) {
+        res.json({
+            success: false,
+            message: err
+        });
+    }
 }
