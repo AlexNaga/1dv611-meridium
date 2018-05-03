@@ -1,2 +1,1 @@
-const modal = new Modal();
-modal.addEventListener('archives');
+new Modal('archives');

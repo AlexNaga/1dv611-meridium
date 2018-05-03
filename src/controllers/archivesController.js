@@ -121,12 +121,12 @@ exports.listArchives = async (req, res) => {
         let archives = await Archive.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('archive/index', {
             active: {
@@ -156,31 +156,29 @@ exports.listArchives = async (req, res) => {
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
+    let archiveName = '';
     try {
-        let archiveName = '';
-        const deleteFile = require('util').promisify(fs.unlink);
-
         let archive = await Archive.findOneAndRemove({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
 
         archiveName = archive.fileName;
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
         res.status(200).json({
-            deleted: archiveName
+            message: 'Filen raderad!',
+            success: true
         });
+        const deleteFile = require('util').promisify(fs.unlink);
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archiveName);
     } catch (err) {
-        let notFound = 'ENOENT'; // ENOENT === No such file
-         // req.session.flash = {
-        //     message: 'Kunde inte ta bort filen!',
-        //     danger: true
-        // };
-        res.status(err.code === notFound ? 404 : 400)
-            .json({
-                error: 'Kunde inte ta bort filen!',
-                danger: true
-            });
+        // ENOENT === No such file or directory
+        if (err.code != 'ENOENT') {
+            res.status(400)
+                .json({
+                    message: 'Kunde inte radera filen!',
+                    danger: true
+                });
+        }
     }
 };
 
