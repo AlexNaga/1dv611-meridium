@@ -57,6 +57,13 @@ class Modal {
                         console.log(err);
                     })
                     .finally(() => {
+                        let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement';
+
+                        // Redirect if a schedule was deleted else remove row
+                        if (isScheduleDeleted) {
+                            window.location.href = '/schedules';
+                        }
+
                         elemRow.parentNode.removeChild(elemRow);
                         this.closeModals();
                     });
