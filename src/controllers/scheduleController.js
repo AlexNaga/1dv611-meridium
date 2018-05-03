@@ -127,6 +127,7 @@ exports.updateSchedule = async (req, res) => {
  * POST/DELETE /schedules/delete/:id
  */
 exports.deleteSchedule = async (req, res) => {
+    // console.log(req.session)
     try {
         let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
 
@@ -137,15 +138,15 @@ exports.deleteSchedule = async (req, res) => {
 
         res.status(200).json({
             deleted: schedule.fileName
-        });
+        });        
     } catch (err) {
         // err.code ENOENT = No such file on disk, but entry removed from db.
         req.session.flash = {
             message: 'Vi kunde inte ta bort schemainställningen!',
             danger: true
         };
-
-        return res.redirect('/schedules');
+        // return res.redirect('/');
+        console.log('renderas ')
     }
 };
 
