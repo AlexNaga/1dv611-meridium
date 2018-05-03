@@ -19,6 +19,7 @@ schema.plugin(mongoosePaginate);
 schema.post('init', (doc) => {
     doc.fileSize = prettyFileSize(doc.fileSize);
     doc.path = `/${process.env.ARCHIVES_FOLDER}/` + doc.fileName;
+    doc.date = doc.createdAt.toLocaleString('sv-SE');
 });
 
 module.exports = mongoose.model('Archive', schema);

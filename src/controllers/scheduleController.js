@@ -58,9 +58,9 @@ exports.listSchedule = (req, res) => {
             })
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
             req.session.flash = {
-                message: 'Kunde ej lista sparade schemalgda arkiveringar!',
+                message: 'Kunde ej lista sparade schemalagda arkiveringar!',
                 danger: true
             }
             return res.redirect('/');
