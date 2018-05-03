@@ -7,7 +7,9 @@
 .startPageIcon {
     color: 		#DC3E2A; 
 }
-
+.section {
+    margin-top: 2rem;
+}
 #recent-list ul li {
     margin-bottom: 10px;
 }
