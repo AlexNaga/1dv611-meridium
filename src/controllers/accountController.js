@@ -176,7 +176,8 @@ exports.resetPassword = async (req, res) => {
 
                 EmailModel.sendMail(emailSettings);
                 req.session.flash = {
-                    message: 'Om den angivna e-postadressen finns i vårt system så har vi nu skickat en återställningslänk till den.',
+                    message: `Om den angivna e-postadressen finns i vårt system så har vi nu skickat en återställningslänk till den.
+                    Om du inte fick en återställningslänk, kolla din skräppost.`,
                     info: true
                 };
                 res.redirect('/');

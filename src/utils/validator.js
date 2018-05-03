@@ -1,8 +1,9 @@
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
+const Setting = require('../models/enums').setting;
 
 /**
- * Checks if the value is between two numbers
+ * Checks if the value is at or between two numbers
  * @param {*} a
  * @param {*} b
  */
@@ -21,7 +22,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
     let structure = body.structure;
     let email = body.email;
     let error = undefined;
-    let typeOfSetting = body.setting;
+    let typeOfSetting = parseInt(body.setting);
     let advancedSetting = body.advancedSetting;
     let typeOfSchedule = parseInt(body.typeOfSchedule); // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
     let isScheduled = parseInt(body.action);
@@ -34,7 +35,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
     if (!typeOfSchedule.between(0, 3)) {
         error = { message: 'Felaktig schemaläggning, kontrollera vald tid.', danger: true };
     }
-    if (typeOfSetting === '0') { // standard setting
+    if (typeOfSetting === Setting.STANDARD) {
         if (url === undefined || !validUrl.isUri(url)) {
             error = { message: 'Fel url!', danger: true };
         }

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 const mongoosePaginate = require('mongoose-paginate');
+const Schedule = require('./enums').schedule;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -34,10 +35,10 @@ schema.plugin(timestamp);
 schema.plugin(mongoosePaginate);
 
 schema.post('init', (doc) => {
-    if (doc.typeOfSchedule === 0) doc.scheduleName = 'Ingen';
-    if (doc.typeOfSchedule === 1) doc.scheduleName = 'Dagligen';
-    if (doc.typeOfSchedule === 2) doc.scheduleName = 'Veckovis';
-    if (doc.typeOfSchedule === 3) doc.scheduleName = 'Månadsvis';
+    if (doc.typeOfSchedule === Schedule.NONE) doc.scheduleName = 'Ingen';
+    if (doc.typeOfSchedule === Schedule.DAILY) doc.scheduleName = 'Dagligen';
+    if (doc.typeOfSchedule === Schedule.WEEKLY) doc.scheduleName = 'Veckovis';
+    if (doc.typeOfSchedule === Schedule.MONTHLY) doc.scheduleName = 'Månadsvis';
 });
 
 module.exports = mongoose.model('Schedules', schema);

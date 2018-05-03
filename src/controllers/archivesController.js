@@ -5,6 +5,7 @@ const httrackWrapper = require('../models/httrackWrapper');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 const Schedules = require('../models/schedules');
+const Setting = require('../models/enums').setting;
 
 /**
  * POST /archives/
@@ -28,7 +29,7 @@ exports.createArchive = async (req, res) => {
     }
 
     if (httrackSettings.isScheduled) {
-        if (httrackSettings.typeOfSetting === '0') { // standard settings
+        if (httrackSettings.typeOfSetting === Setting.STANDARD) {
             Schedules.create({
                 typeOfSetting: httrackSettings.typeOfSetting,
                 url: httrackSettings.url,
