@@ -128,26 +128,32 @@ exports.updateSchedule = async (req, res) => {
  * DELETE /schedules/delete/:id
  */
 exports.deleteSchedule = async (req, res) => {
-    // console.log(req.session)
     try {
         let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
 
-        req.session.flash = {
-            message: 'Schemaläggningen har tagits bort!',
-            success: true
-        };
+        // Detta visas bara när man har uppdaterat eller går till en annan sida
+        // pga vi returnerar json och inte en redirect.
+        // varför vi inte kör en redirect är för att det är javascript som postar hit.
+        // req.session.flash = {
+        //     message: 'Schemaläggningen har tagits bort!',
+        //     success: true
+        // };
 
         res.status(200).json({
             deleted: schedule.fileName
         });        
     } catch (err) {
         // err.code ENOENT = No such file on disk, but entry removed from db.
-        req.session.flash = {
-            message: 'Vi kunde inte ta bort schemainställningen!',
-            danger: true
-        };
-        // return res.redirect('/');
-        console.log('renderas ')
+        let notFound = 'ENOENT';
+        // req.session.flash = {
+        //     message: 'Kunde inte ta bort schemainställningen!',
+        //     danger: true
+        // };
+        res.status(err.code === notFound ? 404 : 400)
+            .json({
+                error: 'Kunde inte ta bort schemainställningen!',
+                danger: true
+            });
     }
 };
 

@@ -172,9 +172,14 @@ exports.deleteArchive = async (req, res) => {
         });
     } catch (err) {
         let notFound = 'ENOENT'; // ENOENT === No such file
+         // req.session.flash = {
+        //     message: 'Kunde inte ta bort filen!',
+        //     danger: true
+        // };
         res.status(err.code === notFound ? 404 : 400)
             .json({
-                error: 'No such file'
+                error: 'Kunde inte ta bort filen!',
+                danger: true
             });
     }
 };

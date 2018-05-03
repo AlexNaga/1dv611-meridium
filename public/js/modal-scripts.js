@@ -42,13 +42,24 @@ class Modal {
                     .finally(() => {
                         let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement';
 
-                        // Redirect if a schedule was deleted else remove row
-                        if (isScheduleDeleted = true) {
-                            window.location.href = '/schedules';
+                        // Redirect if a schedule was deleted from the edit page, else remove row
+                        if (isScheduleDeleted) {
+                            // This will also show the flash message upon reload
+                            window.location = window.location.origin + '/' + path;
+                        } else {
+                            elemRow.parentNode.removeChild(elemRow);
+                            this.closeModals();
                         }
+                        // var notification = document.createElement('div');
+                        // notification.innerHTML = `<div id="flash-notification" class="notification fade-in-out has-text-centered is-success">
+                        //     <button class="delete"></button>
+                        //     ${data.error}
+                        // </div>`;
 
-                        elemRow.parentNode.removeChild(elemRow);
-                        this.closeModals();
+                        // let flash = document.getElementsByClassName('flash-container')[0];
+                        // while (flash.firstChild) flash.removeChild(flash.firstChild);
+
+                        // flash.appendChild(notification);
                     });
             });
         };
