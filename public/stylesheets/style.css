@@ -4,6 +4,10 @@
     color: black;
 }
 
+.startPageIcon {
+    color: 		#DC3E2A; 
+}
+
 #recent-list ul li {
     margin-bottom: 10px;
 }
