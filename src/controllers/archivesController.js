@@ -15,7 +15,7 @@ exports.createArchive = async (req, res) => {
         httrackSettings,
         error
     } = validator.validateHttrackSettings(req.body, req.session.user.id);
-    if (err) {
+    if (error) {
         req.session.flash = error;
         return res.redirect('/'); // return to not continue with archive/saving schedule
     }

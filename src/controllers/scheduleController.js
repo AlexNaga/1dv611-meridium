@@ -11,12 +11,12 @@ exports.listSchedule = async (req, res) => {
         let schedule = await Schedule.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('schedule/index', {
             active: {
@@ -24,7 +24,7 @@ exports.listSchedule = async (req, res) => {
             },
             loadScheduleScripts: true,
 
-            // pagination below
+            // Pagination below
             docs: schedule.docs,
             total: schedule.total,
             limit: schedule.limit,
@@ -34,7 +34,6 @@ exports.listSchedule = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log(err);
         req.session.flash = {
             message: 'Kunde inte lista sparade schemalagda arkiveringar!',
             danger: true
@@ -59,12 +58,12 @@ exports.getSchedule = async (req, res) => {
             ownerId: req.session.user.id,
             fromSchedule: schedule._id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('schedule/edit', {
             schedule: schedule,
@@ -72,7 +71,7 @@ exports.getSchedule = async (req, res) => {
                 schedule: true
             },
             loadScheduleScripts: true,
-            // pagination below
+            // Pagination below
             docs: archives.docs,
             total: archives.total,
             limit: archives.limit,
@@ -82,8 +81,6 @@ exports.getSchedule = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log(err);
-        
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
             danger: true
@@ -131,9 +128,7 @@ exports.updateSchedule = async (req, res) => {
  */
 exports.deleteSchedule = async (req, res) => {
     try {
-        let schedule = await Schedule.findOneAndRemove({
-            _id: req.params.id
-        }).exec();
+        let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
 
         req.session.flash = {
             message: 'Schemaläggningen har tagits bort!',
@@ -155,7 +150,7 @@ exports.deleteSchedule = async (req, res) => {
 };
 
 // POST /schedule/pause/:id
-exports.pauseSchedule = (req, res) => {
+exports.pauseSchedule = async (req, res) => {
     let id = req.params.id;
     Schedule.findById(id)
         .then((schedule) => {
