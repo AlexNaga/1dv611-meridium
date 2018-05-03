@@ -87,12 +87,12 @@ function makeUserFriendlyUrl(doc) {
         doc.url = doc.advancedSetting.split(' ')[0];
     }
 
-    doc.url = (validUrl.isUri(doc.url) ? new URL(doc.url).hostname : doc.url)
+    doc.url = (validUrl.isUri(doc.url) ? new URL(doc.url).hostname : doc.url);
 
     if (doc.includeDomains) {
         let subUrls = doc.includeDomains.split(',');
         for (let j = 0; j < subUrls.length; j++) {
-            subUrls[j] = (validUrl.isUri(subUrls[j]) ? new URL(subUrls[j]).hostname : subUrls[j])
+            subUrls[j] = (validUrl.isUri(subUrls[j]) ? new URL(subUrls[j]).hostname : subUrls[j]);
         }
         doc.includeDomains = subUrls.join(' ');
     }

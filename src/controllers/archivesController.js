@@ -57,9 +57,9 @@ exports.createArchive = async (req, res) => {
             });
         }
     } else {
-        httrackWrapper.archive(httrackSettings, (error, response) => {
-            if (error) {
-                console.log(error);
+        httrackWrapper.archive(httrackSettings, (err, response) => {
+            if (err) {
+                console.log(err);
                 let emailSettings = {
                     email: response.email,
                     subject: 'Din schemalagda arkivering kunde inte slutföras!',
@@ -148,7 +148,7 @@ exports.listArchives = async (req, res) => {
         req.session.flash = {
             message: 'Kunde inte lista dina arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
 };
@@ -202,7 +202,7 @@ exports.previewArchive = async (req, res) => {
             }
         });
 
-    } catch (error) {
+    } catch (err) {
         res.sendStatus(404);
     }
 };

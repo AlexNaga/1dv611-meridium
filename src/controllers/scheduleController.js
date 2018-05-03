@@ -24,7 +24,7 @@ exports.listSchedule = async (req, res) => {
             },
             loadScheduleScripts: true,
 
-            // pagination below
+            // Pagination below
             docs: schedule.docs,
             total: schedule.total,
             limit: schedule.limit,
@@ -32,16 +32,15 @@ exports.listSchedule = async (req, res) => {
                 page: schedule.page,
                 pageCount: schedule.pages,
             }
-        })
+        });
     } catch (err) {
-        console.log(err);
         req.session.flash = {
             message: 'Kunde inte lista sparade schemalagda arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
-}
+};
 
 /**
  * GET /schedules/edit/:id
@@ -72,7 +71,7 @@ exports.getSchedule = async (req, res) => {
                 schedule: true
             },
             loadScheduleScripts: true,
-            // pagination below
+            // Pagination below
             docs: archives.docs,
             total: archives.total,
             limit: archives.limit,
@@ -80,14 +79,12 @@ exports.getSchedule = async (req, res) => {
                 page: archives.page,
                 pageCount: archives.pages,
             }
-        })
-    } catch (error) {
-        console.log(error);
-
+        });
+    } catch (err) {
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
             danger: true
-        }
+        };
         return res.redirect('/schedules');
     }
 };
@@ -116,24 +113,22 @@ exports.updateSchedule = async (req, res) => {
             success: true
         };
         return res.redirect('/schedules');
-    } catch (error) {
+    } catch (err) {
 
         req.session.flash = {
             message: 'Vi kunde inte uppdatera schemainställningarna!',
             danger: true
-        }
+        };
         return res.redirect('/schedules');
     }
-}
+};
 
 /**
  * POST/DELETE /schedules/delete/:id
  */
 exports.deleteSchedule = async (req, res) => {
     try {
-        let schedule = await Schedule.findOneAndRemove({
-            _id: req.params.id
-        }).exec();
+        let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
 
         req.session.flash = {
             message: 'Schemaläggningen har tagits bort!',
@@ -143,7 +138,7 @@ exports.deleteSchedule = async (req, res) => {
         res.status(200).json({
             deleted: schedule.fileName
         });
-    } catch (error) {
+    } catch (err) {
         // err.code ENOENT = No such file on disk, but entry removed from db.
         req.session.flash = {
             message: 'Vi kunde inte ta bort schemainställningen!',
