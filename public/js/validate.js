@@ -17,5 +17,5 @@ function validatePass() {
         message.style.color = passwordDontMatch;
         document.getElementById('submitBtn').disabled = true;
     }
-    console.log('validatePass')
+    console.log('validatePass');
 }

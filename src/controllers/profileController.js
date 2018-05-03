@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
 const User = require('../models/user');
 const throwError = require('../utils/error');
 
@@ -38,9 +37,9 @@ exports.editUser = async (req, res) => {
         };
 
         return res.redirect('/');
-    } catch (error) {
+    } catch (err) {
         req.session.flash = {
-            message: error.message,
+            message: err.message,
             danger: true
         };
 

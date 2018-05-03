@@ -1,4 +1,3 @@
-
 /**
  * Password rules validator https://github.com/mapbox/password-rules
  *
