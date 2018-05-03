@@ -151,21 +151,18 @@ exports.deleteSchedule = async (req, res) => {
 
 // POST /schedule/pause/:id
 exports.pauseSchedule = async (req, res) => {
-    let id = req.params.id;
-    Schedule.findById(id)
-        .then((schedule) => {
-            schedule.isPaused = !schedule.isPaused;
-            return schedule.save();
-        })
-        .then((doc) => {
-            res.json({
-                success: true
-            });
-        })
-        .catch((err) => {
-            res.json({
-                success: false,
-                message: err
-            });
+    try {
+        let schedule = await Schedule.findById(req.params.id).exec();
+        schedule.isPaused = !schedule.isPaused;
+        await schedule.save();
+
+        res.json({
+            success: true
         });
-};
+    } catch (error) {
+        res.json({
+            success: false,
+            message: err
+        });
+    }
+}
