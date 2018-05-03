@@ -136,11 +136,6 @@ exports.loginUser = async (req, res) => {
         };
 
         return res.redirect('/account/login');
-
-        // return res.status(error.status || 400).render('account/login', {
-        //     active: { login: true },
-        //     email
-        // });
     }
 };
 
