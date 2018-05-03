@@ -17,23 +17,23 @@ function archive(settings, callback) {
     let errorResponse = { url: settings.url, email: settings.email };
     let date = dayjs().toObject();
     let timestamp = `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
-    let archivesFolderPath = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
+    let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let previewFolderPath = path.join(__dirname + '/../../previews');
     let pathToFolder = '';
-    let folderName = '';
+    let ARCHIVE_ID = '';
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
     if (settings.typeOfSetting === Setting.STANDARD) {
         let hostname = new URL(settings.url).hostname;
-        folderName = `${hostname}_${timestamp}`;
-        pathToFolder = `${archivesFolderPath}/${folderName}`;
+        ARCHIVE_ID = `${hostname}_${timestamp}`;
+        pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
         settings.output = pathToFolder;
         command = createCommand(settings, callback);
     } else if (settings.typeOfSetting === Setting.ADVANCED) {
-        folderName = `hostname_${timestamp}`;
-        pathToFolder = `${archivesFolderPath}/${folderName}`;
+        ARCHIVE_ID = `hostname_${timestamp}`;
+        pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
         command = httrack + ' ' + settings.advancedSetting + ` -O ${pathToFolder}`;
     }
@@ -48,18 +48,18 @@ function archive(settings, callback) {
 
     console.log('command', command);
 
-    const previewCommmand = `${httrack} ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${previewFolderPath}/${folderName}_original"`;
+    const previewCommmand = `${httrack} ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${previewFolderPath}/${ARCHIVE_ID}_original"`;
     console.log('previewCommmand', previewCommmand);
 
     // Run preview command
     exec(previewCommmand, (error, stdout, stderr) => {
         if (error) return callback(error, errorResponse);
 
-        if (fs.existsSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`)) {
-            fs.moveSync(`${previewFolderPath}/${folderName}_original/${urls[0]}`, `${previewFolderPath}/${folderName}`);
+        if (fs.existsSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`)) {
+            fs.moveSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`, `${previewFolderPath}/${ARCHIVE_ID}`);
         }
 
-        fs.remove(`${previewFolderPath}/${folderName}_original`, error => {
+        fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, error => {
             if (error) return callback(error, errorResponse);
         });
     });
@@ -68,16 +68,17 @@ function archive(settings, callback) {
     exec(command, (error, stdout, stderr) => {
         if (error) return callback(error, errorResponse);
 
-        if (parseInt(settings.structure) === 0 || settings.typeOfSetting === Setting.ADVANCED) {
-            for (let i = 0; i < urls.length; i++) {
-                if (fs.existsSync(`${pathToFolder}/${urls[i]}`)) {
-                    fs.moveSync(`${pathToFolder}/${urls[i]}`, `${pathToFolder}/folderToZip/${urls[i]}`);
-                }
+        urls.forEach(url => {
+            if (fs.existsSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`)) {
+                fs.moveSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
             }
-        } else {
-            if (fs.existsSync(`${pathToFolder}/web`)) {
-                fs.moveSync(`${pathToFolder}/web`, `${pathToFolder}/folderToZip/`);
+            if (fs.existsSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`)) {
+                fs.moveSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
             }
+        });
+
+        if (fs.existsSync(`${pathToFolder}/web`)) {
+            fs.moveSync(`${pathToFolder}/web`, `${pathToFolder}/folderToZip/`);
         }
 
         let zipDest = `${pathToFolder}.zip`;
@@ -91,7 +92,7 @@ function archive(settings, callback) {
                 // to save archive and send email
                 callback(null, {
                     ownerId: settings.ownerId,
-                    zipFile: `${folderName}.zip`,
+                    zipFile: `${ARCHIVE_ID}.zip`,
                     fileSize: fileSize,
                     path: zipDest,
                     url: settings.url,
