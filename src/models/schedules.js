@@ -80,7 +80,7 @@ schema.post('init', (doc) => {
 
 /**
  * Makes the url user friendly for viewing (removes "http://" etc)
- * @param {Schedule} doc Schedule
+ * @param {*} doc Schedule
  */
 function makeUserFriendlyUrl(doc) {
     if (doc.typeOfSetting === Setting.ADVANCED) {

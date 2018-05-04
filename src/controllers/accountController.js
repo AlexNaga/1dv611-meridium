@@ -8,8 +8,8 @@ const throwError = require('../utils/error');
 
 /**
  * Validates the password against a set of rules, throws an error if not valid.
- * @param {String} password
- * @param {String} confirmPassword
+ * @param {string} password
+ * @param {string} confirmPassword
  */
 let validatePassword = async (password, confirmPassword) => {
     let passwordHasError = checkPassword(password, confirmPassword, {
@@ -22,7 +22,7 @@ let validatePassword = async (password, confirmPassword) => {
 
 /**
  * Checks if the temporary reset-password code is valid
- * @param {String} code
+ * @param {string} code
  */
 let isValidCode = async (code) => {
     let user = await User.findOne({
@@ -39,7 +39,7 @@ let isValidCode = async (code) => {
 
 /**
  * Makes a used reset-password code invalid
- * @param {String} code
+ * @param {string} code
  */
 let disableCode = async (code) => {
     await User.findOneAndUpdate({

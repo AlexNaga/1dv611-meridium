@@ -2,16 +2,12 @@ let fs = require('fs');
 let archiver = require('archiver');
 
 /**
- * @param {string} srcFolder Folder to zip
+ * @param {string|string[]} srcFolders Folder(s) to zip
  * @param {string} zipFilePath Destination
- * @return {Zip} Filesize in bytes
- * @typedef {Object} Zip
- * @property {Object} error
- * @property {Number} size
  *
  * Slightly modified from original source: https://github.com/sole/node-zip-folder
  */
-function zipFolder(srcFolder, zipFilePath, callback) {
+function zipFolder(srcFolders, zipFilePath, callback) {
     let output = fs.createWriteStream(zipFilePath);
     let zipArchive = archiver('zip');
 
@@ -21,12 +17,12 @@ function zipFolder(srcFolder, zipFilePath, callback) {
 
     zipArchive.pipe(output);
 
-    if (Array.isArray(srcFolder)) {
-        for (let i = 0; i < srcFolder.length; i++) {
-            zipArchive.directory(srcFolder[i], true);
+    if (Array.isArray(srcFolders)) {
+        for (let i = 0; i < srcFolders.length; i++) {
+            zipArchive.directory(srcFolders[i], true);
         }
     } else {
-        zipArchive.directory(srcFolder, false);
+        zipArchive.directory(srcFolders, false);
     }
 
     zipArchive.finalize((err) => {
