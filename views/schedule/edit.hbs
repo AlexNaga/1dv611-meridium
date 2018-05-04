@@ -1,14 +1,18 @@
+{{> scheduleDeleteModal }}
+
 <section class="section">
     <div class="container">
         <div class="box">
             <nav class="level">
                 <div class="level-item">
-                    <button type="submit" name="action" class="button is-info">
-                        <span class="icon is-small">
-                            <i class="fas fa-cloud-download-alt"></i>
-                        </span>
-                        <span>Arkivera nu</span>
-                    </button>
+                    <form action="/schedules/run/{{schedule._id}}" method="POST">
+                        <button type="submit" name="action" class="button is-info">
+                            <span class="icon is-small">
+                                <i class="fas fa-cloud-download-alt"></i>
+                            </span>
+                            <span>Arkivera nu</span>
+                        </button>
+                    </form>
                 </div>
                 <div class="level-item">
                     <button id="pause" class="pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">
@@ -29,7 +33,7 @@
                     </button>
                 </div>
                 <div class="level-item">
-                    <a class="button is-danger modal-button" data-target="confirmDel" data-id="{{schedule._id}}" title="Radera schemaläggning">
+                    <a class="button is-danger modal-button" data-target="deleteModal" data-id="{{schedule._id}}" title="Radera schemaläggning">
                         <span class="icon is-small">
                             <i class="fas fa-times"></i>
                         </span>
@@ -38,13 +42,13 @@
                 </div>
             </nav>
             {{#unlessEq schedule.typeOfSchedule 0 }}
-            <div class="has-text-centered is-size-4 is-italic">{{countDown schedule}} kvar till nästa arkivering</div>
+                <div class="has-text-centered is-size-4 is-italic">{{countDown schedule}} kvar till nästa arkivering</div>
             {{/unlessEq}}
         </div>
         <div class="columns">
             <div class="column is-one-third">
-                {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}} {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings
-                }} {{/eq}}
+                {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
+                {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings}} {{/eq}}
             </div>
             <div class="column is-two-thirds">
                 {{> listArchives }}

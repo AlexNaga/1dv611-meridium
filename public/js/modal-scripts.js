@@ -1,12 +1,14 @@
 // Code for confirmation message when deleting an archive
 class Modal {
-    constructor() {
+    constructor(path) {
+        this.path = path;
         this.rootElem = document.documentElement;
         this.modalButtons = Modal.getAll('.modal-button');
         this.modalCloses = Modal.getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
+        this.addEventListener();
     }
 
-    addEventListener(path) {
+    addEventListener() {
         if (this.modalButtons.length > 0) {
             this.modalButtons.forEach((elem) => {
                 elem.addEventListener('click', (event) => {
@@ -15,40 +17,43 @@ class Modal {
                     let target = document.getElementById(clickedElem);
                     this.rootElem.classList.add('is-clipped');
                     target.classList.add('is-active');
-                    deleteBtn(path, elem);
+                    deleteBtn(elem);
                 });
             });
         }
 
-        let deleteBtn = (path, elem) => {
+        let deleteBtn = (elem) => {
             // Clone elem to remove old event listeners, to prevent multiple deletes
-            let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            let oldElem = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
             let newElem = oldElem.cloneNode(true);
             oldElem.parentNode.replaceChild(newElem, oldElem);
 
             let id = elem.getAttribute('data-id');
             let elemRow = elem.parentNode.parentNode.parentNode;
 
-            let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            let modalRemoveBtn = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
             modalRemoveBtn.addEventListener('click', () => {
-                fetchUrl(`/${path}/delete/` + id, {
+                fetchUrl(`/${this.path}/delete/` + id, {
                     method: 'DELETE'
                 })
+                    .then((data) => {
+                        flashMessage(data.message, data);
+                    })
                     .catch((err) => {
-                        // console.log('Something went wrong when trying to delete an archive');
-                        // err.status 404 = ENOENT = No such file on disk, but removed entry removed from db
-                        console.log(err);
+                        // err.status 404 = ENOENT = No such file on disk, but entry removed from db
+                        flashMessage(err.message, err);
                     })
                     .finally(() => {
                         let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement';
 
-                        // Redirect if a schedule was deleted else remove row
+                        // Redirect if a schedule was deleted from the edit page, else remove row
                         if (isScheduleDeleted) {
-                            window.location.href = '/schedules';
+                            // This will also show the flash message upon reload
+                            window.location = window.location.origin + '/' + this.path;
+                        } else {
+                            elemRow.parentNode.removeChild(elemRow);
+                            this.closeModals();
                         }
-
-                        elemRow.parentNode.removeChild(elemRow);
-                        this.closeModals();
                     });
             });
         };

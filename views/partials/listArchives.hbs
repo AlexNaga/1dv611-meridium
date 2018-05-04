@@ -1,19 +1,6 @@
-{{> confirmDeleteArchive }}
+{{> archiveDeleteModal }}
+{{> archivePreviewModal }}
 
-<div id="previewArchive" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p id="previewTitle" class="modal-card-title"></p>
-            <button class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-            <iframe id="previewContainer" width="100%" height="700px">
-                <p>Your browser does not support iframes.</p>
-            </iframe>
-        </section>
-    </div>
-</div>
 <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
 <table class="table is-fullwidth is-striped">
     <thead>
@@ -22,12 +9,12 @@
             <th>Datum</th>
             <th>Förhandsgranska</th>
             <th>Ladda ner</th>
-            <th>Radera</th>
+            <th class="has-text-right">Radera</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="archiveList">
         {{#each archives as |archive|}}
-        <tr title="Ändra schemaläggning">
+        <tr>
             <td>
                 <p title="Arkivets namn">
                     {{ archive.prettyName }}
@@ -39,10 +26,13 @@
                 </p>
             </td>
             <td>
-                <a class="button is-link is-outlined is-rounded is-small modal-button action-preview" href="/archives/preview/{{ archive.id }}"
+                <a class="button is-link is-outlined is-rounded is-small" href="/archives/preview/{{ archive.id }}"
                     target="_blank" title="Förhandsgranska arkiv">
                     Förhandsgranska
                 </a>
+                {{!-- <button class="button is-link is-outlined is-rounded is-small modal-button action-preview" data-target="previewModal" data-id="{{ archive.id }}"
+                    data-name="{{ archive.prettyName }}" data-date="{{ archive.date }}" title="Förhandsgranska arkiv">Förhandsgranska
+                </button> --}}
             </td>
             <td>
                 <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">
@@ -50,8 +40,8 @@
                 </a>
             </td>
             <td>
-                <div class="field">
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel" data-id="{{ archive.id }}"
+                <div class="field is-pulled-right">
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="deleteModal" data-id="{{ archive.id }}"
                         title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>

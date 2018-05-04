@@ -11,30 +11,17 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   ### Starting the server
   1. Open up the terminal in the folder.
   2. Install the required dependencies by typing `npm install`
-  3. Create the environment variables by typing the following in the terminal
-  ```bash
-  echo '{
-    EMAIL_USER="YOUR_EMAIL"
-    EMAIL_PASS="YOUR_EMAIL_PASSWORD"
-    IS_RUNNING_LINUX_OS="true"
-    JWT_SECRET="A_RANDOM_SECRET"
-    MONGODB="YOUR_MONGODB_CONNECTION_STRING"
-    SERVER_DOMAIN="http://localhost:3000"
-    SESSION_SECRET="A_RANDOM_SECRET"
-    ARCHIVES_FOLDER="archives"
-  }' > .env
-  ```
-  or create a file `.env` with the following content
+  3. Create a `.env` file for the environment variables, with the following content
   ``` js
   {
-    EMAIL_USER="YOUR_EMAIL"
+    ARCHIVES_FOLDER="archives"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
+    EMAIL_USER="YOUR_EMAIL"
     IS_RUNNING_LINUX_OS="true"
     JWT_SECRET="A_RANDOM_SECRET"
     MONGODB="YOUR_MONGODB_CONNECTION_STRING"
     SERVER_DOMAIN="http://localhost:3000"
     SESSION_SECRET="A_RANDOM_SECRET"
-    ARCHIVES_FOLDER="archives"
   }
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)

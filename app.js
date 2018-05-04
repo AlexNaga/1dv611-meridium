@@ -62,7 +62,7 @@ require('./scheduler').nodeSchedule;
 require('./src/routes')(app);
 
 app.use((req, res, next) => {
-    req.session.flash = { message: '404', danger: true };
-    res.status(404).redirect('/');
+    // req.session.flash = { message: '404', danger: true };
+    res.redirect('/');
 });
 module.exports = app;

@@ -1,26 +1,3 @@
-<section class="section">
-    <div class="container">
-        <div class="columns is-mobile is-centered">
-            {{#if user}}
-            <div class="column is-half">
-                <div class="tabs is-fullwidth">
-                    <ul>
-                        <li class="is-active" id="settings-li" onClick="showSettings();">
-                            <a>Inställningar</a>
-                        </li>
-                        <li id="advancedSettings-li" onClick="showAdvancedSettings();">
-                            <a>Avancerade inställningar</a>
-                        </li>
-                    </ul>
-                </div>
-                {{> settings }} {{> advancedSettings }}
-            </div>
-            {{else}}
-            <div class="column has-text-centered">
-                <h1 class="title">Hem</h1>
-                <h2 class="subtitle">Ej inloggad</h2>
-            </div>
-            {{/if}}
-        </div>
-    </div>
-</section>
+<div class="columns is-mobile is-centered">
+    {{#if user}} {{> loggedInUser}} {{else}} {{> notLoggedInUser}} {{/if}}
+</div>

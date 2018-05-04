@@ -1,5 +1,6 @@
 const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
+const httrackWrapper = require('../models/httrackWrapper');
 
 /**
  * GET /schedules/
@@ -24,7 +25,7 @@ exports.listSchedule = async (req, res) => {
             },
             loadScheduleScripts: true,
 
-            // pagination below
+            // Pagination below
             docs: schedule.docs,
             total: schedule.total,
             limit: schedule.limit,
@@ -32,16 +33,15 @@ exports.listSchedule = async (req, res) => {
                 page: schedule.page,
                 pageCount: schedule.pages,
             }
-        })
+        });
     } catch (err) {
-        console.log(err);
         req.session.flash = {
             message: 'Kunde inte lista sparade schemalagda arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
-}
+};
 
 /**
  * GET /schedules/edit/:id
@@ -52,7 +52,8 @@ exports.getSchedule = async (req, res) => {
         let itemsPerPage = 10;
 
         let schedule = await Schedule.findOne({
-            _id: req.params.id
+            _id: req.params.id,
+            ownerId: req.session.user.id
         }).exec();
 
         let archives = await Archive.paginate({
@@ -72,7 +73,7 @@ exports.getSchedule = async (req, res) => {
                 schedule: true
             },
             loadScheduleScripts: true,
-            // pagination below
+            // Pagination below
             docs: archives.docs,
             total: archives.total,
             limit: archives.limit,
@@ -80,14 +81,12 @@ exports.getSchedule = async (req, res) => {
                 page: archives.page,
                 pageCount: archives.pages,
             }
-        })
-    } catch (error) {
-        console.log(error);
-        
+        });
+    } catch (err) {
         req.session.flash = {
             message: 'Något gick fel vid hämtning av schemaläggningen!',
             danger: true
-        }
+        };
         return res.redirect('/schedules');
     }
 };
@@ -97,7 +96,10 @@ exports.getSchedule = async (req, res) => {
  */
 exports.updateSchedule = async (req, res) => {
     try {
-        await Schedule.findByIdAndUpdate(req.params.id, {
+        await Schedule.findOneAndUpdate({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }, {
             $set: {
                 url: req.body.url,
                 advancedSetting: req.body.advancedSetting,
@@ -116,61 +118,87 @@ exports.updateSchedule = async (req, res) => {
             success: true
         };
         return res.redirect('/schedules');
-    } catch (error) {
+    } catch (err) {
 
         req.session.flash = {
             message: 'Vi kunde inte uppdatera schemainställningarna!',
             danger: true
-        }
-        return res.redirect('/schedules');
-    }
-}
-
-/**
- * POST/DELETE /schedules/delete/:id
- */
-exports.deleteSchedule = async (req, res) => {
-    try {
-        let schedule = await Schedule.findOneAndRemove({
-            _id: req.params.id
-        }).exec();
-
-        req.session.flash = {
-            message: 'Schemaläggningen har tagits bort!',
-            success: true
         };
-
-        res.status(200).json({
-            deleted: schedule.fileName
-        });
-    } catch (error) {
-        // err.code ENOENT = No such file on disk, but entry removed from db.
-        req.session.flash = {
-            message: 'Vi kunde inte ta bort schemainställningen!',
-            danger: true
-        };
-
         return res.redirect('/schedules');
     }
 };
 
-// POST /schedule/pause/:id
-exports.pauseSchedule = (req, res) => {
-    let id = req.params.id;
-    Schedule.findById(id)
-        .then((schedule) => {
-            schedule.isPaused = !schedule.isPaused;
-            return schedule.save();
-        })
-        .then((doc) => {
-            res.json({
-                success: true
-            });
-        })
-        .catch((err) => {
-            res.json({
-                success: false,
-                message: err
-            });
+/**
+ * DELETE /schedules/delete/:id
+ */
+exports.deleteSchedule = async (req, res) => {
+    try {
+        let schedule = await Schedule.findOneAndRemove({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+
+        res.status(200).json({
+            message: 'Schemaläggningen är raderad.',
+            success: true
         });
-}
+    } catch (err) {
+        // err.code ENOENT = No such file on disk, but entry removed from db.
+        let notFound = 'ENOENT';
+        // req.session.flash = {
+        //     message: 'Kunde inte ta bort schemainställningen!',
+        //     danger: true
+        // };
+        res.status(err.code === notFound ? 404 : 400)
+            .json({
+                message: 'Kunde inte radera Schemaläggningen.',
+                danger: true
+            });
+    }
+};
+
+/*
+ * POST /schedule/run/:id
+ */
+exports.runSchedule = async (req, res) => {
+    try {
+        let schedule = await Schedule.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+        httrackWrapper.archive(schedule);
+
+        res.json({
+            success: true
+        });
+    } catch (err) {
+        res.json({
+            success: false,
+            message: err
+        });
+    }
+};
+
+/*
+ * POST /schedule/pause/:id
+ */
+exports.pauseSchedule = async (req, res) => {
+    try {
+        let schedule = await Schedule.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+
+        schedule.isPaused = !schedule.isPaused;
+        await schedule.save();
+
+        res.json({
+            success: true
+        });
+    } catch (err) {
+        res.json({
+            success: false,
+            message: err
+        });
+    }
+};

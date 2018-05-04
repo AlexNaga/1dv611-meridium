@@ -76,18 +76,26 @@ exports.createArchive = async (req, res) => {
 /**
  * GET /archives/:id
  */
-exports.getArchive = (req, res) => {
-    let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+exports.getArchive = async (req, res) => {
+    try {
+        await Archive.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
 
-    fs.stat(pathToFile, (err, stat) => {
-        if (err == null) {
-            // File exist
-            return res.status(200).sendFile(pathToFile);
-        } else {
-            let notFound = 'ENOENT'; // ENOENT === No such file
-            res.sendStatus(err.code === notFound ? 404 : 400);
-        }
-    });
+        let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+
+        fs.stat(pathToFile, (err, stat) => {
+            if (err == null) {
+                // File exist
+                return res.status(200).sendFile(pathToFile);
+            }
+        });
+    } catch (err) {
+
+        let notFound = 'ENOENT'; // ENOENT === No such file
+        res.sendStatus(err.code === notFound ? 404 : 400);
+    }
 };
 
 /**
@@ -127,7 +135,7 @@ exports.listArchives = async (req, res) => {
         req.session.flash = {
             message: 'Kunde inte lista dina arkiveringar!',
             danger: true
-        }
+        };
         return res.redirect('/');
     }
 };
@@ -136,26 +144,29 @@ exports.listArchives = async (req, res) => {
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
+    let archiveName = '';
     try {
-        let archiveName = '';
-        const deleteFile = require('util').promisify(fs.unlink);
-
         let archive = await Archive.findOneAndRemove({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
 
         archiveName = archive.fileName;
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
         res.status(200).json({
-            deleted: archiveName
+            message: 'Arkiveringen är raderad.',
+            success: true
         });
+        const deleteFile = require('util').promisify(fs.unlink);
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archiveName);
     } catch (err) {
-        let notFound = 'ENOENT'; // ENOENT === No such file
-        res.status(err.code === notFound ? 404 : 400)
-            .json({
-                error: 'No such file'
-            });
+        // ENOENT === No such file or directory
+        if (err.code != 'ENOENT') {
+            res.status(400)
+                .json({
+                    message: 'Kunde inte radera arkiveringen.',
+                    danger: true
+                });
+        }
     }
 };
 
@@ -168,12 +179,13 @@ exports.previewArchive = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
+        
         let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
         let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
 
         fs.stat(pathToFile, (err, stat) => {
+            // File exist
             if (err == null) {
-                // File exist
                 return res.status(200).sendFile(pathToFile);
             } else {
                 let notFound = 'ENOENT'; // ENOENT === No such file
@@ -181,7 +193,7 @@ exports.previewArchive = async (req, res) => {
             }
         });
 
-    } catch (error) {
+    } catch (err) {
         res.sendStatus(404);
     }
 };

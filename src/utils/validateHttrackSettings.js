@@ -9,8 +9,13 @@ const Setting = require('../models/enums').setting;
  * @param {*} b
  */
 Number.prototype.between = function(a, b) {
+<<<<<<< HEAD
     let min = Math.min(a, b);
     let max = Math.max(a, b);
+=======
+    let min = Math.min(a, b),
+        max = Math.max(a, b);
+>>>>>>> a86c661a5ae09b55665f49f9dd4ff5d4dd0beae2
 
     return this >= min && this <= max;
 };

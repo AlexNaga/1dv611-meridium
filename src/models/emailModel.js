@@ -1,11 +1,11 @@
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 /**
  * Needs to have 3 properties: email, subject and message
  * @param {*} settings {email, subject, message}
  */
 function sendMail(settings) {
-    var transporter = nodemailer.createTransport({
+    let transporter = nodemailer.createTransport({
         host: 'smtp@gmail.com',
         port: 465,
         secure: true,
@@ -23,9 +23,9 @@ function sendMail(settings) {
         html: settings.message
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            console.log(err);
         } else {
             console.log('Email sent:', info.messageId);
         }
