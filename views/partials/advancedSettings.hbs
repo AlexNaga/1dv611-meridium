@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Arkivdium</title>
+</head>
 <form action="/archives" method="post" id="advancedSettings" style="display:none;">
     <input type="hidden" name="setting" value="1">
     <div class="field">
@@ -21,8 +28,8 @@
         </label>
         <div class="control has-icons-left">
             <div class="select">
-                <select name="typeOfSchedule" id="schedule" required>
-                    <option selected="selected" value="0">Ingen schemaläggning</option>
+                <select name="typeOfSchedule" id="schedule">
+                    <option value="0" selected="selected">Ingen schemaläggning</option>
                     <option value="1">Varje dag</option>
                     <option value="2">Varje vecka</option>
                     <option value="3">Varje månad</option>
@@ -60,3 +67,5 @@
         </div>
     </div>
 </form>
+
+</html>

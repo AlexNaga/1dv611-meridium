@@ -56,7 +56,7 @@ app.use((req, res, next) => {
 });
 
 // Node schedule
-require('./scheduler').nodeSchedule;
+// require('./src/utils/scheduler').nodeSchedule;
 
 // Routes
 require('./src/routes')(app);
