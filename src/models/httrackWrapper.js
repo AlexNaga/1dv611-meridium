@@ -1,13 +1,8 @@
 const zipFolder = require('../utils/zipFolder');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
-
-const {
-    URL
-} = require('url');
-const {
-    exec
-} = require('child_process');
+const { URL } = require('url');
+const { exec } = require('child_process');
 const fs = require('fs-extra');
 const dayjs = require('dayjs');
 const path = require('path');
@@ -41,6 +36,7 @@ async function archive(settings) {
 
         command = `${httrack} ${settings.advancedSetting} -O ${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
     }
+    let archivedFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
     let urls = [...getUrls(command)];
     let previewUrl = urls[0];
@@ -60,13 +56,13 @@ async function archive(settings) {
         // Archive
         await runCommand(command);
         urls.forEach(async url => {
-            await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
-            await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
+            await moveFolder(`${archivedFolder}/${url}`, `${archivedFolder}/folderToZip/${url}`);
+            await moveFolder(`${archivedFolder}/www.${url}`, `${archivedFolder}/folderToZip/${url}`);
         });
-        await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/web`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/`);
+        await moveFolder(`${archivedFolder}/web`, `${archivedFolder}/folderToZip/`);
 
-        let fileSize = await zip(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`);
-        removeFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}`);
+        let fileSize = await zip(`${archivedFolder}/folderToZip`, `${archivedFolder}.zip`);
+        removeFolder(`${archivedFolder}`);
 
         console.log('Archive was successful!');
 
@@ -93,15 +89,20 @@ async function archive(settings) {
 
         // Send fail mail
         let emailSettings = {
-            email: err.email,
+            email: settings.email,
             subject: 'Din schemalagda arkivering kunde inte slutföras!',
             message: `<p><b>Din schemalagda arkivering av
-            <a href="${err.url}">${err.url}</a> kunde inte slutföras.</b></p>`
+            <a href="${settings.url}">${settings.url}</a> kunde inte slutföras.</b></p>`
         };
         EmailModel.sendMail(emailSettings);
     }
 }
 
+/**
+ * @param {string} folder Folder to zip
+ * @param {string} zipDest File destination
+ * @returns {promise} Filesize in bytes
+ */
 function zip(folder, zipDest) {
     return new Promise((resolve, reject) => {
         zipFolder(folder, zipDest, (error, fileSize) => {
@@ -114,18 +115,18 @@ function zip(folder, zipDest) {
     });
 }
 
-function moveFolder(orig, dest) {
-    // TODO async och felhantering
-    if (fs.existsSync(orig)) {
-        fs.moveSync(orig, dest);
+async function moveFolder(orig, dest) {
+    try {
+        await fs.move(orig, dest);
+    } catch (err) {
+        // if (err.code === 'ENOENT') {
+        // No such file or directory, just continue...
+        // }
     }
 }
 
-function removeFolder(folder) {
-    // TODO använd promise?
-    fs.remove(folder, error => {
-        if (error) throw `httrackWrapper error: Could not remove folder '${folder}'`;
-    });
+async function removeFolder(folder) {
+    await fs.remove(folder);
 }
 
 function runCommand(command) {
