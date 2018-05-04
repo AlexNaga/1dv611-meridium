@@ -1,6 +1,21 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const throwError = require('../utils/error');
+const checkPassword = require('../utils/passwordValidator');
+
+/**
+ * Validates the password against a set of rules, throws an error if not valid.
+ * @param {String} password
+ * @param {String} confirmPassword
+ */
+let validatePassword = async (password, confirmPassword) => {
+    let passwordHasError = checkPassword(password, confirmPassword, {
+        minimumLength: 6
+    });
+    if (passwordHasError) {
+        throwError(400, passwordHasError.sentence);
+    }
+};
 
 /**
  * POST /profile/edit
@@ -9,7 +24,9 @@ exports.editUser = async (req, res) => {
     const email = req.session.user.email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
+    const confirmNewPassword = req.body.confirmNewPassword;
     try {
+        await validatePassword(newPassword, confirmNewPassword);
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         const updateParams = {
