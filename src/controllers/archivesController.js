@@ -96,18 +96,26 @@ exports.createArchive = async (req, res) => {
 /**
  * GET /archives/:id
  */
-exports.getArchive = (req, res) => {
-    let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+exports.getArchive = async (req, res) => {
+    try {
+        await Archive.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
 
-    fs.stat(pathToFile, (err, stat) => {
-        if (err == null) {
-            // File exist
-            return res.status(200).sendFile(pathToFile);
-        } else {
-            let notFound = 'ENOENT'; // ENOENT === No such file
-            res.sendStatus(err.code === notFound ? 404 : 400);
-        }
-    });
+        let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+
+        fs.stat(pathToFile, (err, stat) => {
+            if (err == null) {
+                // File exist
+                return res.status(200).sendFile(pathToFile);
+            }
+        });
+    } catch (err) {
+
+        let notFound = 'ENOENT'; // ENOENT === No such file
+        res.sendStatus(err.code === notFound ? 404 : 400);
+    }
 };
 
 /**
@@ -121,12 +129,12 @@ exports.listArchives = async (req, res) => {
         let archives = await Archive.paginate({
             ownerId: req.session.user.id
         }, {
-                sort: {
-                    createdAt: 'desc'
-                },
-                page: page,
-                limit: itemsPerPage
-            });
+            sort: {
+                createdAt: 'desc'
+            },
+            page: page,
+            limit: itemsPerPage
+        });
 
         res.render('archive/index', {
             active: {
