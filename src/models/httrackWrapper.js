@@ -2,8 +2,12 @@ const zipFolder = require('../utils/zipFolder');
 const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 
-const { URL } = require('url');
-const { exec } = require('child_process');
+const {
+    URL
+} = require('url');
+const {
+    exec
+} = require('child_process');
 const fs = require('fs-extra');
 const dayjs = require('dayjs');
 const path = require('path');
@@ -99,7 +103,7 @@ async function archive(settings) {
 }
 
 function zip(folder, zipDest) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         zipFolder(folder, zipDest, (error, fileSize) => {
             if (error) {
                 console.log(error);
@@ -125,7 +129,7 @@ function removeFolder(folder) {
 }
 
 function runCommand(command) {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         exec(command, (error, stdout, stderr) => {
             if (error) reject(error);
             resolve();
@@ -144,22 +148,24 @@ function createCommand(settings) {
 
     let command = [
         httrack,
-        url,                            // Url to crawl.
-        '-O', output,                   // Output path.
-        ...include,                     // Domains to include.
-        ...exclude,                     // Paths to exclude.
-        `-s${robots}`,                  // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        `-N${structure}`,               // Site structure. 0 = default site structure.
-        `-A${100000000000}`,            // Maximum transfer rate in bytes/seconds.
-        `-%c${10}`,                     // Maximum number of connections/seconds.
+        url, // Url to crawl.
+        '-O', output, // Output path.
+        ...include, // Domains to include.
+        ...exclude, // Paths to exclude.
+        `-s${robots}`, // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
+        `-N${structure}`, // Site structure. 0 = default site structure.
+        `-A${100000000000}`, // Maximum transfer rate in bytes/seconds.
+        `-%c${10}`, // Maximum number of connections/seconds.
         // '-%!',                       // Crawl without limit. DO NOT USE.
-        `-C${0}`,                       // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
+        `-C${0}`, // Cache. 0 = no cache. 1 = cache. 2 = see what works best.
         // '-%F', '<!-- Arkivdium -->',    // Footer content.
-        `-f${2}`,                       // 2 = put all logs in a single log file.
-        '-q'                            // Quiet mode. No questions. No log.
+        `-f${2}`, // 2 = put all logs in a single log file.
+        '-q' // Quiet mode. No questions. No log.
     ];
 
     return command.join(' ');
 }
 
-module.exports = { archive };
+module.exports = {
+    archive
+};
