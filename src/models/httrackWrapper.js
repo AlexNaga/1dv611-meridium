@@ -64,13 +64,7 @@ async function archive(settings) {
         let fileSize = await zip(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`);
         removeFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}`);
 
-<<<<<<< HEAD
         console.log(`Archive was successful!`);
-=======
-    // Run preview command
-    exec(previewCommmand, (err, stdout, stderr) => {
-        if (err) return callback(err, errorResponse);
->>>>>>> a86c661a5ae09b55665f49f9dd4ff5d4dd0beae2
 
         // Create archive in database
         let archive = new Archive({
@@ -104,7 +98,6 @@ async function archive(settings) {
     }
 }
 
-<<<<<<< HEAD
 function zip(folder, zipDest) {
     return new Promise(function (resolve, reject) {
         zipFolder(folder, zipDest, (error, fileSize) => {
@@ -113,26 +106,16 @@ function zip(folder, zipDest) {
                 reject();
             }
             resolve(fileSize);
-=======
-        fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, err => {
-            if (err) return callback(err, errorResponse);
->>>>>>> a86c661a5ae09b55665f49f9dd4ff5d4dd0beae2
         });
     });
 }
 
-<<<<<<< HEAD
 function moveFolder(orig, dest) {
     // TODO async och felhantering
     if (fs.existsSync(orig)) {
         fs.moveSync(orig, dest);
     }
 }
-=======
-    // Run archive command
-    exec(command, (err, stdout, stderr) => {
-        if (err) return callback(err, errorResponse);
->>>>>>> a86c661a5ae09b55665f49f9dd4ff5d4dd0beae2
 
 function removeFolder(folder) {
     // TODO använd promise?
@@ -141,36 +124,11 @@ function removeFolder(folder) {
     });
 }
 
-<<<<<<< HEAD
 function runCommand(command) {
     return new Promise(function(resolve, reject) {
         exec(command, (error, stdout, stderr) => {
             if (error) reject(error);
             resolve();
-=======
-        if (fs.existsSync(`${pathToFolder}/web`)) {
-            fs.moveSync(`${pathToFolder}/web`, `${pathToFolder}/folderToZip/`);
-        }
-
-        let zipDest = `${pathToFolder}.zip`;
-        zipFolder(`${pathToFolder}/folderToZip`, zipDest, (err, fileSize) => {
-            if (err) return callback(err, errorResponse);
-
-            fs.remove(`${pathToFolder}`, err => {
-                if (err) return callback(err, errorResponse);
-
-                // Return everything thats needed for the calling method
-                // to save archive and send email
-                callback(null, {
-                    ownerId: settings.ownerId,
-                    zipFile: `${ARCHIVE_ID}.zip`,
-                    fileSize: fileSize,
-                    path: zipDest,
-                    url: settings.url,
-                    email: settings.email
-                });
-            });
->>>>>>> a86c661a5ae09b55665f49f9dd4ff5d4dd0beae2
         });
     });
 }
