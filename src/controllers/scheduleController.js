@@ -12,12 +12,12 @@ exports.listSchedule = async (req, res) => {
         let schedule = await Schedule.paginate({
             ownerId: req.session.user.id
         }, {
-                sort: {
-                    createdAt: 'desc'
-                },
-                page: page,
-                limit: itemsPerPage
-            });
+            sort: {
+                createdAt: 'desc'
+            },
+            page: page,
+            limit: itemsPerPage
+        });
 
         res.render('schedule/index', {
             active: {
@@ -52,19 +52,20 @@ exports.getSchedule = async (req, res) => {
         let itemsPerPage = 10;
 
         let schedule = await Schedule.findOne({
-            _id: req.params.id
+            _id: req.params.id,
+            ownerId: req.session.user.id
         }).exec();
 
         let archives = await Archive.paginate({
             ownerId: req.session.user.id,
             fromSchedule: schedule._id
         }, {
-                sort: {
-                    createdAt: 'desc'
-                },
-                page: page,
-                limit: itemsPerPage
-            });
+            sort: {
+                createdAt: 'desc'
+            },
+            page: page,
+            limit: itemsPerPage
+        });
 
         res.render('schedule/edit', {
             schedule: schedule,
@@ -95,7 +96,10 @@ exports.getSchedule = async (req, res) => {
  */
 exports.updateSchedule = async (req, res) => {
     try {
-        await Schedule.findByIdAndUpdate(req.params.id, {
+        await Schedule.findOneAndUpdate({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }, {
             $set: {
                 url: req.body.url,
                 advancedSetting: req.body.advancedSetting,
@@ -129,7 +133,10 @@ exports.updateSchedule = async (req, res) => {
  */
 exports.deleteSchedule = async (req, res) => {
     try {
-        let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
+        let schedule = await Schedule.findOneAndRemove({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
 
         res.status(200).json({
             message: 'Schemaläggningen har tagits bort!',
@@ -151,8 +158,8 @@ exports.deleteSchedule = async (req, res) => {
 };
 
 /*
-* POST /schedule/run/:id
-*/
+ * POST /schedule/run/:id
+ */
 exports.runSchedule = async (req, res) => {
     try {
         let schedule = await Schedule.findOne({
@@ -173,8 +180,8 @@ exports.runSchedule = async (req, res) => {
 };
 
 /*
-* POST /schedule/pause/:id
-*/
+ * POST /schedule/pause/:id
+ */
 exports.pauseSchedule = async (req, res) => {
     try {
         let schedule = await Schedule.findOne({
