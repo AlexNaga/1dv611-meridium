@@ -11,7 +11,7 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   ### Starting the server
   1. Open up the terminal in the folder.
   2. Install the required dependencies by typing `npm install`
-  3. Create the an `.env` file for the environment variables with the following content
+  3. Create a `.env` file for the environment variables, with the following content
   ``` js
   {
     EMAIL_USER="YOUR_EMAIL"
