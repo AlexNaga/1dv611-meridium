@@ -1,5 +1,5 @@
-{{> confirmDeleteArchive }}
-{{> previewArchive }}
+{{> archiveDeleteModal }}
+{{> archivePreviewModal }}
 
 <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
 <table class="table is-fullwidth is-striped">
@@ -12,7 +12,7 @@
             <th class="has-text-right">Radera</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="archiveList">
         {{#each archives as |archive|}}
         <tr>
             <td>
@@ -30,8 +30,8 @@
                     target="_blank" title="Förhandsgranska arkiv">
                     Förhandsgranska
                 </a> --}}
-                <button class="button is-link is-outlined is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
-                    title="Förhandsgranska arkiv">Förhandsgranska
+                <button class="button is-link is-outlined is-rounded is-small modal-button action-preview" data-target="previewModal" data-id="{{ archive.id }}"
+                    data-name="{{ archive.prettyName }}" data-date="{{ archive.date }}" title="Förhandsgranska arkiv">Förhandsgranska
                 </button>
             </td>
             <td>
@@ -41,7 +41,7 @@
             </td>
             <td>
                 <div class="field is-pulled-right">
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel" data-id="{{ archive.id }}"
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="deleteModal" data-id="{{ archive.id }}"
                         title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>

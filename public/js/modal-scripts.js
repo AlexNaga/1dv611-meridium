@@ -24,14 +24,14 @@ class Modal {
 
         let deleteBtn = (elem) => {
             // Clone elem to remove old event listeners, to prevent multiple deletes
-            let oldElem = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            let oldElem = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
             let newElem = oldElem.cloneNode(true);
             oldElem.parentNode.replaceChild(newElem, oldElem);
 
             let id = elem.getAttribute('data-id');
             let elemRow = elem.parentNode.parentNode.parentNode;
 
-            let modalRemoveBtn = document.querySelector('#confirmDel > div.modal-content > div > button.button.is-danger');
+            let modalRemoveBtn = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
             modalRemoveBtn.addEventListener('click', () => {
                 fetchUrl(`/${this.path}/delete/` + id, {
                     method: 'DELETE'
