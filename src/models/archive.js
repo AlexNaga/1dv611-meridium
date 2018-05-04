@@ -18,7 +18,7 @@ schema.plugin(mongoosePaginate);
 // After finding documents, run this function on each document.
 schema.post('init', (doc) => {
     doc.fileSize = prettyFileSize(doc.fileSize);
-    doc.path = `/${process.env.ARCHIVES_FOLDER}/` + doc.fileName;
+    doc.downloadPath = '/archives/download/' + doc._id;
     doc.date = doc.createdAt.toLocaleString('sv-SE');
     doc.prettyName = doc.fileName.substring(0, doc.fileName.indexOf('_'));
 });

@@ -6,6 +6,7 @@ const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 const Schedules = require('../models/schedules');
 const Setting = require('../models/enums').setting;
+const throwError = require('../utils/error');
 
 /**
  * POST /archives/
@@ -79,7 +80,7 @@ exports.createArchive = async (req, res) => {
             });
             archive.save();
 
-            let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
+            let downloadUrl = process.env.SERVER_DOMAIN + '/archives/download/' + archive._id;
             let emailSettings = {
                 email: response.email,
                 subject: 'Arkiveringen är klar ✔',
@@ -96,25 +97,22 @@ exports.createArchive = async (req, res) => {
 /**
  * GET /archives/:id
  */
-exports.getArchive = async (req, res) => {
+exports.downloadArchive = async (req, res) => {
     try {
-        await Archive.findOne({
+        let archive = await Archive.findOne({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
 
-        let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+        let pathToFile = path.join(process.cwd() + `/${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
 
-        fs.stat(pathToFile, (err, stat) => {
-            if (err == null) {
-                // File exist
-                return res.status(200).sendFile(pathToFile);
-            }
-        });
+        if (fs.existsSync(pathToFile)) {
+            return res.download(pathToFile, archive.fileName);
+        } else {
+            throwError(404, 'Arkivet finns inte längre kvar.');
+        }
     } catch (err) {
-
-        let notFound = 'ENOENT'; // ENOENT === No such file
-        res.sendStatus(err.code === notFound ? 404 : 400);
+        res.sendStatus(err.status || 400).end();
     }
 };
 
@@ -129,12 +127,12 @@ exports.listArchives = async (req, res) => {
         let archives = await Archive.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('archive/index', {
             active: {
@@ -193,27 +191,27 @@ exports.deleteArchive = async (req, res) => {
 /**
  * GET /archives/preview/:id
  */
-exports.previewArchive = async (req, res) => {
+exports.previewArchive = async (req, res, next) => {
     try {
         let archive = await Archive.findOne({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
-        
+
         let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
         let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
-
         fs.stat(pathToFile, (err, stat) => {
             // File exist
             if (err == null) {
-                return res.status(200).sendFile(pathToFile);
+                return next();
             } else {
                 let notFound = 'ENOENT'; // ENOENT === No such file
                 res.sendStatus(err.code === notFound ? 404 : 400);
             }
         });
-
     } catch (err) {
-        res.sendStatus(404);
+        let notFound = 'ENOENT'; // ENOENT === No such file
+
+        res.sendStatus(err.code === notFound ? 404 : 400);
     }
 };

@@ -8,8 +8,8 @@ module.exports = (app, baseRoute) => {
     // Lists all archives
     app.get(baseRoute + '/', isLoggedIn, ArchivesController.listArchives);
 
-    // Get a specific archive
-    app.get(baseRoute + '/:id', isLoggedIn, ArchivesController.getArchive);
+    // Download a specific archive
+    app.get(baseRoute + '/download/:id', isLoggedIn, ArchivesController.downloadArchive);
 
     // Preview a specific archive
     app.get(baseRoute + '/preview/:id', isLoggedIn, ArchivesController.previewArchive);

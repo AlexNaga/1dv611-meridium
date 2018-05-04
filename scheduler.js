@@ -52,7 +52,7 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', () => {
                     });
                     archive.save();
 
-                    let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
+                    let downloadUrl = process.env.SERVER_DOMAIN + '/archives/download/' + archive._id;
                     let emailSettings = {
                         email: response.email,
                         subject: 'Din schemalagda arkivering är klar ✔',
