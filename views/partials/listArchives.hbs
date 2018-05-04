@@ -9,12 +9,12 @@
             <th>Datum</th>
             <th>Förhandsgranska</th>
             <th>Ladda ner</th>
-            <th>Radera</th>
+            <th class="has-text-right">Radera</th>
         </tr>
     </thead>
     <tbody>
         {{#each archives as |archive|}}
-        <tr title="Ändra schemaläggning">
+        <tr>
             <td>
                 <p title="Arkivets namn">
                     {{ archive.prettyName }}
@@ -37,7 +37,7 @@
                 </a>
             </td>
             <td>
-                <div class="field">
+                <div class="field is-pulled-right">
                     <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="confirmDel" data-id="{{ archive.id }}"
                         title="Radera arkiv">
                         <span class="icon">

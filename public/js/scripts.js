@@ -20,10 +20,9 @@ closeNotification(); // Add event listener for closing notifications
 
 
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
-window.onscroll = function () { stickyNavBar(); };
 let navbar = document.getElementById('navbar');
 let sticky = navbar.offsetTop;
-function stickyNavBar() {
+window.onscroll = function () {
     if (window.pageYOffset >= sticky) {
         navbar.classList.add('sticky');
         navbar.firstElementChild.classList.add('is-dark');
@@ -33,7 +32,7 @@ function stickyNavBar() {
         navbar.firstElementChild.classList.remove('is-dark');
         navbar.firstElementChild.classList.remove('is-bold');
     }
-}
+};
 
 // Table row clickable
 let tableRows = document.querySelectorAll('.table-row-hover tr');
@@ -50,18 +49,17 @@ for (let i = 0; i < tableRows.length; i++) {
 // https://bulma.io/documentation/components/navbar/#navbar-menu
 document.addEventListener('DOMContentLoaded', () => {
     // Get all "navbar-burger" elements
-    var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    let navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
     // Check if there are any navbar burgers
-    if ($navbarBurgers.length > 0) {
+    if (navbarBurgers.length > 0) {
         // Add a click event on each of them
-        $navbarBurgers.forEach(($el) => {
-            $el.addEventListener('click', () => {
+        navbarBurgers.forEach((el) => {
+            el.addEventListener('click', () => {
                 // Get the target from the "data-target" attribute
-                var target = $el.dataset.target;
-                var $target = document.getElementById(target);
+                let target = document.getElementById(el.dataset.target);
                 // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-                $el.classList.toggle('is-active');
-                $target.classList.toggle('is-active');
+                el.classList.toggle('is-active');
+                target.classList.toggle('is-active');
             });
         });
     }
@@ -78,8 +76,34 @@ function fetchUrl(url, options) {
     Object.assign(defaultOptions, options); // sent options overrides defaultOptions
     return fetch(url, defaultOptions)
         .then(resp => {
-            if (resp.ok) return resp.json();
-
-            throw resp; // new Error('Something went wrong');
+            return resp.ok ?
+                resp.json() :
+                resp.json().then((err) => Promise.reject(err));
         });
+}
+
+/**
+ * Displays a flash message, same as req.session.flash
+ * @param {String} message The displayed message
+ * @param {Object} obj Bulma colors https://bulma.io/documentation/overview/colors/
+ * example: { danger: true }
+ */
+function flashMessage(message, obj = { info: true }) {
+    let color = obj.danger ? 'danger' :
+        obj.success ? 'success' :
+            'info';
+
+    let notification = document.createElement('div');
+    let button = document.createElement('button');
+    let text = document.createTextNode(message);
+
+    notification.classList.add('notification', 'fade-in-out', 'has-text-centered', 'is-' + color);
+    button.classList.add('delete');
+    notification.appendChild(button);
+    notification.appendChild(text);
+
+    let container = document.getElementsByClassName('flash-container')[0];
+    while (container.firstChild) container.removeChild(container.firstChild);
+
+    container.appendChild(notification);
 }

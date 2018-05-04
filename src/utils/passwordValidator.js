@@ -7,7 +7,7 @@
  * @param {*} rules Overrides default rules
  */
 module.exports = function (pw, confirmPw, rules) {
-    var issues = [];
+    let issues = [];
     rules = rules || {};
     // If rules is undefined, the confirm variable (might) have the rules
     // i.e did not received a password to confirm.
@@ -78,7 +78,7 @@ module.exports = function (pw, confirmPw, rules) {
     } : false;
 
     function sentence(reasons) {
-        var start = 'Lösenordet måste ';
+        let start = 'Lösenordet måste ';
         if (reasons.length === 1) {
             return start + reasons[0].part + '.';
         }
@@ -86,7 +86,7 @@ module.exports = function (pw, confirmPw, rules) {
             return start + reasons[0].part + ' och ' + reasons[1].part + '.';
         }
         if (reasons.length > 2) {
-            var last = reasons[reasons.length - 1].part;
+            let last = reasons[reasons.length - 1].part;
             return start + reasons.slice(0, -1).map((r) => {
                 return r.part;
             }).join(', ') + ', och ' + last + '.';
