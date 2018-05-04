@@ -173,7 +173,7 @@ exports.deleteArchive = async (req, res) => {
 
         archiveName = archive.fileName;
         res.status(200).json({
-            message: 'Filen raderad!',
+            message: 'Arkiveringen är raderad.',
             success: true
         });
         const deleteFile = require('util').promisify(fs.unlink);
@@ -183,7 +183,7 @@ exports.deleteArchive = async (req, res) => {
         if (err.code != 'ENOENT') {
             res.status(400)
                 .json({
-                    message: 'Kunde inte radera filen!',
+                    message: 'Kunde inte radera arkiveringen.',
                     danger: true
                 });
         }

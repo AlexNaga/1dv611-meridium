@@ -37,4 +37,4 @@ function previewAction(elem) {
     });
 }
 
-setupEventHandlers();
+// setupEventHandlers();

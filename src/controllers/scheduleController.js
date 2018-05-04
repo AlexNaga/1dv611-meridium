@@ -139,7 +139,7 @@ exports.deleteSchedule = async (req, res) => {
         }).exec();
 
         res.status(200).json({
-            message: 'Schemaläggningen har tagits bort!',
+            message: 'Schemaläggningen är raderad.',
             success: true
         });
     } catch (err) {
@@ -151,7 +151,7 @@ exports.deleteSchedule = async (req, res) => {
         // };
         res.status(err.code === notFound ? 404 : 400)
             .json({
-                message: 'Kunde inte ta bort schemainställningen!',
+                message: 'Kunde inte radera Schemaläggningen.',
                 danger: true
             });
     }
