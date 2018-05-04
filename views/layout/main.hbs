@@ -10,21 +10,29 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <script defer src="/js/scripts.js"></script>
-    <script defer src="/js/modal-scripts.js"></script> {{#if user }} {{#if loadIndexScripts }}
-    <script defer src="/js/frontend-settings.js"></script> {{/if}} {{#if loadArchiveScripts }}
-    <script defer src="/js/archive-scripts.js"></script> {{/if}} {{#if loadScheduleScripts }}
-    <script defer src="/js/schedule-scripts.js"></script> {{/if}} {{/if}} {{#if loadValidation }}
-    <script defer src="/js/validate.js"></script> {{/if}}
+    <script defer src="/js/modal-scripts.js"></script>
+    {{#if user }}
+        {{#if loadIndexScripts }}
+            <script defer src="/js/frontend-settings.js"></script> {{/if}}
+        {{#if loadArchiveScripts }}
+            <script defer src="/js/archive-scripts.js"></script> {{/if}}
+        {{#if loadScheduleScripts }}
+            <script defer src="/js/schedule-scripts.js"></script> {{/if}}
+    {{/if}}
+    {{#if loadValidation }}
+        <script defer src="/js/validate.js"></script> {{/if}}
 </head>
 
 <body>
-    {{> hero }} {{> navbar }}
+    {{> hero }}
+        <div class="flash-container">{{> flash }}</div>
+
+    {{> navbar }}
     <section class="section">
         <div class="container">
             {{{ body }}}
         </div>
     </section>
-
 </body>
 
 </html>
