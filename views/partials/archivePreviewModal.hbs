@@ -1,14 +1,27 @@
-<div id="previewModal" class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p id="previewTitle" class="modal-card-title"></p>
-            <button class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-            <iframe id="previewContainer" width="100%" height="700px">
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="utf-8">
+    <title>Arkivdium</title>
+</head>
+
+<body>
+
+    <div id="previewModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p id="previewTitle" class="modal-card-title"></p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <select class="modal-card-body">
                 <p>Your browser does not support iframes.</p>
-            </iframe>
-        </section>
+                <iframe id="previewContainer" width="100" height="700">
+                </iframe>
+            </select>
+        </div>
     </div>
-</div>
+</body>
+
+</html>
