@@ -5,7 +5,7 @@ class Modal {
         this.rootElem = document.documentElement;
         this.modalButtons = Modal.getAll('.modal-button');
         this.modalCloses = Modal.getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
-        this.addEventListener()
+        this.addEventListener();
     }
 
     addEventListener() {

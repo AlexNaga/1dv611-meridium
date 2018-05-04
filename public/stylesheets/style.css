@@ -49,16 +49,12 @@
     display: none;
 }
 
+/* The snackbar - position it at the bottom and in the middle of the screen */
  .flash-container {
-    position: relative;
- }
-
- /* The snackbar - position it at the bottom and in the middle of the screen */
- #flash-notification {
+    position: fixed;
     max-width: 768px; /* Bulma mobile */
-    position: absolute;
-    z-index: 1; /* Add a z-index if needed */
-    top: 8px; /* From the top */
+    z-index: 6;
+    top: 10px;
     left: 50%; /* Center */
     transform: translateX(-50%); /* Center */
 }
@@ -71,20 +67,20 @@
 /* Animations to fade the notification in and out */
 @-webkit-keyframes fadein {
     from {top: -50px; opacity: 0;}
-    to {top: 8px; opacity: 1;}
+    to {top: 0; opacity: 1;}
 }
 
 @keyframes fadein {
     from {top: -50px; opacity: 0;}
-    to {top: 8px; opacity: 1;}
+    to {top: 0; opacity: 1;}
 }
 
 @-webkit-keyframes fadeout {
-    from {top: 8px; opacity: 1;}
-    to {top: -70px; opacity: 0;}
+    from {top: 0; opacity: 1;}
+    to {top: -50px; opacity: 0;}
 }
 
 @keyframes fadeout {
-    from {top: 8px; opacity: 1;}
-    to {top: -70px; opacity: 0;}
+    from {top: 0; opacity: 1;}
+    to {top: -50px; opacity: 0;}
 }

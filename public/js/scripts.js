@@ -85,7 +85,8 @@ function fetchUrl(url, options) {
 /**
  * Displays a flash message, same as req.session.flash
  * @param {String} message The displayed message
- * @param {String} obj Bulma colors https://bulma.io/documentation/overview/colors/
+ * @param {Object} obj Bulma colors https://bulma.io/documentation/overview/colors/
+ * example: { danger: true }
  */
 function flashMessage(message, obj = { info: true }) {
     let color = obj.danger ? 'danger' :
