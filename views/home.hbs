@@ -1,3 +1,7 @@
 <div class="columns is-mobile is-centered">
-    {{#if user}} {{> loggedInUser}} {{else}} {{> notLoggedInUser}} {{/if}}
+    {{#if user}}
+        {{> isLoggedIn}}
+    {{else}}
+        {{> isLoggedOut}}
+    {{/if}}
 </div>
