@@ -55,7 +55,8 @@ class Modal {
                             this.closeModals();
                         }
                     });
-            });
+                });
+                modalRemoveBtn.focus(); // So you can just press Enter
         };
 
         if (this.modalCloses.length > 0) {

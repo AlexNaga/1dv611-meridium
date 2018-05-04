@@ -7,6 +7,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
+const compression = require('compression');
 const paginate = require('handlebars-paginate');
 const helpers = require('handlebars-helpers')(['comparison']);
 
@@ -16,12 +17,13 @@ const countdownHelper = require('./src/utils/countdownHelper');
 mongoose.connect(process.env.MONGODB);
 mongoose.Promise = global.Promise;
 
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public', { maxAge: 3600000 }));
 
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
