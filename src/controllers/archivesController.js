@@ -1,8 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const validator = require('../utils/validateHttrackSettings');
+const validateHttrackSettings = require('../utils/validateHttrackSettings');
 const httrackWrapper = require('../models/httrackWrapper');
-const EmailModel = require('../models/emailModel');
 const Archive = require('../models/archive');
 const Schedules = require('../models/schedules');
 const Setting = require('../models/enums').setting;
@@ -11,87 +10,67 @@ const Setting = require('../models/enums').setting;
  * POST /archives/
  */
 exports.createArchive = async (req, res) => {
-    let {
-        httrackSettings,
-        error
-    } = validator.validateHttrackSettings(req.body, req.session.user.id);
-    if (error) {
-        req.session.flash = error;
-        return res.redirect('/'); // return to not continue with archive/saving schedule
-    }
-
-    if (!httrackSettings.isScheduled) {
+    // Validate httrack settings
+    let httrackSettings = '';
+    try {
+        httrackSettings = validateHttrackSettings({ ...req.body, ...{ ownerId: req.session.user.id } });
+    } catch (err) {
         req.session.flash = {
-            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
-            info: true
-        };
-        res.redirect('/');
-    } else {
-        req.session.flash = {
-            message: 'Arkiveringen är sparad. Du kommer notifieras via email när arkiveringen är klar.',
-            info: true
-        };
-        res.redirect('/');
-    }
-
-    if (httrackSettings.isScheduled) {
-        if (httrackSettings.typeOfSetting === Setting.STANDARD) {
-            Schedules.create({
-                typeOfSetting: httrackSettings.typeOfSetting,
-                url: httrackSettings.url,
-                includeDomains: httrackSettings.includeDomains,
-                excludePaths: httrackSettings.excludePaths,
-                robots: httrackSettings.robots,
-                structure: httrackSettings.structure,
-                email: httrackSettings.email,
-                ownerId: httrackSettings.ownerId,
-                typeOfSchedule: httrackSettings.typeOfSchedule
-            });
-        } else { // advanced settings
-            Schedules.create({
-                typeOfSetting: httrackSettings.typeOfSetting,
-                advancedSetting: httrackSettings.advancedSetting,
-                email: httrackSettings.email,
-                ownerId: httrackSettings.ownerId,
-                typeOfSchedule: httrackSettings.typeOfSchedule
-            });
+            message: err.message,
+            danger: true
         }
-    } else {
-        httrackWrapper.archive(httrackSettings, (error, response) => {
-            if (error) {
-                console.log(error);
-                let emailSettings = {
-                    email: response.email,
-                    subject: 'Din schemalagda arkivering kunde inte slutföras!',
-                    message: `<p><b>Din schemalagda arkivering av
-                  <a href="${response.url}">${response.url}</a> kunde inte slutföras.</b></p>`
-                };
+        return res.redirect('/');
+    }
 
-                EmailModel.sendMail(emailSettings);
-                return;
+    // Save schedule in database
+    if (httrackSettings.isScheduled) {
+        try {
+            if (httrackSettings.typeOfSetting === Setting.STANDARD) {
+                let schedule = new Schedules({
+                    typeOfSetting: httrackSettings.typeOfSetting,
+                    url: httrackSettings.url,
+                    includeDomains: httrackSettings.includeDomains,
+                    excludePaths: httrackSettings.excludePaths,
+                    robots: httrackSettings.robots,
+                    structure: httrackSettings.structure,
+                    email: httrackSettings.email,
+                    ownerId: httrackSettings.ownerId,
+                    typeOfSchedule: httrackSettings.typeOfSchedule
+                });
+                await schedule.save();
+            } else if (httrackSettings.typeOfSetting === Setting.ADVANCED) {
+                let schedule = new Schedules({
+                    typeOfSetting: httrackSettings.typeOfSetting,
+                    advancedSetting: httrackSettings.advancedSetting,
+                    email: httrackSettings.email,
+                    ownerId: httrackSettings.ownerId,
+                    typeOfSchedule: httrackSettings.typeOfSchedule
+                });
+                await schedule.save();
             }
 
-            console.log(`Archive ${response.zipFile} was successful!`);
-
-            let archive = new Archive({
-                fileName: response.zipFile,
-                ownerId: response.ownerId,
-                fileSize: response.fileSize
-            });
-            archive.save();
-
-            let downloadUrl = process.env.SERVER_DOMAIN + `/${process.env.ARCHIVES_FOLDER}/` + response.zipFile;
-            let emailSettings = {
-                email: response.email,
-                subject: 'Arkiveringen är klar ✔',
-                message: `<p><b>Din arkivering av
-              <a href="${response.url}">${response.url}</a> är klar!</b></p>
-              <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
+            req.session.flash = {
+                message: 'Schemaläggningen har sparats.',
+                success: true
             };
-
-            // EmailModel.sendMail(emailSettings);
-        });
+            return res.redirect('/');
+        } catch (err) {
+            console.log(err);
+            req.session.flash = {
+                message: 'Schemaläggningen kunde inte sparas.',
+                danger: true
+            };
+            return res.redirect('/');
+        }
     }
+
+    req.session.flash = {
+        message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
+        info: true
+    };
+    res.redirect('/');
+
+    httrackWrapper.archive(httrackSettings);
 };
 
 /**

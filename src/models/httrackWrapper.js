@@ -1,4 +1,7 @@
 const zipFolder = require('../utils/zipFolder');
+const EmailModel = require('../models/emailModel');
+const Archive = require('../models/archive');
+
 const { URL } = require('url');
 const { exec } = require('child_process');
 const fs = require('fs-extra');
@@ -11,99 +14,126 @@ const Setting = require('../models/enums').setting;
 /**
  *
  * @param {string} settings The settings to archive.
- * @param {function} callback Function to be called when archive is done.
  */
-function archive(settings, callback) {
-    let errorResponse = { url: settings.url, email: settings.email };
+async function archive(settings) {
+    let PREVIEWS_FOLDER = path.join(__dirname + '/../../previews');
+    let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
+    let ARCHIVE_ID = '';
+
     let date = dayjs().toObject();
     let timestamp = `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
-    let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
-    let previewFolderPath = path.join(__dirname + '/../../previews');
-    let pathToFolder = '';
-    let ARCHIVE_ID = '';
+
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let command = '';
 
     if (settings.typeOfSetting === Setting.STANDARD) {
         let hostname = new URL(settings.url).hostname;
         ARCHIVE_ID = `${hostname}_${timestamp}`;
-        pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
-        settings.output = pathToFolder;
-        command = createCommand(settings, callback);
+        settings.output = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
+        command = createCommand(settings);
     } else if (settings.typeOfSetting === Setting.ADVANCED) {
         ARCHIVE_ID = `hostname_${timestamp}`;
-        pathToFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
 
-        command = httrack + ' ' + settings.advancedSetting + ` -O ${pathToFolder}`;
+        command = `${httrack} ${settings.advancedSetting} -O ${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
     }
 
-    let urls = getUrls(command);
-    urls = [...urls];
+    let urls = [...getUrls(command)];
     let previewUrl = urls[0];
+    urls = urls.map(url => url.substring(url.indexOf('//') + 2));
 
-    for (let i = 0; i < urls.length; i++) {
-        urls[i] = urls[i].substring(urls[i].indexOf('//') + 2);
-    }
+    const previewCommand = `${httrack} ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original"`;
 
     console.log('command', command);
+    console.log('previewCommand', previewCommand);
 
-    const previewCommmand = `${httrack} ${previewUrl} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${previewFolderPath}/${ARCHIVE_ID}_original"`;
-    console.log('previewCommmand', previewCommmand);
+    try {
+        // Preview
+        await runCommand(previewCommand);
+        await moveFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original/${urls[0]}`, `${PREVIEWS_FOLDER}/${ARCHIVE_ID}/`);
+        removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
-    // Run preview command
-    exec(previewCommmand, (error, stdout, stderr) => {
-        if (error) return callback(error, errorResponse);
-
-        if (fs.existsSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`)) {
-            fs.moveSync(`${previewFolderPath}/${ARCHIVE_ID}_original/${urls[0]}`, `${previewFolderPath}/${ARCHIVE_ID}`);
-        }
-
-        fs.remove(`${previewFolderPath}/${ARCHIVE_ID}_original`, error => {
-            if (error) return callback(error, errorResponse);
+        // Archive
+        await runCommand(command);
+        urls.forEach(async url => {
+            await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
+            await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
         });
-    });
+        await moveFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/web`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/`);
 
-    // Run archive command
-    exec(command, (error, stdout, stderr) => {
-        if (error) return callback(error, errorResponse);
+        let fileSize = await zip(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`);
+        removeFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}`);
 
-        urls.forEach(url => {
-            if (fs.existsSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`)) {
-                fs.moveSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
-            }
-            if (fs.existsSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`)) {
-                fs.moveSync(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/www.${url}`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip/${url}`);
-            }
+        console.log(`Archive was successful!`);
+
+        // Create archive in database
+        let archive = new Archive({
+            fileName: `${ARCHIVE_ID}.zip`,
+            ownerId: settings.ownerId,
+            fileSize: fileSize
         });
+        await archive.save();
 
-        if (fs.existsSync(`${pathToFolder}/web`)) {
-            fs.moveSync(`${pathToFolder}/web`, `${pathToFolder}/folderToZip/`);
-        }
+        // Send success email
+        let downloadUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`;
+        let emailSettings = {
+            email: settings.email,
+            subject: 'Arkiveringen är klar ✔',
+            message: `<p><b>Din arkivering av
+            <a href="${settings.url}">${settings.url}</a> är klar!</b></p>
+            <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
+        };
+        EmailModel.sendMail(emailSettings);
+    } catch (err) {
+        console.log(err);
 
-        let zipDest = `${pathToFolder}.zip`;
-        zipFolder(`${pathToFolder}/folderToZip`, zipDest, (error, fileSize) => {
-            if (error) return callback(error, errorResponse);
+        // Send fail mail
+        let emailSettings = {
+            email: err.email,
+            subject: 'Din schemalagda arkivering kunde inte slutföras!',
+            message: `<p><b>Din schemalagda arkivering av
+            <a href="${err.url}">${err.url}</a> kunde inte slutföras.</b></p>`
+        };
+        EmailModel.sendMail(emailSettings);
+    }
+}
 
-            fs.remove(`${pathToFolder}`, error => {
-                if (error) return callback(error, errorResponse);
-
-                // Return everything thats needed for the calling method
-                // to save archive and send email
-                callback(null, {
-                    ownerId: settings.ownerId,
-                    zipFile: `${ARCHIVE_ID}.zip`,
-                    fileSize: fileSize,
-                    path: zipDest,
-                    url: settings.url,
-                    email: settings.email
-                });
-            });
+function zip(folder, zipDest) {
+    return new Promise(function (resolve, reject) {
+        zipFolder(folder, zipDest, (error, fileSize) => {
+            if (error) {
+                console.log(error);
+                reject();
+            }
+            resolve(fileSize);
         });
     });
 }
 
-function createCommand(settings, callback) {
+function moveFolder(orig, dest) {
+    // TODO async och felhantering
+    if (fs.existsSync(orig)) {
+        fs.moveSync(orig, dest);
+    }
+}
+
+function removeFolder(folder) {
+    // TODO använd promise?
+    fs.remove(folder, error => {
+        if (error) throw `httrackWrapper error: Could not remove folder '${folder}'`;
+    });
+}
+
+function runCommand(command) {
+    return new Promise(function(resolve, reject) {
+        exec(command, (error, stdout, stderr) => {
+            if (error) reject(error);
+            resolve();
+        });
+    });
+}
+
+function createCommand(settings) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     let url = validUrl.isUri(settings.url) ? settings.url : callback('Httrackwrapper error. Invalid url.');
     let output = '"' + settings.output + '"';
