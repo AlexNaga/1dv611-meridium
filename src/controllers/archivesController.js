@@ -199,12 +199,13 @@ exports.previewArchive = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
+        
         let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
         let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
 
         fs.stat(pathToFile, (err, stat) => {
+            // File exist
             if (err == null) {
-                // File exist
                 return res.status(200).sendFile(pathToFile);
             } else {
                 let notFound = 'ENOENT'; // ENOENT === No such file

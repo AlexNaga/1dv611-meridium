@@ -25,14 +25,22 @@
 
 <body>
     {{> hero }}
-        <div class="flash-container">{{> flash }}</div>
-
     {{> navbar }}
-    <section class="section">
+    <section class="section wrapper">
         <div class="container">
             {{{ body }}}
         </div>
     </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-left">
+                <p>
+                    <strong>Arkivdium</strong>
+                </p>
+            </div>
+        </div>
+    </footer>
+    {{> flash }}
 </body>
 
 </html>

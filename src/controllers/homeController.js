@@ -14,8 +14,7 @@ exports.home = (req, res) => {
         active: {
             home: true
         },
-        loadIndexScripts: true,
-        loadArchiveScripts: true
+        loadIndexScripts: true
     });
 };
 

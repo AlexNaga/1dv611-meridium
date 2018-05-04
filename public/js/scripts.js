@@ -93,17 +93,20 @@ function flashMessage(message, obj = { info: true }) {
         obj.success ? 'success' :
             'info';
 
+    let container = document.createElement('div');
     let notification = document.createElement('div');
-    let button = document.createElement('button');
+    let delButton = document.createElement('button');
     let text = document.createTextNode(message);
 
+    container.classList.add('notification-container');
     notification.classList.add('notification', 'fade-in-out', 'has-text-centered', 'is-' + color);
-    button.classList.add('delete');
-    notification.appendChild(button);
+    delButton.classList.add('delete');
+    notification.appendChild(delButton);
     notification.appendChild(text);
-
-    let container = document.getElementsByClassName('flash-container')[0];
-    while (container.firstChild) container.removeChild(container.firstChild);
-
     container.appendChild(notification);
+
+    // while (container.firstChild) container.removeChild(container.firstChild);
+    document.body.appendChild(container);
+
+    closeNotification(); // Add event listener for closing notifications
 }
