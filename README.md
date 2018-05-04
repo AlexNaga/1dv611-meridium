@@ -22,6 +22,7 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
     MONGODB="YOUR_MONGODB_CONNECTION_STRING"
     SERVER_DOMAIN="http://localhost:3000"
     SESSION_SECRET="A_RANDOM_SECRET"
+    PORT=3000
   }
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
