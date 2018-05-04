@@ -26,10 +26,13 @@
                 </p>
             </td>
             <td>
-                <a class="button is-link is-outlined is-rounded is-small modal-button action-preview" href="/archives/preview/{{ archive.id }}"
+                {{!-- <a class="button is-link is-outlined is-rounded is-small modal-button action-preview" href="/archives/preview/{{ archive.id }}"
                     target="_blank" title="Förhandsgranska arkiv">
                     Förhandsgranska
-                </a>
+                </a> --}}
+                <button class="button is-link is-outlined is-rounded is-small modal-button action-preview" data-target="previewArchive" data-id="{{ archive.id }}"
+                    title="Förhandsgranska arkiv">Förhandsgranska
+                </button>
             </td>
             <td>
                 <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.path }}" title="Ladda ned arkiv">
