@@ -68,7 +68,7 @@ async function archive(settings) {
         let fileSize = await zip(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}/folderToZip`, `${ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`);
         removeFolder(`${ARCHIVES_FOLDER}/${ARCHIVE_ID}`);
 
-        console.log(`Archive was successful!`);
+        console.log('Archive was successful!');
 
         // Create archive in database
         let archive = new Archive({
@@ -79,7 +79,7 @@ async function archive(settings) {
         await archive.save();
 
         // Send success email
-        let downloadUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/${ARCHIVE_ID}.zip`;
+        let downloadUrl = `${process.env.SERVER_DOMAIN}/archives/${archive.id}`;
         let emailSettings = {
             email: settings.email,
             subject: 'Arkiveringen är klar ✔',

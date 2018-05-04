@@ -178,20 +178,14 @@ exports.previewArchive = async (req, res, next) => {
             ownerId: req.session.user.id
         }).exec();
 
-        let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
-        let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
-        fs.stat(pathToFile, (err, stat) => {
-            // File exist
-            if (err == null) {
-                return next();
-            } else {
-                let notFound = 'ENOENT'; // ENOENT === No such file
-                res.sendStatus(err.code === notFound ? 404 : 400);
-            }
+        let pathToFolder = path.join(__dirname + '/../../previews/' + archive.id);
+        fs.stat(pathToFolder, (err, stat) => {
+            if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
+
+            // Folder exist
+            next();
         });
     } catch (err) {
-        let notFound = 'ENOENT'; // ENOENT === No such file
-
-        res.sendStatus(err.code === notFound ? 404 : 400);
+        res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
     }
 };
