@@ -106,3 +106,42 @@ function flashMessage(message, obj = { info: true }) {
 
     container.appendChild(notification);
 }
+
+function setupEventHandlers() {
+    let list = document.querySelectorAll('#recent-list > ul > li > div');
+
+    for (let i = 0; i < list.length; i++) {
+        let elem = list[i];
+        previewBtn(elem);
+    }
+}
+
+function previewBtn(elem) {
+    log
+    let btn = elem.querySelector('.action-preview');
+    let archiveId = btn.getAttribute('data-id');
+    let archiveName = btn.getAttribute('data-name');
+
+    btn.addEventListener('click', () => {
+        console.log(btn);
+        let previewContainer = document.querySelector('#previewContainer');
+        let previewTitle = document.querySelector('#previewTitle');
+        previewTitle.textContent = `Förhandsgranskning av: ${archiveName}`;
+        previewContainer.src = '';
+
+        fetchUrl('/archives/preview/' + archiveId, {
+            method: 'GET'
+        })
+            .then((data) => {
+                console.log(data);
+
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(data.html);
+            })
+            .catch((err) => {
+                previewContainer.src = 'data:text/html;charset=utf-8,' + escape(err.status + ' ' + err.statusText);
+            });
+    });
+    return btn;
+}
+
+setupEventHandlers();
