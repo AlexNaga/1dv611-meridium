@@ -1,9 +1,11 @@
 {{#if flash}}
-<div id="flash-notification" class="notification fade-in-out has-text-centered
+    <div class="notification-container">
+        <div class="notification fade-in-out has-text-centered
             {{#if flash.success}}is-success{{/if}}
             {{#if flash.danger}}is-danger{{/if}}
             {{#if flash.info}}is-info{{/if}}">
-    <button class="delete"></button>
-    {{ flash.message }}
-</div>
+            <button class="delete"></button>
+            {{ flash.message }}
+        </div>
+    </div>
 {{/if}}

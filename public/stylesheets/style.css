@@ -1,3 +1,9 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
 .invisbleButton {
     background: transparent;
     border: none !important;
@@ -5,11 +11,14 @@
 }
 
 .startPageIcon {
-    color: 		#DC3E2A; 
+    color: #DC3E2A;
 }
+
 .section {
     margin-top: 2rem;
+    flex:1;
 }
+
 #recent-list ul li {
     margin-bottom: 10px;
 }
@@ -24,6 +33,7 @@
     -ms-transition: background-color 0.2s ease-in;
     transition: background-color 0.2s ease-in;
 }
+
 /* Scroll sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp */
 .sticky {
     position: fixed;
@@ -42,6 +52,7 @@
 }
 
 .active-page {
+    background-color: #4A4A4A !important; /* fallback color */
     background-color: hsl(0, 0%, 29%) !important;
 }
 
@@ -49,38 +60,41 @@
     display: none;
 }
 
-/* The snackbar - position it at the bottom and in the middle of the screen */
- .flash-container {
+.notification-container {
     position: fixed;
     max-width: 768px; /* Bulma mobile */
     z-index: 6;
-    top: 10px;
+    bottom: 10px;
     left: 50%; /* Center */
     transform: translateX(-50%); /* Center */
+    pointer-events: none; /* Click through div */
 }
 
 .fade-in-out {
     -webkit-animation: fadein 1s, fadeout 1s 4s linear forwards;
     animation: fadein 1s, fadeout 1s 4s linear forwards;
+    pointer-events: auto;
 }
 
 /* Animations to fade the notification in and out */
 @-webkit-keyframes fadein {
-    from {top: -50px; opacity: 0;}
-    to {top: 0; opacity: 1;}
+    from { bottom: -10px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
 }
 
 @keyframes fadein {
-    from {top: -50px; opacity: 0;}
-    to {top: 0; opacity: 1;}
+    from { bottom: -10px; opacity: 0; }
+    to { bottom: 0; opacity: 1; }
 }
 
 @-webkit-keyframes fadeout {
-    from {top: 0; opacity: 1;}
-    to {top: -50px; opacity: 0;}
+    from { bottom: 0; opacity: 1; }
+    99% { bottom: -10px; opacity: 0; }
+    100% { bottom: -200px; }
 }
 
 @keyframes fadeout {
-    from {top: 0; opacity: 1;}
-    to {top: -50px; opacity: 0;}
+    from { bottom: 0; opacity: 1; }
+    99% { bottom: -10px; opacity: 0; }
+    100% { bottom: -200px; }
 }
