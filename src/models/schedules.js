@@ -75,7 +75,7 @@ schema.post('init', (doc) => {
     if (doc.typeOfSchedule === Schedule.WEEKLY) doc.scheduleName = 'Veckovis';
     if (doc.typeOfSchedule === Schedule.MONTHLY) doc.scheduleName = 'Månadsvis';
 
-    doc.friendlyUrl = makeUserFriendlyUrl(doc.url);
+    doc.friendlyUrl = makeUserFriendlyUrl(doc);
 });
 
 /**

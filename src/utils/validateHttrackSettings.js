@@ -1,5 +1,6 @@
 const validEmail = require('email-validator');
 const validUrl = require('valid-url');
+const throwError = require('./error');
 const Setting = require('../models/enums').setting;
 
 /**
@@ -8,20 +9,21 @@ const Setting = require('../models/enums').setting;
  * @param {*} b
  */
 Number.prototype.between = function(a, b) {
-    let min = Math.min(a, b),
-        max = Math.max(a, b);
+    let min = Math.min(a, b);
+    let max = Math.max(a, b);
 
     return this >= min && this <= max;
 };
 
-exports.validateHttrackSettings = (body, ownerId) => {
+module.exports = (body) => {
+    let ownerId = body.ownerId;
     let url = body.url;
     let includeDomains = body.includeDomains === '' || body.includeDomains === undefined ? [] : body.includeDomains.replace(' ', '').split(',');
     let excludePaths = body.excludePaths === '' || body.excludePaths === undefined ? [] : body.excludePaths.replace(' ', '').split(',');
     let robots = parseInt(body.robots);
     let structure = body.structure;
     let email = body.email;
-    let error = undefined;
+    // let error = undefined;
     let typeOfSetting = parseInt(body.setting);
     let advancedSetting = body.advancedSetting;
     let typeOfSchedule = parseInt(body.typeOfSchedule); // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
@@ -30,33 +32,35 @@ exports.validateHttrackSettings = (body, ownerId) => {
     if (isScheduled.between(0, 1)) {
         isScheduled = isScheduled === 1; // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
     } else {
-        error = { message: 'Felaktig metod, välj arkivera eller spara.', danger: true };
+        throw new Error('Falaktig metod, välj arkivera eller spara.');
     }
-    if (!typeOfSchedule.between(0, 3)) {
-        error = { message: 'Felaktig schemaläggning, kontrollera vald tid.', danger: true };
+
+    if (typeOfSchedule.between(0, 3) === false) {
+        throw new Error('Felaktig schemaläggning, kontrollera vald tid.');
     }
+
+    if (validEmail.validate(email) === false) {
+        throw new Error('Fel epost!');
+    }
+
     if (typeOfSetting === Setting.STANDARD) {
-        if (url === undefined || !validUrl.isUri(url)) {
-            error = { message: 'Fel url!', danger: true };
+        if (url === undefined || validUrl.isUri(url) === false) {
+            throw new Error('Fel url!');
         }
         if (includeDomains[0] !== '' && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
-            error = { message: 'Fel sub-url!', danger: true };
+            throw new Error('Fel sub-url!');
         }
         if (!robots.between(0, 2)) {
-            error = { message: 'Fel robot-inställningar!', danger: true };
-        }
-        if (validEmail.validate(email) === false) {
-            error = { message: 'Fel epost!', danger: true };
+            throw new Error('Fel robot-inställningar!');
         }
         // lägg till validering av structure
         // if (structure > 2 && structure < 0) {
         //     error = { message: 'Fel robot-inställningar!', danger: true };
         // }
+    }
 
-    } else { // advanced setting
-        if (validEmail.validate(email) === false) {
-            error = { message: 'Fel epost!', danger: true };
-        }
+    if (typeOfSetting === Setting.ADVANCED) {
+        // TODO validera advanced kommando
     }
 
     let httrackSettings = {
@@ -71,7 +75,7 @@ exports.validateHttrackSettings = (body, ownerId) => {
         email,          // just pass along
         typeOfSchedule,  // just pass along
         isScheduled,    // just pass along
-
     };
-    return { httrackSettings, error };
+
+    return httrackSettings;
 };
