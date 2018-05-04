@@ -237,7 +237,7 @@ exports.updatePassword = async (req, res) => {
     const confirmPassword = req.body.confirmPassword;
 
     try {
-        // await validatePassword(password, confirmPassword);
+         await validatePassword(password, confirmPassword);
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.findOneAndUpdate({
             resetPasswordCode: code
@@ -259,7 +259,9 @@ exports.updatePassword = async (req, res) => {
             message: err.message,
             danger: true
         };
-        return res.status(err.status || 400).render('account/forgot-password');
+  
+        return res.redirect('/account/reset-password/' + code);
+       
     }
 };
 
