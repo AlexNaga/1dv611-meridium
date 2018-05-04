@@ -33,7 +33,7 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', async () => {
             httrackWrapper.archive(shouldBeArchived[i], (err, response) => {
                 if (err) {
                     let emailSettings = {
-                        email: response.email,
+                        to: response.email,
                         subject: 'Din schemalagda arkivering kunde inte slutföras!',
                         message: `<p><b>Din schemalagda arkivering av
                           <a href="${response.url}">${response.url}</a> kunde inte slutföras.</b></p>`
@@ -55,7 +55,7 @@ exports.nodeSchedule = nodeSchedule.scheduleJob('00 00 03 * * *', async () => {
 
                     let downloadUrl = process.env.SERVER_DOMAIN + '/archives/download/' + archive._id;
                     let emailSettings = {
-                        email: response.email,
+                        to: response.email,
                         subject: 'Din schemalagda arkivering är klar ✔',
                         message: `<p><b>Din schemalagda arkivering av
                       <a href="${response.url}">${response.url}</a> är klar!</b></p>

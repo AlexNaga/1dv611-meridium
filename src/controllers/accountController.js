@@ -164,7 +164,7 @@ exports.resetPassword = async (req, res) => {
                     }).exec();
 
                 let emailSettings = {
-                    email: email,
+                    to: email,
                     subject: 'Återställ ditt lösenord',
                     message: `<p>Hej,</p>
                           <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
@@ -189,7 +189,7 @@ exports.resetPassword = async (req, res) => {
         }
     } else {
         let emailSettings = {
-            email: email,
+            to: email,
             subject: 'Återställning av lösenord',
             message: 'Någon har försökt återställa ett lösenord till den här e-posten men vi har den inte registrerad hos oss på Arkivdium.se.'
         };

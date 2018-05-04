@@ -182,7 +182,7 @@ exports.previewArchive = async (req, res, next) => {
         fs.stat(pathToFolder, (err, stat) => {
             if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
 
-            // Folder exist
+            // Folder exist, continue to static folder and let express find folder with the id as name.
             next();
         });
     } catch (err) {

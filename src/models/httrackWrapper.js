@@ -14,7 +14,7 @@ const Setting = require('../models/enums').setting;
  *
  * @param {string} settings The settings to archive.
  */
-async function archive(settings) {
+exports.archive = async (settings) => {
     let PREVIEWS_FOLDER = path.join(__dirname + '/../../previews');
     let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let ARCHIVE_ID = '';
@@ -50,8 +50,6 @@ async function archive(settings) {
     try {
         // Preview
         await runCommand(previewCommand);
-        await moveFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original/${urls[0]}`, `${PREVIEWS_FOLDER}/${ARCHIVE_ID}/`);
-        removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
         // Archive
         await runCommand(command);
@@ -62,10 +60,10 @@ async function archive(settings) {
         await moveFolder(`${archivedFolder}/web`, `${archivedFolder}/folderToZip/`);
 
         let fileSize = await zip(`${archivedFolder}/folderToZip`, `${archivedFolder}.zip`);
-        removeFolder(`${archivedFolder}`);
+        await removeFolder(`${archivedFolder}`);
 
         console.log('Archive was successful!');
-
+        
         // Create archive in database
         let archive = new Archive({
             fileName: `${ARCHIVE_ID}.zip`,
@@ -73,23 +71,27 @@ async function archive(settings) {
             fileSize: fileSize
         });
         await archive.save();
+        
+        // Preview folder gets the archive id name to make the viewing of previews to work.
+        await moveFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original/${urls[0]}`, `${PREVIEWS_FOLDER}/${archive.id}/`);
+        await removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
         // Send success email
         let downloadUrl = `${process.env.SERVER_DOMAIN}/archives/${archive.id}`;
         let emailSettings = {
-            email: settings.email,
+            to: settings.email,
             subject: 'Arkiveringen är klar ✔',
             message: `<p><b>Din arkivering av
             <a href="${settings.url}">${settings.url}</a> är klar!</b></p>
             <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
         };
-        EmailModel.sendMail(emailSettings);
+         EmailModel.sendMail(emailSettings);
     } catch (err) {
         console.log(err);
 
-        // Send fail mail
+        // Send error mail
         let emailSettings = {
-            email: settings.email,
+            to: settings.email,
             subject: 'Din schemalagda arkivering kunde inte slutföras!',
             message: `<p><b>Din schemalagda arkivering av
             <a href="${settings.url}">${settings.url}</a> kunde inte slutföras.</b></p>`
@@ -166,7 +168,3 @@ function createCommand(settings) {
 
     return command.join(' ');
 }
-
-module.exports = {
-    archive
-};
