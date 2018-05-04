@@ -1,5 +1,4 @@
-const modal = new Modal();
-modal.addEventListener('schedules');
+new Modal('schedules');
 
 /**
  * Pause / Start scheduled archive

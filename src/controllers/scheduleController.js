@@ -1,5 +1,6 @@
 const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
+const httrackWrapper = require('../models/httrackWrapper');
 
 /**
  * GET /schedules/
@@ -124,45 +125,73 @@ exports.updateSchedule = async (req, res) => {
 };
 
 /**
- * POST/DELETE /schedules/delete/:id
+ * DELETE /schedules/delete/:id
  */
 exports.deleteSchedule = async (req, res) => {
     try {
         let schedule = await Schedule.findOneAndRemove({ _id: req.params.id }).exec();
 
-        req.session.flash = {
+        res.status(200).json({
             message: 'Schemaläggningen har tagits bort!',
             success: true
-        };
-
-        res.status(200).json({
-            deleted: schedule.fileName
         });
     } catch (err) {
         // err.code ENOENT = No such file on disk, but entry removed from db.
-        req.session.flash = {
-            message: 'Vi kunde inte ta bort schemainställningen!',
-            danger: true
-        };
-
-        return res.redirect('/schedules');
+        let notFound = 'ENOENT';
+        // req.session.flash = {
+        //     message: 'Kunde inte ta bort schemainställningen!',
+        //     danger: true
+        // };
+        res.status(err.code === notFound ? 404 : 400)
+            .json({
+                message: 'Kunde inte ta bort schemainställningen!',
+                danger: true
+            });
     }
 };
 
-// POST /schedule/pause/:id
+/*
+* POST /schedule/run/:id
+*/
+exports.runSchedule = async (req, res) => {
+    try {
+        let schedule = await Schedule.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+        httrackWrapper.archive(schedule);
+
+        res.json({
+            success: true
+        });
+    } catch (err) {
+        res.json({
+            success: false,
+            message: err
+        });
+    }
+};
+
+/*
+* POST /schedule/pause/:id
+*/
 exports.pauseSchedule = async (req, res) => {
     try {
-        let schedule = await Schedule.findById(req.params.id).exec();
+        let schedule = await Schedule.findOne({
+            _id: req.params.id,
+            ownerId: req.session.user.id
+        }).exec();
+
         schedule.isPaused = !schedule.isPaused;
         await schedule.save();
 
         res.json({
             success: true
         });
-    } catch (error) {
+    } catch (err) {
         res.json({
             success: false,
             message: err
         });
     }
-}
+};

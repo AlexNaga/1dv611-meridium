@@ -1,49 +1,45 @@
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-4 is-offset-4">
-                <h1 class="title">Registrera användare</h1>
-                <h2 class="subtitle">Ange din email och lösenord</h2>
-                <form action="/account/register" method="post">
-                    <div class="field">
-                        <div class="control has-icons-left">
-                            <input class="input" type="email" required name="email" placeholder="Email" value="{{email}}">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control has-icons-left">
-                            <input class="input" type="password" id="password" required name="password" placeholder="Lösenord" onkeyup="validatePass(); return false;">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-key"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control has-icons-left">
-                            <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
-                                onkeyup="validatePass(); return false;">
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-key"></i>
-                            </span>
-                        </div>
-                    </div>
-                    <span id="confirmMessage" class="confirmMessage"></span>
-                    <br>
-                    <div class="field">
-                        <div class="control">
-                            <button type="submit" class="button is-link" disabled id="submitBtn">
-                                <span class="icon is-small">
-                                    <i class="fas fa-sign-in-alt"></i>
-                                </span>
-                                <span>Registrera</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+<div class="columns">
+    <div class="column is-4 is-offset-4">
+        <h1 class="title">Registrera användare</h1>
+        <h2 class="subtitle">Ange din email och lösenord</h2>
+        <form action="/account/register" method="post">
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input class="input" type="email" required name="email" placeholder="Email" value="{{email}}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
             </div>
-        </div>
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input class="input" type="password" id="password" required name="password" placeholder="Lösenord" onkeyup="validatePass(); return false;">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-key"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input class="input" type="password" id="passwordConfirm" required name="password" placeholder="Ange ditt lösenord igen"
+                        onkeyup="validatePass(); return false;">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-key"></i>
+                    </span>
+                </div>
+            </div>
+            <span id="confirmMessage" class="confirmMessage"></span>
+            <br>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" class="button is-link" disabled id="submitBtn">
+                        <span class="icon is-small">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </span>
+                        <span>Registrera</span>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
-</section>
+</div>

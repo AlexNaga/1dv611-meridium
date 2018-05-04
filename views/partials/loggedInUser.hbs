@@ -1,19 +1,13 @@
-<section class="section">
-    <div class="container">
-        <div class="columns is-mobile is-centered">
-            <div class="column is-half">
-                <div class="tabs is-fullwidth">
-                    <ul>
-                        <li class="is-active" id="settings-li" onClick="showSettings();">
-                            <a>Inställningar</a>
-                        </li>
-                        <li id="advancedSettings-li" onClick="showAdvancedSettings();">
-                            <a>Avancerade inställningar</a>
-                        </li>
-                    </ul>
-                </div>
-                {{> settings }} {{> advancedSettings }}
-            </div>
-        </div>
+<div class="column is-half">
+    <div class="tabs is-fullwidth">
+        <ul>
+            <li class="is-active" id="settings-li" onClick="showSettings();">
+                <a>Inställningar</a>
+            </li>
+            <li id="advancedSettings-li" onClick="showAdvancedSettings();">
+                <a>Avancerade inställningar</a>
+            </li>
+        </ul>
     </div>
-</section>
+    {{> settings }} {{> advancedSettings }}
+</div>
