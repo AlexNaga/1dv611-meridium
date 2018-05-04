@@ -20,10 +20,9 @@
             <script defer src="/js/schedule-scripts.js"></script> {{/if}}
     {{/if}}
     {{#if loadValidation }}
-        <script defer src="/js/validate.js"></script> {{/if}}
-</head>
+        <script defer src="/js/validate.js"></script> 
+    {{/if}}
 
-<body>
     {{> hero }}
     {{> navbar }}
     <section class="section wrapper">
@@ -31,6 +30,7 @@
             {{{ body }}}
         </div>
     </section>
+    
     <footer class="footer">
         <div class="container">
             <div class="content has-text-left">
@@ -41,6 +41,6 @@
         </div>
     </footer>
     {{> flash }}
-</body>
+
 
 </html>
