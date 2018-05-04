@@ -14,14 +14,14 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   3. Create a `.env` file for the environment variables, with the following content
   ``` js
   {
-    EMAIL_USER="YOUR_EMAIL"
+    ARCHIVES_FOLDER="archives"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
+    EMAIL_USER="YOUR_EMAIL"
     IS_RUNNING_LINUX_OS="true"
     JWT_SECRET="A_RANDOM_SECRET"
     MONGODB="YOUR_MONGODB_CONNECTION_STRING"
     SERVER_DOMAIN="http://localhost:3000"
     SESSION_SECRET="A_RANDOM_SECRET"
-    ARCHIVES_FOLDER="archives"
   }
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
