@@ -89,9 +89,6 @@ exports.archive = async (settings) => {
     }
 }
 
-function getUrlsInCommand(command) {
-}
-
 function getTimestamp() {
     let date = dayjs().toObject();
     return `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
