@@ -39,7 +39,7 @@ module.exports = (settings) => {
 
     if (settings.typeOfSetting === Setting.STANDARD) {
         // url
-        if (validUrl.isUri(settings.url) === false) {
+        if (!validUrl.isUri(settings.url)) {
             throw new Error('Huvuddomän är inte korrekt.');
         }
 
@@ -80,7 +80,14 @@ module.exports = (settings) => {
     }
 
     if (settings.typeOfSetting === Setting.ADVANCED) {
-        // TODO validate advanced setting string
+        let url = settings.advancedSetting.split(' ')[0];
+        if (!validUrl.isUri(url)) {
+            throw new Error('Felaktig url.');
+        }
+
+        if (settings.advancedSetting.includes('-O')) {
+            throw new Error('Inte tillåtet att använda flagga "-O".');
+        }
 
         return {
             typeOfSetting: settings.typeOfSetting,

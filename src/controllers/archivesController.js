@@ -37,8 +37,6 @@ exports.createArchive = async (req, res) => {
         return res.redirect('/');
     }
 
-    console.log(httrackSettings);
-
     // if pressed 'Spara' -> save schedule in database
     // TODO enums
     if (action === 1) {
