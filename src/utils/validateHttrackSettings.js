@@ -15,67 +15,79 @@ Number.prototype.between = function(a, b) {
     return this >= min && this <= max;
 };
 
-module.exports = (body) => {
-    let ownerId = body.ownerId;
-    let url = body.url;
-    let includeDomains = body.includeDomains === '' || body.includeDomains === undefined ? [] : body.includeDomains.replace(' ', '').split(',');
-    let excludePaths = body.excludePaths === '' || body.excludePaths === undefined ? [] : body.excludePaths.replace(' ', '').split(',');
-    let robots = parseInt(body.robots);
-    let structure = body.structure;
-    let email = body.email;
-    // let error = undefined;
-    let typeOfSetting = parseInt(body.setting);
-    let advancedSetting = body.advancedSetting;
-    let typeOfSchedule = parseInt(body.typeOfSchedule); // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
-    let isScheduled = parseInt(body.action);
-
-    if (isScheduled.between(0, 1)) {
-        isScheduled = isScheduled === 1; // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
-    } else {
-        throw new Error('Falaktig metod, välj arkivera eller spara.');
+/**
+ * Returns a valid settings object with all required attributes
+ * @param {object} settings 
+ */
+module.exports = (settings) => {
+    // type of setting
+    settings.typeOfSetting = parseInt(settings.setting);
+    if (settings.typeOfSetting.between(0, 1) === false) {
+        throw Error('Fel inställningstyp.');
     }
 
-    if (typeOfSchedule.between(0, 3) === false) {
+    // type of schedule
+    settings.typeOfSchedule = parseInt(settings.typeOfSchedule);
+    if (settings.typeOfSchedule.between(0, 3) === false) {
         throw new Error('Felaktig schemaläggning, kontrollera vald tid.');
     }
 
-    if (validEmail.validate(email) === false) {
+    // email
+    if (validEmail.validate(settings.email) === false) {
         throw new Error('Fel epost!');
     }
 
-    if (typeOfSetting === Setting.STANDARD) {
-        if (url === undefined || validUrl.isUri(url) === false) {
-            throw new Error('Fel url!');
+    if (settings.typeOfSetting === Setting.STANDARD) {
+        // url
+        if (validUrl.isUri(settings.url) === false) {
+            throw new Error('Huvuddomän är inte korrekt.');
         }
-        if (includeDomains[0] !== '' && includeDomains.every(domain => validUrl.isUri(domain)) === false) {
-            throw new Error('Fel sub-url!');
+
+        // include domains
+        settings.includeDomains = settings.includeDomains.replace(' ', '').split(',');
+        if (settings.includeDomains[0] !== '') {
+            if (settings.includeDomains.every(domain => validUrl.isUri(domain)) === false) {
+                throw new Error('En subdomän att arkivera är inte korrekt.');
+            }
         }
-        if (!robots.between(0, 2)) {
-            throw new Error('Fel robot-inställningar!');
+
+        // exclude paths
+        settings.excludePaths = settings.excludePaths.replace(' ', '').split(',');
+
+        // robots
+        settings.robots = parseInt(settings.robots);
+        if (settings.robots.between(0, 2) === false) {
+            throw new Error('Robot-inställningar är inte korrekt.');
         }
-        // lägg till validering av structure
-        // if (structure > 2 && structure < 0) {
-        //     error = { message: 'Fel robot-inställningar!', danger: true };
-        // }
+
+        // structure
+        settings.structure = parseInt(settings.structure);
+        if (settings.structure.between(0, 5) === false) {
+            throw new Error('Strukturinställning är inte korrekt.');
+        }
+
+        return {
+            typeOfSetting: settings.typeOfSetting,
+            typeOfSchedule: settings.typeOfSchedule,
+            email: settings.email,
+            ownerId: settings.ownerId,
+            url: settings.url,
+            includeDomains: settings.includeDomains,
+            excludePaths: settings.excludePaths,
+            robots: settings.robots,
+            structure: settings.structure
+        };
     }
 
-    if (typeOfSetting === Setting.ADVANCED) {
-        // TODO validera advanced kommando
+    if (settings.typeOfSetting === Setting.ADVANCED) {
+        // TODO validate advanced setting string
+
+        return {
+            typeOfSetting: settings.typeOfSetting,
+            typeOfSchedule: settings.typeOfSchedule,
+            advancedSetting: settings.advancedSetting,
+            email: settings.email,
+            ownerId: settings.ownerId
+        }
     }
-
-    let httrackSettings = {
-        url,            // url to crawl
-        includeDomains, // including urls
-        excludePaths,   // excluding paths
-        robots,         // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
-        structure,      // 0 = default site structure.
-        typeOfSetting,  // HTTrack uses this
-        advancedSetting,   // HTTrack uses this
-        ownerId,        // just pass along, HTTrack does not use this
-        email,          // just pass along
-        typeOfSchedule,  // just pass along
-        isScheduled,    // just pass along
-    };
-
-    return httrackSettings;
 };

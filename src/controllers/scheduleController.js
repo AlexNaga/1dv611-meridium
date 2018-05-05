@@ -1,6 +1,7 @@
 const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const httrackWrapper = require('../models/httrackWrapper');
+const validateHttrackSettings = require('../utils/validateHttrackSettings');
 
 /**
  * GET /schedules/
@@ -95,6 +96,21 @@ exports.getSchedule = async (req, res) => {
  * POST /schedules/edit/:id
  */
 exports.updateSchedule = async (req, res) => {
+    try {
+        let httrackSettings = {
+            ...req.body,
+            ownerId: req.session.user.id
+        };
+        validateHttrackSettings(httrackSettings);
+    } catch (err) {
+        console.log(err);
+        req.session.flash = {
+            message: err.message,
+            danger: true
+        }
+        return res.redirect(`/schedules/edit/${req.params.id}`);
+    }
+
     try {
         await Schedule.findOneAndUpdate({
             _id: req.params.id,
