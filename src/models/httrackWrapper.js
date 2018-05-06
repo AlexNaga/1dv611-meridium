@@ -52,12 +52,13 @@ exports.archive = async (settings) => {
         await removeFolder(`${archivedFolder}`);
 
         console.log('Archive was successful!');
-        
+
         // Create archive in database
         let archive = new Archive({
             fileName: `${ARCHIVE_ID}.zip`,
             ownerId: settings.ownerId,
-            fileSize: fileSize
+            fileSize: fileSize,
+            fromSchedule: settings.fromSchedule
         });
         await archive.save();
 
