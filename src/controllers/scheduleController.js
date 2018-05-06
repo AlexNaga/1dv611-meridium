@@ -75,7 +75,7 @@ exports.getSchedule = async (req, res) => {
             },
             loadScheduleScripts: true,
             // Pagination below
-            docs: archives.docs,
+            archives: archives.docs,
             total: archives.total,
             limit: archives.limit,
             pagination: {
@@ -182,12 +182,19 @@ exports.runSchedule = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
-        httrackWrapper.archive(schedule);
+
+        let httrackSettings = {
+            ...schedule._doc,
+            fromSchedule: schedule._doc._id
+        };
+        httrackSettings = validateHttrackSettings(httrackSettings);
+        httrackWrapper.archive(httrackSettings);
 
         res.json({
             success: true
         });
     } catch (err) {
+        console.log(err);
         res.json({
             success: false,
             message: err
