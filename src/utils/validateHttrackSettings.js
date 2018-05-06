@@ -21,7 +21,7 @@ Number.prototype.between = function(a, b) {
  */
 module.exports = (settings) => {
     // type of setting
-    settings.typeOfSetting = parseInt(settings.setting);
+    settings.typeOfSetting = parseInt(settings.typeOfSetting);
     if (settings.typeOfSetting.between(0, 1) === false) {
         throw Error('Fel inställningstyp.');
     }
@@ -70,7 +70,8 @@ module.exports = (settings) => {
             typeOfSetting: settings.typeOfSetting,
             typeOfSchedule: settings.typeOfSchedule,
             email: settings.email,
-            ownerId: settings.ownerId,
+            fromSchedule: settings.fromSchedule, // Pass along.
+            ownerId: settings.ownerId, // Pass along.
             url: settings.url,
             includeDomains: settings.includeDomains,
             excludePaths: settings.excludePaths,
@@ -94,7 +95,8 @@ module.exports = (settings) => {
             typeOfSchedule: settings.typeOfSchedule,
             advancedSetting: settings.advancedSetting,
             email: settings.email,
-            ownerId: settings.ownerId
+            fromSchedule: settings.fromSchedule, // Pass along.
+            ownerId: settings.ownerId // Pass along.
         }
     }
 };
