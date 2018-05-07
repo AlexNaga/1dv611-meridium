@@ -192,7 +192,7 @@ exports.runSchedule = async (req, res) => {
 
         req.session.flash = {
             message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
-            success: true
+            info: true
         }
         res.redirect('/schedules/edit/' + req.params.id)
     } catch (err) {
