@@ -12,10 +12,14 @@ const throwError = require('../utils/error');
  */
 exports.createArchive = async (req, res) => {
     // Validate httrack settings
-    let httrackSettings = '';
+    let httrackSettings = {
+        ...req.body,
+        ownerId: req.session.user.id
+    };
     try {
-        httrackSettings = validateHttrackSettings({ ...req.body, ...{ ownerId: req.session.user.id } });
+        httrackSettings = validateHttrackSettings(httrackSettings);
     } catch (err) {
+        console.log(err);
         req.session.flash = {
             message: err.message,
             danger: true
@@ -23,8 +27,19 @@ exports.createArchive = async (req, res) => {
         return res.redirect('/');
     }
 
-    // Save schedule in database
-    if (httrackSettings.isScheduled) {
+    // action = name of buttons. 0 = Arkivera, 1 = Spara
+    let action = parseInt(req.body.action);
+    if (action !== 0 && action !== 1) {
+        req.session.flash = {
+            message: 'Falaktig metod, välj arkivera eller spara.',
+            danger: true
+        }
+        return res.redirect('/');
+    }
+
+    // if pressed 'Spara' -> save schedule in database
+    // TODO enums
+    if (action === 1) {
         try {
             if (httrackSettings.typeOfSetting === Setting.STANDARD) {
                 let schedule = new Schedules({
@@ -65,13 +80,18 @@ exports.createArchive = async (req, res) => {
         }
     }
 
-    req.session.flash = {
-        message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
-        info: true
-    };
-    res.redirect('/');
+    // if pressed 'Arkivera' -> make archive
+    if (action === 0) {
+        req.session.flash = {
+            message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
+            info: true
+        };
+        res.redirect('/');
+    
+        httrackWrapper.archive(httrackSettings);
+    }
 
-    httrackWrapper.archive(httrackSettings);
+    // this part of code should be unreachable
 };
 
 /**
