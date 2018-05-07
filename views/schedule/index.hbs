@@ -1,4 +1,4 @@
-{{> scheduleDeleteModal }}
+{{> deleteModal }}
 
 <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
 <table class="table is-fullwidth is-striped">
@@ -23,7 +23,7 @@
                 <td>
                     <div class="field is-grouped is-pulled-right">
                         <a href="/schedules/edit/{{_id}}"></a>
-                        <button class="table-row-delete-btn button is-inverted is-rounded is-danger modal-button action-delete" data-target="deleteModal" data-id="{{ _id }}"
+                        <button class="table-row-delete-btn button is-inverted is-rounded is-danger modal-button action-delete" data-route="schedules" data-id="{{ _id }}"
                             title="Radera schemaläggning">
                             <span class="icon is-small">
                                 <i class="fas fa-times"></i>

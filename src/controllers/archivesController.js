@@ -1,6 +1,5 @@
 const path = require('path');
-const fs = require('fs');
-const fsExtra = require('fs-extra');
+const fs = require('fs-extra');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
 const httrackWrapper = require('../models/httrackWrapper');
 const Archive = require('../models/archive');
@@ -163,7 +162,7 @@ exports.listArchives = async (req, res) => {
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
-    let archiveName = '';
+    let archiveName;
     try {
         let archive = await Archive.findOneAndRemove({
             _id: req.params.id,
@@ -171,16 +170,15 @@ exports.deleteArchive = async (req, res) => {
         }).exec();
 
         archiveName = archive.fileName;
+        const deleteFolder = require('util').promisify(fs.remove);
+        const deleteFile = require('util').promisify(fs.unlink);
+        await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archiveName}`);
+        
         res.status(200).json({
             message: 'Arkiveringen är raderad.',
             success: true
         });
-
-        const deleteFolder = require('util').promisify(fsExtra.remove);
-        const deleteFile = require('util').promisify(fs.unlink);
-
-        await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archiveName}`);
     } catch (err) {
         console.log(err);
         // ENOENT === No such file or directory
@@ -208,7 +206,7 @@ exports.previewArchive = async (req, res, next) => {
         fs.stat(pathToFolder, (err, stat) => {
             if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
 
-            // Folder exist. Continue to static folder and let express find the folder with ID === name
+            // Folder exist. Continue to static folder and let express find the folder with id as folder name
             next();
         });
     } catch (err) {
