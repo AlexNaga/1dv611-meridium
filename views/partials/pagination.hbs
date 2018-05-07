@@ -1,0 +1,17 @@
+<nav class="pagination" aria-label="pagination">
+    {{#paginate pagination type="previous"}}
+    <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-previous" class="button pagination-previous{{#if disabled}} is-disabled{{/if}}">
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Föregående</span>
+    </a>
+    {{/paginate}} {{#paginate pagination type="next"}}
+    <a {{#unless disabled}}href="?p={{n}}" {{/unless}} id="list-next" class="button pagination-next{{#if disabled}} is-disabled{{/if}}">
+        <span>Nästa</span>
+        <span class="icon">
+            <i class="fas fa-arrow-right"></i>
+        </span>
+    </a>
+    {{/paginate}}
+</nav>
