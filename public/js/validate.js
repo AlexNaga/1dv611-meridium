@@ -5,7 +5,7 @@ function validatePass() {
     let passwordsMatch = '#23d160'; // Green color for OK
     let passwordDontMatch = '';
 
-    if (password.value === passwordConfirm.value) {
+    if (password.value.length > 0 && password.value === passwordConfirm.value) {
         passwordConfirm.style.backgroundColor = passwordsMatch;
         document.getElementById('submitBtn').disabled = false;
     } else {
