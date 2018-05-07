@@ -63,7 +63,7 @@ exports.archive = async (settings) => {
         await archive.save();
 
         // Preview folder gets the archive id name to make the viewing of previews to work.
-        await moveFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original/${hostnames[0]}`, `${PREVIEWS_FOLDER}/${archive.id}/`);
+        await moveFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original/${hostnames[0]}`, `${PREVIEWS_FOLDER}/${archive.id}`);
         await removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
         // Send success email
