@@ -135,9 +135,9 @@ exports.listArchives = async (req, res) => {
                 limit: itemsPerPage
             });
 
-        res.render('archive/index', {
+        res.render('archives/index', {
             active: {
-                archive: true
+                archives: true
             },
             loadArchiveScripts: true,
 

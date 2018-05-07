@@ -17,6 +17,7 @@ function showSettings() {
 }
 
 function showAdvancedSettings() {
+    console.log('hej!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     let advancedSettingsDiv = document.getElementById('advancedSettings');
 
     if (advancedSettingsDiv.style.display === 'none') {
