@@ -14,7 +14,7 @@ const Setting = require('../models/enums').setting;
  * @param {string} settings The settings to archive.
  */
 exports.archive = async (settings) => {
-    let PREVIEWS_FOLDER = path.join(__dirname + '/../../previews');
+    let PREVIEWS_FOLDER = path.join(__dirname + `/../../${process.env.PREVIEWS_FOLDER}`);
     let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let ARCHIVE_ID = '';
 
@@ -88,7 +88,7 @@ exports.archive = async (settings) => {
         };
         EmailModel.sendMail(emailSettings);
     }
-}
+};
 
 function getTimestamp() {
     let date = dayjs().toObject();
