@@ -1,8 +1,8 @@
 <form action="/archives" method="post" id="settings">
     <input type="hidden" name="typeOfSetting" value="0">
     <div class="field">
-        <label class="label">Huvuddomän att arkivera
-            <span class="tooltip invisbleButton" data-tooltip="Webbplats att arkivera">
+        <label class="label">Huvuddomän
+            <span class="tooltip invisbleButton" data-tooltip="Webbplats att arkivera.">
                 <i class="far fa-question-circle"></i>
             </span>
         </label>
@@ -14,8 +14,8 @@
         </div>
     </div>
     <div class="field">
-        <label class="label">Subdomän att arkivera
-            <span class="tooltip invisbleButton" data-tooltip="Webbplatsens subdomäner">
+        <label class="label">Subdomäner
+            <span class="tooltip invisbleButton" data-tooltip="Subdomäner att arkivera.">
                 <i class="far fa-question-circle"></i>
             </span>
         </label>
@@ -28,7 +28,7 @@
     </div>
     <div class="field">
         <label class="label">Sidor att exkludera
-            <span class="tooltip invisbleButton" data-tooltip="Sidor som inte ska arkiveras">
+            <span class="tooltip invisbleButton" data-tooltip="Sidor som inte ska arkiveras.">
                 <i class="far fa-question-circle"></i>
             </span>
         </label>
@@ -38,28 +38,28 @@
                 <i class="fas fa-unlink"></i>
             </span>
         </div>
-        <div class="field">
-            <div class="control">
-                <label class="label">Följ robots.txt och meta-taggar
-                    <span class="tooltip invisbleButton" data-tooltip="ÄNDRA, Fråga Meridium!!">
-                        <i class="far fa-question-circle"></i>
-                    </span>
-                </label>
-                <label class="radio">
-                    <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
-                </label>
-                <label class="radio">
-                    <input type="radio" id="metaTags1" name="robots" value="1"> Ja, men filter överskrider
-                </label>
-                <label class="radio">
-                    <input type="radio" id="metaTags2" name="robots" value="2"> Nej
-                </label>
-            </div>
+    </div>
+    <div class="field">
+        <label class="label">Följ robots.txt och meta-taggar
+            <span class="tooltip invisbleButton" data-tooltip="ÄNDRA, Fråga Meridium!!!">
+                <i class="far fa-question-circle"></i>
+            </span>
+        </label>
+        <div class="control">
+            <label class="radio">
+                <input type="radio" id="metaTags0" name="robots" value="0" checked> Ja
+            </label>
+            <label class="radio">
+                <input type="radio" id="metaTags1" name="robots" value="1"> Ja, men filter överskrider
+            </label>
+            <label class="radio">
+                <input type="radio" id="metaTags2" name="robots" value="2"> Nej
+            </label>
         </div>
     </div>
     <div class="field">
         <label class="label">Mappstruktur
-            <span class="tooltip invisbleButton" data-tooltip="Arkiveringen sparas i denna struktur">
+            <span class="tooltip invisbleButton" data-tooltip="Arkiveringen sparas i denna struktur.">
                 <i class="far fa-question-circle"></i>
             </span>
         </label>
@@ -81,7 +81,7 @@
     </div>
     <div class="field">
         <label class="label">Schemaläggning
-            <span class="tooltip invisbleButton" data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen">
+            <span class="tooltip invisbleButton" data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen.">
                 <i class="far fa-question-circle"></i>
             </span>
         </label>
@@ -98,31 +98,31 @@
                 </div>
             </div>
         </div>
-        <div class="field">
-            <label class="label">E-post</label>
-            <div class="control has-icons-left">
-                <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
-                <span class="icon is-small is-left">
-                    <i class="fas fa-envelope"></i>
-                </span>
-            </div>
-            <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+    </div>
+    <div class="field">
+        <label class="label">E-post</label>
+        <div class="control has-icons-left">
+            <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+            <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+            </span>
         </div>
-        <div class="field">
-            <div class="control">
-                <button type="submit" name="action" value="0" class="button is-info">
-                    <span class="icon is-small">
-                        <i class="fas fa-cloud-download-alt"></i>
-                    </span>
-                    <span>Arkivera</span>
-                </button>
-                <button type="submit" name="action" value="1" class="button is-success">
-                    <span class="icon is-small">
-                        <i class="fas fa-save"></i>
-                    </span>
-                    <span>Spara</span>
-                </button>
-            </div>
+        <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button type="submit" name="action" value="0" class="button is-info">
+                <span class="icon is-small">
+                    <i class="fas fa-cloud-download-alt"></i>
+                </span>
+                <span>Arkivera</span>
+            </button>
+            <button type="submit" name="action" value="1" class="button is-success">
+                <span class="icon is-small">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span>Spara</span>
+            </button>
         </div>
     </div>
 </form>

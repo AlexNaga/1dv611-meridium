@@ -20,7 +20,7 @@ closeNotification(); // Add event listener for closing notifications
 
 
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
-let navbar = document.getElementsByTagName('navbar');
+let navbar = document.querySelector('.navbar');
 let sticky = navbar.offsetTop;
 window.onscroll = function () {
     if (window.pageYOffset >= sticky) {
