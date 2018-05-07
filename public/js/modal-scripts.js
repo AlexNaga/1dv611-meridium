@@ -1,7 +1,6 @@
 // Code for confirmation message when deleting an archive
 class Modal {
-    constructor(path) {
-        this.path = path;
+    constructor() {
         this.rootElem = document.documentElement;
         this.modalButtons = Modal.getAll('.modal-button');
         this.modalCloses = Modal.getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button, .hideModal');
@@ -13,10 +12,11 @@ class Modal {
             this.modalButtons.forEach((elem) => {
                 elem.addEventListener('click', (event) => {
                     event.stopPropagation();
-                    let clickedElem = elem.dataset.target;
-                    let target = document.getElementById(clickedElem);
-                    this.rootElem.classList.add('is-clipped');
-                    target.classList.add('is-active');
+                    let modal = document.querySelector('div.modal');
+                    let typeToDeleteSpan = document.querySelector('div.modal > div.modal-content > div > p > span');
+
+                    modal.classList.add('is-active');
+                    typeToDeleteSpan.innerHTML = this.route === 'archives' ? 'arkivet' : 'schemaläggningen';
                     deleteBtn(elem);
                 });
             });
@@ -24,39 +24,39 @@ class Modal {
 
         let deleteBtn = (elem) => {
             // Clone elem to remove old event listeners, to prevent multiple deletes
-            let oldElem = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
-            let newElem = oldElem.cloneNode(true);
-            oldElem.parentNode.replaceChild(newElem, oldElem);
+            let oldElem = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
+            oldElem.parentNode.replaceChild(oldElem.cloneNode(true), oldElem);
 
             let id = elem.getAttribute('data-id');
+            this.route = elem.getAttribute('data-route');
             let elemRow = elem.parentNode.parentNode.parentNode;
+            let modalRemoveBtn = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
+            let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // when editing a schedule
 
-            let modalRemoveBtn = document.querySelector('#deleteModal > div.modal-content > div > button.button.is-danger');
             modalRemoveBtn.addEventListener('click', () => {
-                fetchUrl(`/${this.path}/delete/` + id, {
+                fetchUrl(`/${this.route}/delete/` + id, {
                     method: 'DELETE'
                 })
                     .then((data) => {
                         flashMessage(data.message, data);
+                        elemRow.parentNode.removeChild(elemRow);
                     })
                     .catch((err) => {
                         // err.status 404 = ENOENT = No such file on disk, but entry removed from db
                         flashMessage(err.message, err);
                     })
                     .finally(() => {
-                        let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement';
 
                         // Redirect if a schedule was deleted from the edit page, else remove row
                         if (isScheduleDeleted) {
                             // This will also show the flash message upon reload
-                            window.location = window.location.origin + '/' + this.path;
+                            window.location = window.location.origin + '/' + this.route;
                         } else {
-                            elemRow.parentNode.removeChild(elemRow);
                             this.closeModals();
                         }
                     });
-                });
-                modalRemoveBtn.focus(); // So you can just press Enter
+            });
+            modalRemoveBtn.focus(); // So you can just press Enter
         };
 
         if (this.modalCloses.length > 0) {

@@ -1,5 +1,3 @@
-{{> scheduleDeleteModal }}
-
 <div class="section">
     <div class="container">
         <div class="box">
@@ -33,7 +31,7 @@
                     </button>
                 </div>
                 <div class="level-item">
-                    <a class="button is-danger modal-button" data-target="deleteModal" data-id="{{schedule._id}}" title="Radera schemaläggning">
+                    <a class="button is-danger modal-button" data-route="schedules" data-id="{{schedule._id}}" title="Radera schemaläggning">
                         <span class="icon is-small">
                             <i class="fas fa-times"></i>
                         </span>
