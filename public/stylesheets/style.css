@@ -43,6 +43,23 @@ body {
     -ms-transition: background-color 0.2s ease-in;
     transition: background-color 0.2s ease-in;
 }
+.navbar-logout-btn {
+    border: 0;
+    background-color: transparent;
+    font-size: 1rem;
+    height: 100%;
+}
+.navbar-logout-btn:hover {
+    background-color: rgb(232,232,232);
+    cursor: pointer;
+}
+
+.active-page {
+    background-color: rgb(232, 232, 232) !important;
+}
+.active-page > span.icon {
+    color:#DC3E2A;
+}
 
 .is-disabled {
     cursor: not-allowed;
@@ -66,11 +83,14 @@ body {
     background-color: #e2e2e7 !important;
     cursor: pointer;
 }
-
-
-.active-page {
-    background-color: #4A4A4A !important; /* fallback color */
-    background-color: hsl(0, 0%, 29%) !important;
+.table-row-paused {
+    background-color:rgba(255, 221, 87, 0.4) !important;
+}
+.table-row-delete-btn {
+    background-color:rgba(255, 221, 87, 0) !important;
+}
+.table-row-delete-btn:hover {
+    background-color:rgba(0,0,0,0.05) !important;
 }
 
 .notification-container {

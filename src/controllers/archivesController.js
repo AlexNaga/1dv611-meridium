@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
 const httrackWrapper = require('../models/httrackWrapper');
 const Archive = require('../models/archive');
@@ -37,7 +37,7 @@ exports.createArchive = async (req, res) => {
         return res.redirect('/');
     }
 
-    // if pressed 'Spara' -> save schedule in database
+    // If user clicked 'Spara' --> Save schedule in db
     // TODO enums
     if (action === 1) {
         try {
@@ -80,7 +80,7 @@ exports.createArchive = async (req, res) => {
         }
     }
 
-    // if pressed 'Arkivera' -> make archive
+    // If user clicked 'Arkivera' --> Create archive
     if (action === 0) {
         req.session.flash = {
             message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
@@ -134,9 +134,9 @@ exports.listArchives = async (req, res) => {
                 limit: itemsPerPage
             });
 
-        res.render('archive/index', {
+        res.render('archives/index', {
             active: {
-                archive: true
+                archives: true
             },
             loadArchiveScripts: true,
 
@@ -170,14 +170,17 @@ exports.deleteArchive = async (req, res) => {
         }).exec();
 
         archiveName = archive.fileName;
+        const deleteFolder = require('util').promisify(fs.remove);
         const deleteFile = require('util').promisify(fs.unlink);
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archiveName);
-
+        await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archiveName}`);
+        
         res.status(200).json({
             message: 'Arkiveringen är raderad.',
             success: true
         });
     } catch (err) {
+        console.log(err);
         // ENOENT === No such file or directory
         if (err.code != 'ENOENT') {
             res.status(400)
@@ -199,11 +202,11 @@ exports.previewArchive = async (req, res, next) => {
             ownerId: req.session.user.id
         }).exec();
 
-        let pathToFolder = path.join(__dirname + '/../../previews/' + archive.id);
+        let pathToFolder = path.join(__dirname + `/../../${process.env.PREVIEWS_FOLDER}/` + archive.id);
         fs.stat(pathToFolder, (err, stat) => {
             if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
 
-            // Folder exist, continue to static folder and let express find folder with the id as name.
+            // Folder exist. Continue to static folder and let express find the folder with id as folder name
             next();
         });
     } catch (err) {

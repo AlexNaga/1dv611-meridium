@@ -13,8 +13,7 @@ exports.home = (req, res) => {
     res.render('home', {
         active: {
             home: true
-        },
-        loadIndexScripts: true
+        }
     });
 };
 
@@ -23,5 +22,14 @@ exports.getAboutPage = (req, res) => {
         active: {
             about: true
         },
+    });
+};
+
+exports.getArchivePage = (req, res) => {
+    res.render('archive/index', {
+        active: {
+            archive: true
+        },
+        loadIndexScripts: true
     });
 };
