@@ -14,7 +14,7 @@
     </thead>
     <tbody class="table-row-hover">
         {{#each docs}}
-            <tr title="Ändra schemaläggning" data-id="{{ _id }}">
+            <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
                 <td>{{friendlyUrl}}</td>
                 <td>{{friendlyIncludeDomains}}</td>
                 <td>{{excludePaths}}</td>
@@ -23,7 +23,7 @@
                 <td>
                     <div class="field is-grouped is-pulled-right">
                         <a href="/schedules/edit/{{_id}}"></a>
-                        <button class="button is-inverted is-rounded is-danger modal-button action-delete" data-target="deleteModal" data-id="{{ _id }}"
+                        <button class="table-row-delete-btn button is-inverted is-rounded is-danger modal-button action-delete" data-target="deleteModal" data-id="{{ _id }}"
                             title="Radera schemaläggning">
                             <span class="icon is-small">
                                 <i class="fas fa-times"></i>
