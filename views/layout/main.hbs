@@ -10,34 +10,78 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/stylesheets/fontawesome-all.min.css">
     <script defer src="/js/scripts.js"></script>
-    <script defer src="/js/modal-scripts.js"></script>
-    {{#if user }}
-        {{#if loadIndexScripts }}
-            <script defer src="/js/frontend-settings.js"></script> {{/if}}
-        {{#if loadArchiveScripts }}
-            <script defer src="/js/archive-scripts.js"></script> {{/if}}
-        {{#if loadScheduleScripts }}
-            <script defer src="/js/schedule-scripts.js"></script> {{/if}}
-    {{/if}}
-    {{#if loadValidation }}
-        <script defer src="/js/validate.js"></script> 
-    {{/if}}
-
-    {{> hero }}
-    {{> navbar }}
+    <script defer src="/js/modal-scripts.js"></script> {{#if user }} {{#if loadIndexScripts }}
+    <script defer src="/js/frontend-settings.js"></script> {{/if}} {{#if loadArchiveScripts }}
+    <script defer src="/js/archive-scripts.js"></script> {{/if}} {{#if loadScheduleScripts }}
+    <script defer src="/js/schedule-scripts.js"></script> {{/if}} {{/if}} {{#if loadValidation }}
+    <script defer src="/js/validate.js"></script> {{/if}} {{> hero }} {{> navbar }}
     <div class="section wrapper">
         <div class="container">
             {{{ body }}}
         </div>
     </div>
     <footer class="footer">
+        {{!--
         <div class="container">
             <div class="content has-text-left">
                 <p>
                     <strong>Arkivdium</strong>
                 </p>
             </div>
+        </div> --}}
+        <div class="columns">
+            <div class="column">
+                <b>Meridium
+                    <img src="/images/meridium.jpg" alt="Meridium" height="80" width="150">
+                </b>
+                <ul>
+                    <li>
+                        Svensknabbevägen 17, 393 51 Kalmar 
+                    </li>
+                    <li>
+                        Tel. 0480-42 60 60
+                    </li>
+                    <br>
+                    <li>
+                        Humlegårdsgatan 20, 114 46 Stockholm 
+                    </li>
+                    <li>
+                        Tel. 08-557 797 00
+                    </li>
+                </ul>
+
+            </div>
+            <div class="column is-1"></div>
+            <div class="column">
+                <b>Linnéuniversitetet
+                    <img src="/images/linneuniversitetet.png" alt="Linnéuniversitetet" height="20" width="30">
+                </b>
+                <ul>
+                    <li>
+                        <i>Webbtjänst skapad av: </i>
+                    </li>
+                    <li>
+                        Alex Naga
+                    </li>
+                    <li>
+                        Frida Melin
+                    </li>
+                    <li>
+                        Rosa Ekström
+                    </li>
+                    <li>
+                         Simon Österdahl
+                    </li>
+                    <li>
+                       Robin Nowakowski
+                    </li>
+                </ul>
+
+
+            </div>
         </div>
+
     </footer>
     {{> flash }}
+
 </html>
