@@ -12,9 +12,7 @@ const throwError = require('../utils/error');
  * @param {string} confirmPassword
  */
 let validatePassword = async (password, confirmPassword) => {
-    let passwordHasError = checkPassword(password, confirmPassword, {
-        minimumLength: 6
-    });
+    let passwordHasError = checkPassword(password, confirmPassword, { minimumLength: 6 });
     if (passwordHasError) {
         throwError(400, passwordHasError.sentence);
     }
@@ -25,9 +23,7 @@ let validatePassword = async (password, confirmPassword) => {
  * @param {string} code
  */
 let isValidCode = async (code) => {
-    let user = await User.findOne({
-        resetPasswordCode: code
-    }).exec();
+    let user = await User.findOne({ resetPasswordCode: code }).exec();
 
     if (user) {
         if (Date.now() / 1000 < user.resetPasswordDate) {
@@ -42,13 +38,8 @@ let isValidCode = async (code) => {
  * @param {string} code
  */
 let disableCode = async (code) => {
-    await User.findOneAndUpdate({
-        resetPasswordCode: code
-    }, {
-            $set: {
-                resetPasswordCode: null
-            }
-        }).exec();
+    await User.findOneAndUpdate({ resetPasswordCode: code },
+        { $set: { resetPasswordCode: null } }).exec();
 };
 
 /**
@@ -157,11 +148,8 @@ exports.resetPassword = async (req, res) => {
 
         try {
             if (user) {
-                await User.findOneAndUpdate({
-                    email: email
-                }, {
-                        $set: tempValue
-                    }).exec();
+                await User.findOneAndUpdate({ email: email },
+                    { $set: tempValue }).exec();
 
                 let emailSettings = {
                     to: email,
@@ -237,15 +225,11 @@ exports.updatePassword = async (req, res) => {
     const confirmPassword = req.body.confirmPassword;
 
     try {
-         await validatePassword(password, confirmPassword);
+        await validatePassword(password, confirmPassword);
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.findOneAndUpdate({
-            resetPasswordCode: code
-        }, {
-                $set: {
-                    password: hashedPassword
-                }
-            }).exec();
+        await User.findOneAndUpdate({ resetPasswordCode: code }, {
+            $set: { password: hashedPassword }
+        }).exec();
         await disableCode(code);
 
         req.session.flash = {
@@ -259,9 +243,8 @@ exports.updatePassword = async (req, res) => {
             message: err.message,
             danger: true
         };
-  
+
         return res.redirect('/account/reset-password/' + code);
-       
     }
 };
 
@@ -270,10 +253,6 @@ exports.updatePassword = async (req, res) => {
  */
 exports.logoutUser = (req, res) => {
     req.session.user = null;
-    req.session.flash = {
-        message: 'Du har blivit utloggad.',
-        info: true
-    };
     res.redirect('/');
 };
 
