@@ -1,6 +1,6 @@
 httrack
-/archives/
-/previews/
+archives/
+previews/
 .DS_Store
 
 # Logs
