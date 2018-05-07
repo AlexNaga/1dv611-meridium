@@ -3,8 +3,7 @@ const http = require('http');
 const app = require('./app');
 
 const port = process.env.PORT || 3500;
-const hostname = 'localhost';
 const server = http.createServer(app);
-server.listen(port, hostname, () => {
-    console.log(`The server is now running at: http://${hostname}:${port}`);
+server.listen(port, () => {
+    console.log(`The server is now running at: ${port}`);
 });

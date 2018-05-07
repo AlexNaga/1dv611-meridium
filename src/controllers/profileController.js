@@ -5,8 +5,8 @@ const checkPassword = require('../utils/passwordValidator');
 
 /**
  * Validates the password against a set of rules, throws an error if not valid.
- * @param {String} password
- * @param {String} confirmPassword
+ * @param {string} password
+ * @param {string} confirmPassword
  */
 let validatePassword = async (password, confirmPassword) => {
     let passwordHasError = checkPassword(password, confirmPassword, {

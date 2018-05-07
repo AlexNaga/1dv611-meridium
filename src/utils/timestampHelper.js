@@ -4,7 +4,7 @@
  * https://gist.github.com/vigikaran/d138cdcef3881cbc82c1cb71cac8b8d6
  *
  * Translated into Swedish.
-@param {} utcTime - Utc timestamp in ms (probably also works fo unix timestamp as well)
+@param {*} utcTime - Utc timestamp in ms (probably also works fo unix timestamp as well)
 */
 module.exports = (utcTime) => {
     let timestamp = new Date(utcTime).getTime()/ 1000;

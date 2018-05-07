@@ -5,7 +5,7 @@ const ScheduleSetting = require('../models/enums').schedule;
  * Handlebars helper for calculating when a schedule is supposed to run.
  * Shows days until > 1 day, then shows hours and then minutes
  *
- * @param {Schedule} schedule
+ * @param {*} schedule
  */
 module.exports = (schedule) => {
     if (schedule.typeOfSchedule === ScheduleSetting.NONE) {
@@ -31,8 +31,8 @@ module.exports = (schedule) => {
 
 /**
  * Gets the difference from today and when the schedule is supposed to run
- * @param {Schedule} schedule
- * @returns {} A Javascript Date object
+ * @param {*} schedule
+ * @returns A Javascript Date object
  */
 function getDiffBetweenDates(schedule) {
     // Predefined settings, has to match the ones decided in scheduler.js

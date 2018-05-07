@@ -1,6 +1,7 @@
 const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const httrackWrapper = require('../models/httrackWrapper');
+const validateHttrackSettings = require('../utils/validateHttrackSettings');
 
 /**
  * GET /schedules/
@@ -74,7 +75,7 @@ exports.getSchedule = async (req, res) => {
             },
             loadScheduleScripts: true,
             // Pagination below
-            docs: archives.docs,
+            archives: archives.docs,
             total: archives.total,
             limit: archives.limit,
             pagination: {
@@ -95,6 +96,21 @@ exports.getSchedule = async (req, res) => {
  * POST /schedules/edit/:id
  */
 exports.updateSchedule = async (req, res) => {
+    try {
+        let httrackSettings = {
+            ...req.body,
+            ownerId: req.session.user.id
+        };
+        validateHttrackSettings(httrackSettings);
+    } catch (err) {
+        console.log(err);
+        req.session.flash = {
+            message: err.message,
+            danger: true
+        }
+        return res.redirect(`/schedules/edit/${req.params.id}`);
+    }
+
     try {
         await Schedule.findOneAndUpdate({
             _id: req.params.id,
@@ -166,12 +182,19 @@ exports.runSchedule = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
-        httrackWrapper.archive(schedule);
+
+        let httrackSettings = {
+            ...schedule._doc,
+            fromSchedule: schedule._doc._id
+        };
+        httrackSettings = validateHttrackSettings(httrackSettings);
+        httrackWrapper.archive(httrackSettings);
 
         res.json({
             success: true
         });
     } catch (err) {
+        console.log(err);
         res.json({
             success: false,
             message: err

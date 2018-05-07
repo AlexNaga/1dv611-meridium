@@ -75,26 +75,26 @@ schema.post('init', (doc) => {
     if (doc.typeOfSchedule === Schedule.WEEKLY) doc.scheduleName = 'Veckovis';
     if (doc.typeOfSchedule === Schedule.MONTHLY) doc.scheduleName = 'Månadsvis';
 
-    doc.friendlyUrl = makeUserFriendlyUrl(doc);
-});
-
-/**
- * Makes the url user friendly for viewing (removes "http://" etc)
- * @param {Schedule} doc Schedule
- */
-function makeUserFriendlyUrl(doc) {
     if (doc.typeOfSetting === Setting.ADVANCED) {
         doc.url = doc.advancedSetting.split(' ')[0];
     }
 
-    doc.url = (validUrl.isUri(doc.url) ? new URL(doc.url).hostname : doc.url);
+    makeUserFriendlyUrl(doc);
+});
+
+/**
+ * Makes the url user friendly for viewing (removes "http://" etc)
+ * @param {*} doc Schedule
+ */
+function makeUserFriendlyUrl(doc) {
+    doc.friendlyUrl = (validUrl.isUri(doc.url) ? new URL(doc.url).hostname : doc.url);
 
     if (doc.includeDomains) {
         let subUrls = doc.includeDomains.split(',');
         for (let j = 0; j < subUrls.length; j++) {
             subUrls[j] = (validUrl.isUri(subUrls[j]) ? new URL(subUrls[j]).hostname : subUrls[j]);
         }
-        doc.includeDomains = subUrls.join(' ');
+        doc.friendlyIncludeDomains = subUrls.join(' ');
     }
 }
 module.exports = mongoose.model('Schedules', schema);

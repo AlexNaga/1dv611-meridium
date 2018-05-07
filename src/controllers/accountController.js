@@ -8,8 +8,8 @@ const throwError = require('../utils/error');
 
 /**
  * Validates the password against a set of rules, throws an error if not valid.
- * @param {String} password
- * @param {String} confirmPassword
+ * @param {string} password
+ * @param {string} confirmPassword
  */
 let validatePassword = async (password, confirmPassword) => {
     let passwordHasError = checkPassword(password, confirmPassword, {
@@ -22,7 +22,7 @@ let validatePassword = async (password, confirmPassword) => {
 
 /**
  * Checks if the temporary reset-password code is valid
- * @param {String} code
+ * @param {string} code
  */
 let isValidCode = async (code) => {
     let user = await User.findOne({
@@ -39,7 +39,7 @@ let isValidCode = async (code) => {
 
 /**
  * Makes a used reset-password code invalid
- * @param {String} code
+ * @param {string} code
  */
 let disableCode = async (code) => {
     await User.findOneAndUpdate({
@@ -164,7 +164,7 @@ exports.resetPassword = async (req, res) => {
                     }).exec();
 
                 let emailSettings = {
-                    email: email,
+                    to: email,
                     subject: 'Återställ ditt lösenord',
                     message: `<p>Hej,</p>
                           <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
@@ -189,7 +189,7 @@ exports.resetPassword = async (req, res) => {
         }
     } else {
         let emailSettings = {
-            email: email,
+            to: email,
             subject: 'Återställning av lösenord',
             message: 'Någon har försökt återställa ett lösenord till den här e-posten men vi har den inte registrerad hos oss på Arkivdium.se.'
         };

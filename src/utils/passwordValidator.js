@@ -2,8 +2,8 @@
  * Password rules validator https://github.com/mapbox/password-rules
  *
  * Translated into Swedish.
- * @param {String} pw
- * @param {String} confirm
+ * @param {string} pw
+ * @param {string} confirm
  * @param {*} rules Overrides default rules
  */
 module.exports = function (pw, confirmPw, rules) {

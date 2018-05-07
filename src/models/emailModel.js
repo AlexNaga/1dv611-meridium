@@ -2,9 +2,9 @@ const nodemailer = require('nodemailer');
 
 /**
  * Needs to have 3 properties: email, subject and message
- * @param {*} settings {email, subject, message}
+ * @param {*} settings {to, subject, message}
  */
-function sendMail(settings) {
+exports.sendMail = (settings) => {
     let transporter = nodemailer.createTransport({
         host: 'smtp@gmail.com',
         port: 465,
@@ -18,7 +18,7 @@ function sendMail(settings) {
 
     let mailOptions = {
         from: 'kurs1dv611@gmail.com',
-        to: settings.email,
+        to: settings.to,
         subject: settings.subject,
         html: settings.message
     };
@@ -31,5 +31,3 @@ function sendMail(settings) {
         }
     });
 }
-
-module.exports = { sendMail };

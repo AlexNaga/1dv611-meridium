@@ -15,8 +15,8 @@
     <tbody class="table-row-hover">
         {{#each docs}}
             <tr title="Ändra schemaläggning" data-id="{{ _id }}">
-                <td>{{url}}</td>
-                <td>{{includeDomains}}</td>
+                <td>{{friendlyUrl}}</td>
+                <td>{{friendlyIncludeDomains}}</td>
                 <td>{{excludePaths}}</td>
                 <td>{{scheduleName}}</td>
                 <td title="{{updatedAt}}">{{timeSince updatedAt}}</td>

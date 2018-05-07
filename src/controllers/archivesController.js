@@ -5,16 +5,21 @@ const httrackWrapper = require('../models/httrackWrapper');
 const Archive = require('../models/archive');
 const Schedules = require('../models/schedules');
 const Setting = require('../models/enums').setting;
+const throwError = require('../utils/error');
 
 /**
  * POST /archives/
  */
 exports.createArchive = async (req, res) => {
     // Validate httrack settings
-    let httrackSettings = '';
+    let httrackSettings = {
+        ...req.body,
+        ownerId: req.session.user.id
+    };
     try {
-        httrackSettings = validateHttrackSettings({ ...req.body, ...{ ownerId: req.session.user.id } });
+        httrackSettings = validateHttrackSettings(httrackSettings);
     } catch (err) {
+        console.log(err);
         req.session.flash = {
             message: err.message,
             danger: true
@@ -22,8 +27,19 @@ exports.createArchive = async (req, res) => {
         return res.redirect('/');
     }
 
-    // Save schedule in database
-    if (httrackSettings.isScheduled) {
+    // action = name of buttons. 0 = Arkivera, 1 = Spara
+    let action = parseInt(req.body.action);
+    if (action !== 0 && action !== 1) {
+        req.session.flash = {
+            message: 'Falaktig metod, välj arkivera eller spara.',
+            danger: true
+        }
+        return res.redirect('/');
+    }
+
+    // if pressed 'Spara' -> save schedule in database
+    // TODO enums
+    if (action === 1) {
         try {
             if (httrackSettings.typeOfSetting === Setting.STANDARD) {
                 let schedule = new Schedules({
@@ -64,38 +80,39 @@ exports.createArchive = async (req, res) => {
         }
     }
 
-    req.session.flash = {
-        message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
-        info: true
-    };
-    res.redirect('/');
+    // if pressed 'Arkivera' -> make archive
+    if (action === 0) {
+        req.session.flash = {
+            message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
+            info: true
+        };
+        res.redirect('/');
+    
+        httrackWrapper.archive(httrackSettings);
+    }
 
-    // Create archive, zip, send email etc..
-    httrackWrapper.archive(httrackSettings);
+    // this part of code should be unreachable
 };
 
 /**
  * GET /archives/:id
  */
-exports.getArchive = async (req, res) => {
+exports.downloadArchive = async (req, res) => {
     try {
-        await Archive.findOne({
+        let archive = await Archive.findOne({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
 
-        let pathToFile = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}/` + req.params.id);
+        let pathToFile = path.join(process.cwd() + `/${process.env.ARCHIVES_FOLDER}/` + archive.fileName);
 
-        fs.stat(pathToFile, (err, stat) => {
-            if (err == null) {
-                // File exist
-                return res.status(200).sendFile(pathToFile);
-            }
-        });
+        if (fs.existsSync(pathToFile)) {
+            return res.download(pathToFile, archive.fileName);
+        } else {
+            throwError(404, 'Arkivet finns inte längre kvar.');
+        }
     } catch (err) {
-
-        let notFound = 'ENOENT'; // ENOENT === No such file
-        res.sendStatus(err.code === notFound ? 404 : 400);
+        res.sendStatus(err.status || 400).end();
     }
 };
 
@@ -110,12 +127,12 @@ exports.listArchives = async (req, res) => {
         let archives = await Archive.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('archive/index', {
             active: {
@@ -174,27 +191,21 @@ exports.deleteArchive = async (req, res) => {
 /**
  * GET /archives/preview/:id
  */
-exports.previewArchive = async (req, res) => {
+exports.previewArchive = async (req, res, next) => {
     try {
         let archive = await Archive.findOne({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
-        
-        let fileName = archive.fileName.substr(0, archive.fileName.length - 4); // Remove .zip from file-name
-        let pathToFile = path.join(__dirname + '/../../previews/' + fileName + '/index.html');
 
-        fs.stat(pathToFile, (err, stat) => {
-            // File exist
-            if (err == null) {
-                return res.status(200).sendFile(pathToFile);
-            } else {
-                let notFound = 'ENOENT'; // ENOENT === No such file
-                res.sendStatus(err.code === notFound ? 404 : 400);
-            }
+        let pathToFolder = path.join(__dirname + '/../../previews/' + archive.id);
+        fs.stat(pathToFolder, (err, stat) => {
+            if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
+
+            // Folder exist, continue to static folder and let express find folder with the id as name.
+            next();
         });
-
     } catch (err) {
-        res.sendStatus(404);
+        res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
     }
 };

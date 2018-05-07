@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * @param {string} url The resource that you wish to fetch
- * @param {Object} options An options object containing any custom settings that you want to apply to the request.
+ * @param {object} options An options object containing any custom settings that you want to apply to the request.
  */
 function fetchUrl(url, options) {
     let defaultOptions = {
@@ -84,8 +84,8 @@ function fetchUrl(url, options) {
 
 /**
  * Displays a flash message, same as req.session.flash
- * @param {String} message The displayed message
- * @param {Object} obj Bulma colors https://bulma.io/documentation/overview/colors/
+ * @param {string} message The displayed message
+ * @param {object} obj Bulma colors https://bulma.io/documentation/overview/colors/
  * example: { danger: true }
  */
 function flashMessage(message, obj = { info: true }) {
