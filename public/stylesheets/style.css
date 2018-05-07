@@ -23,6 +23,10 @@ body {
     padding-right:20px;
 }
 
+.table-wrapper {
+    overflow-x: auto;
+}
+
 .wrapper {
     /* margin-top: 1rem; */
     flex:1;/* To make sticky footer */
@@ -107,6 +111,10 @@ body {
     -webkit-animation: fadein 1s, fadeout 1s 4s linear forwards;
     animation: fadein 1s, fadeout 1s 4s linear forwards;
     pointer-events: auto;
+}
+
+.schedule-edit-btn {
+    width:140px;
 }
 
 /* Animations to fade the notification in and out */
