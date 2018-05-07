@@ -88,10 +88,10 @@ function fetchUrl(url, options) {
  * @param {object} obj Bulma colors https://bulma.io/documentation/overview/colors/
  * example: { danger: true }
  */
-function flashMessage(message, obj = { info: true }) {
-    let color = obj.danger ? 'danger' :
+function flashMessage(message, obj = { danger: true }) {
+    let color = obj.info ? 'info' :
         obj.success ? 'success' :
-            'info';
+            'danger';
 
     let container = document.createElement('div');
     let notification = document.createElement('div');

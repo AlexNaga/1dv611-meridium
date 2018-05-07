@@ -1,4 +1,4 @@
-new Modal('archives');
+new Modal();
 
 function setupEventHandlers() {
     let archiveList = document.querySelectorAll('#archiveList > tr');

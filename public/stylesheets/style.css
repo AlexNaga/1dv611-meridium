@@ -73,7 +73,6 @@ body {
     background-color: hsl(0, 0%, 29%) !important;
 }
 
-
 .notification-container {
     position: fixed;
     max-width: 768px; /* Bulma mobile */

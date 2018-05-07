@@ -87,7 +87,7 @@ exports.createArchive = async (req, res) => {
             info: true
         };
         res.redirect('/');
-    
+
         httrackWrapper.archive(httrackSettings);
     }
 
@@ -162,7 +162,7 @@ exports.listArchives = async (req, res) => {
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
-    let archiveName = '';
+    let archiveName;
     try {
         let archive = await Archive.findOneAndRemove({
             _id: req.params.id,
@@ -170,12 +170,13 @@ exports.deleteArchive = async (req, res) => {
         }).exec();
 
         archiveName = archive.fileName;
+        const deleteFile = require('util').promisify(fs.unlink);
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archiveName);
+
         res.status(200).json({
             message: 'Arkiveringen är raderad.',
             success: true
         });
-        const deleteFile = require('util').promisify(fs.unlink);
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/` + archiveName);
     } catch (err) {
         // ENOENT === No such file or directory
         if (err.code != 'ENOENT') {

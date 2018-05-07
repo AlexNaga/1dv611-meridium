@@ -1,4 +1,4 @@
-{{> archiveDeleteModal }}
+{{> deleteModal }}
 {{> archivePreviewModal }}
 
 <h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
@@ -41,7 +41,7 @@
             </td>
             <td>
                 <div class="field is-pulled-right">
-                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-target="deleteModal" data-id="{{ archive.id }}"
+                    <button class="button is-inverted is-rounded is-danger is-small modal-button action-delete" data-route="archives" data-id="{{ archive.id }}"
                         title="Radera arkiv">
                         <span class="icon">
                             <i class="fas fa-lg fa-times"></i>

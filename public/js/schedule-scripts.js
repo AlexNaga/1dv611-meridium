@@ -1,4 +1,4 @@
-new Modal('schedules');
+new Modal();
 
 /**
  * Pause / Start scheduled archive
