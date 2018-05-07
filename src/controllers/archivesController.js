@@ -70,6 +70,7 @@ exports.createArchive = async (req, res) => {
     };
     res.redirect('/');
 
+    // Create archive, zip, send email etc..
     httrackWrapper.archive(httrackSettings);
 };
 

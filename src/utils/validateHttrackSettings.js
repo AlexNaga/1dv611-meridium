@@ -29,11 +29,12 @@ module.exports = (body) => {
     let typeOfSchedule = parseInt(body.typeOfSchedule); // 0 = none, 1 = daily, 2 = weekly, 3 = monthly
     let isScheduled = parseInt(body.action);
 
-    if (isScheduled.between(0, 1)) {
-        isScheduled = isScheduled === 1; // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
-    } else {
-        throw new Error('Falaktig metod, välj arkivera eller spara.');
-    }
+    // kolla bara i kontrollen?
+    // if (isScheduled.between(0, 1)) {
+    //     isScheduled = isScheduled === 1; // action = name of buttons. 0 = Arkivera, 1 = Schemalägg
+    // } else {
+    //     throw new Error('Falaktig metod, välj arkivera eller spara.');
+    // }
 
     if (typeOfSchedule.between(0, 3) === false) {
         throw new Error('Felaktig schemaläggning, kontrollera vald tid.');
