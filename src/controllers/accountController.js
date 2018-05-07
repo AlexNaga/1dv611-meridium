@@ -207,12 +207,15 @@ exports.resetPassword = async (req, res) => {
  * GET /account/reset-password/:temporaryCode
  */
 exports.validateLink = async (req, res) => {
+    let resetUrl = {
+        body: req.params.temporaryCode
+    }
     if (await isValidCode(req.params.temporaryCode)) {
         return res.render('account/update-password', {
-            loadValidation: true
+            loadValidation: true,
+            resetUrl: resetUrl
         });
     }
-
     req.session.flash = {
         message: 'Länken har utgått!',
         danger: true
@@ -233,9 +236,9 @@ exports.updatePassword = async (req, res) => {
         };
         return res.status(400).redirect('/');
     }
+
     const password = req.body.resetPassword;
     const confirmPassword = req.body.confirmPassword;
-
     try {
          await validatePassword(password, confirmPassword);
         const hashedPassword = await bcrypt.hash(password, 10);
