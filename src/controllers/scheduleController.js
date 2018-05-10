@@ -107,7 +107,7 @@ exports.updateSchedule = async (req, res) => {
         req.session.flash = {
             message: err.message,
             danger: true
-        }
+        };
         return res.redirect(`/schedules/edit/${req.params.id}`);
     }
 
@@ -133,7 +133,7 @@ exports.updateSchedule = async (req, res) => {
             message: 'Schemaläggningen har uppdaterats!',
             success: true
         };
-        return res.redirect('/schedules');
+        return res.redirect(`/schedules/edit/${req.params.id}`);
     } catch (err) {
 
         req.session.flash = {
@@ -191,9 +191,9 @@ exports.runSchedule = async (req, res) => {
         httrackWrapper.archive(httrackSettings);
 
         req.session.flash = {
-            message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
+            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
             info: true
-        }
+        };
         res.redirect('/schedules/edit/' + req.params.id)
     } catch (err) {
         console.log(err);

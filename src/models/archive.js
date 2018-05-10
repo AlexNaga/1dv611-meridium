@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 const prettyFileSize = require('prettysize');
 const mongoosePaginate = require('mongoose-paginate');
+const dayjs = require('dayjs');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -19,7 +20,7 @@ schema.plugin(mongoosePaginate);
 schema.post('init', (doc) => {
     doc.fileSize = prettyFileSize(doc.fileSize);
     doc.downloadPath = '/archives/' + doc._id;
-    doc.date = doc.createdAt.toLocaleString('sv-SE');
+    doc.date = dayjs(doc.createdAt).format('YY-MM-DD HH:mm');
     doc.prettyName = doc.fileName.substring(0, doc.fileName.indexOf('_'));
 });
 
