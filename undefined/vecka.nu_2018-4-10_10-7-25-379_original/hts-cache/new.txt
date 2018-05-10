@@ -1,4 +1,0 @@
-date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
-10:07:26	79/79	---M-Z	200	added ('OK')	text/plain	etag:%224b-55accbaea7f03-gzip%22	https://vecka.nu/robots.txt		(from )
-10:07:26	3354/3354	---M-Z	200	added ('OK')	text/html	date:Sun,%2006%20May%202018%2022:00:00%20GMT	https://vecka.nu/	C:/Users/rjosi/OneDrive/Dokument/1dv611/1dv611-meridium/undefined/vecka.nu_2018-4-10_10-7-25-379_original/vecka.nu/index.html	(from )
-10:07:26	108/108	---M--	200	added ('OK')	image/png	etag:%226c-5515a4460d286%22	https://vecka.nu/favicon.png	C:/Users/rjosi/OneDrive/Dokument/1dv611/1dv611-meridium/undefined/vecka.nu_2018-4-10_10-7-25-379_original/vecka.nu/favicon.png	(from https://vecka.nu/)

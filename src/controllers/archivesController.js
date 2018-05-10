@@ -27,71 +27,41 @@ exports.createArchive = async (req, res) => {
         return res.redirect('/archive');
     }
 
-    // action = name of buttons. 0 = Arkivera, 1 = Spara
-    let action = parseInt(req.body.action);
-    if (action !== 0 && action !== 1) {
-        req.session.flash = {
-            message: 'Falaktig metod, välj arkivera eller spara.',
-            danger: true
-        };
-        return res.redirect('/archive');
-    }
+    try {
+        // Create the schedule
+        let schedule = new Schedules({
+            typeOfSetting: httrackSettings.typeOfSetting,
+            advancedSetting: httrackSettings.advancedSetting,
+            url: httrackSettings.url,
+            includeDomains: httrackSettings.includeDomains,
+            excludePaths: httrackSettings.excludePaths,
+            robots: httrackSettings.robots,
+            structure: httrackSettings.structure,
+            email: httrackSettings.email,
+            ownerId: httrackSettings.ownerId,
+            typeOfSchedule: httrackSettings.typeOfSchedule
+        });
+        await schedule.save();
 
-    // If user clicked 'Spara' --> Save schedule in db
-    // TODO enums
-    if (action === 1) {
-        try {
-            if (httrackSettings.typeOfSetting === Setting.STANDARD) {
-                let schedule = new Schedules({
-                    typeOfSetting: httrackSettings.typeOfSetting,
-                    url: httrackSettings.url,
-                    includeDomains: httrackSettings.includeDomains,
-                    excludePaths: httrackSettings.excludePaths,
-                    robots: httrackSettings.robots,
-                    structure: httrackSettings.structure,
-                    email: httrackSettings.email,
-                    ownerId: httrackSettings.ownerId,
-                    typeOfSchedule: httrackSettings.typeOfSchedule
-                });
-                await schedule.save();
-            } else if (httrackSettings.typeOfSetting === Setting.ADVANCED) {
-                let schedule = new Schedules({
-                    typeOfSetting: httrackSettings.typeOfSetting,
-                    advancedSetting: httrackSettings.advancedSetting,
-                    email: httrackSettings.email,
-                    ownerId: httrackSettings.ownerId,
-                    typeOfSchedule: httrackSettings.typeOfSchedule
-                });
-                await schedule.save();
-            }
-
-            req.session.flash = {
-                message: 'Schemaläggningen har sparats.',
-                success: true
-            };
-            return res.redirect('/archive');
-        } catch (err) {
-            console.log(err);
-            req.session.flash = {
-                message: 'Schemaläggningen kunde inte sparas.',
-                danger: true
-            };
-            return res.redirect('/archive');
-        }
-    }
-
-    // If user clicked 'Arkivera' --> Create archive
-    if (action === 0) {
         req.session.flash = {
             message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
             info: true
         };
         res.redirect('/archive');
-
-        httrackWrapper.archive(httrackSettings);
+    
+        // Create the archive
+        httrackWrapper.archive({
+            ...httrackSettings,
+            fromSchedule: schedule.id
+        });
+    } catch (err) {
+        console.log(err);
+        req.session.flash = {
+            message: 'Arkiveringen kunde inte sparas.',
+            danger: true
+        };
+        return res.redirect('/archive');
     }
-
-    // this part of code should be unreachable
 };
 
 /**
