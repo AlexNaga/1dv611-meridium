@@ -22,14 +22,17 @@ closeNotification(); // Add event listener for closing notifications
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
 window.onload = () => {
     let navbar = document.querySelector('.navbar');
+    let navbarLogo = document.querySelector('.navbarLogo');
     let stickyHeight = navbar.offsetTop;
     window.onscroll = function () {
         if (window.pageYOffset >= stickyHeight) {
             navbar.classList.add('sticky');
+            navbarLogo.classList.remove('is-hidden');
             navbar.firstElementChild.classList.add('is-dark');
             navbar.firstElementChild.classList.add('is-bold');
         } else {
             navbar.classList.remove('sticky');
+            navbarLogo.classList.add('is-hidden');
             navbar.firstElementChild.classList.remove('is-dark');
             navbar.firstElementChild.classList.remove('is-bold');
         }
