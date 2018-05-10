@@ -8,13 +8,13 @@
     </div>
     <div id="navMenu" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item {{#if active.home}}active-page{{/if}}" href="/">
+            <a class="navbar-item has-text-centered{{#if active.home}} active-page{{/if}}" href="/">
                 <span class="icon">
                     <i class="fas fa-home"></i>
                 </span>
                 <span>Hem</span>
             </a>
-            <a class="navbar-item {{#if active.about}}active-page{{/if}}" href="/about">
+            <a class="navbar-item has-text-centered{{#if active.about}} active-page{{/if}}" href="/about">
                 <span class="icon">
                     <i class="far fa-address-card"></i>
                 </span>
@@ -23,32 +23,32 @@
         </div>
         {{#if user}}
             <div class="navbar-end">
-                <a class="navbar-item {{#if active.archive}}active-page{{/if}}" href="/archive">
+                <a class="navbar-item has-text-centered{{#if active.archive}} active-page{{/if}}" href="/archive">
                     <span class="icon">
                         <i class="far fa-file-archive"></i>
                     </span>
                     <span>Arkivera</span>
                 </a>
-                <a class="navbar-item {{#if active.schedule}}active-page{{/if}}" href="/schedules">
+                <a class="navbar-item has-text-centered{{#if active.schedule}} active-page{{/if}}" href="/schedules">
                     <span class="icon">
                         <i class="far fa-calendar-alt"></i>
                     </span>
                     <span>Mina schemaläggningar</span>
                 </a>
-                <a class="navbar-item {{#if active.archives}}active-page{{/if}}" href="/archives">
+                <a class="navbar-item has-text-centered{{#if active.archives}} active-page{{/if}}" href="/archives">
                     <span class="icon">
                         <i class="far fa-folder"></i>
                     </span>
                     <span>Mina arkiveringar</span>
                 </a>
-                <a class="navbar-item {{#if active.profile}}active-page{{/if}}" href="/profile/edit">
+                <a class="navbar-item has-text-centered{{#if active.profile}} active-page{{/if}}" href="/profile/edit">
                     <span class="icon">
                         <i class="far fa-user"></i>
                     </span>
                     <span>Min profil</span>
                 </a>
                 <form action="/account/logout" method="POST">
-                    <button class="navbar-logout-btn navbar-item is-link" style="padding-top:5px;">
+                    <button class="navbar-logout-btn navbar-item is-link has-text-centered" style="padding-top:5px;">
                         <span class="icon">
                             <i class="fas fa-sign-out-alt"></i>
                         </span>
@@ -58,13 +58,13 @@
             </div>
         {{else}}
             <div class="navbar-end">
-                <a class="navbar-item {{#if active.register}}active-page{{/if}}" href="/account/register">
+                <a class="navbar-item has-text-centered{{#if active.register}} active-page{{/if}}" href="/account/register">
                     <span class="icon">
                         <i class="fas fa-user"></i>
                     </span>
                     <span>Registrera</span>
                 </a>
-                <a class="navbar-item {{#if active.login}}active-page{{/if}}" href="/account/login">
+                <a class="navbar-item has-text-centered{{#if active.login}} active-page{{/if}}" href="/account/login">
                     <span class="icon">
                         <i class="fas fa-sign-in-alt"></i>
                     </span>

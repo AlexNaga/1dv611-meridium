@@ -116,7 +116,8 @@ exports.loginUser = async (req, res) => {
             success: true
         };
 
-        return res.redirect('/');
+        res.redirect(req.session.redirectTo || '/');
+        delete req.session.redirectTo;
     } catch (err) {
         req.session.flash = {
             message: err.message,
