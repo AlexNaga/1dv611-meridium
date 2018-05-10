@@ -97,6 +97,6 @@ module.exports = (settings) => {
             email: settings.email,
             fromSchedule: settings.fromSchedule, // Pass along.
             ownerId: settings.ownerId // Pass along.
-        }
+        };
     }
 };

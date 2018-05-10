@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').load();
+require('dotenv').load();
 const http = require('http');
 const app = require('./app');
 

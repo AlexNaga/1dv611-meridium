@@ -14,10 +14,10 @@ module.exports = (utcTime) => {
         secs = ((new Date()).getTime() / 1000) - timestamp,
         minutes = secs / 60,
         hours = minutes / 60,
-        days = hours / 24,
-        weeks = days / 7,
-        months = weeks / 4.34812,
-        years = months / 12;
+        days = hours / 24;
+        // weeks = days / 7,
+        // months = weeks / 4.34812,
+        // years = months / 12;
 
     if (minutes < 1) {
         secs = Math.floor(secs % 60);

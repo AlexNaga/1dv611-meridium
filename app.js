@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const compression = require('compression');
 const paginate = require('handlebars-paginate');
-const helpers = require('handlebars-helpers')(['comparison']);
+require('handlebars-helpers')(['comparison']);
 
 const timestampHelper = require('./src/utils/timestampHelper');
 const countdownHelper = require('./src/utils/countdownHelper');
@@ -62,10 +62,10 @@ require('./src/utils/scheduler').nodeSchedule;
 require('./src/routes')(app);
 app.use('/archives/preview/', express.static('previews')); // Make previews folder accessible
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     console.log('err', err.message);
 
-    //req.session.flash = { message: '404', danger: true };
+    // req.session.flash = { message: '404', danger: true };
     res.redirect('/');
 });
 module.exports = app;
