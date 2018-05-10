@@ -23,10 +23,6 @@ body {
     padding-right:20px;
 }
 
-.table-wrapper {
-    overflow-x: auto;
-}
-
 .wrapper {
     /* margin-top: 1rem; */
     flex:1;/* To make sticky footer */

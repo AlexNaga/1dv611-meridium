@@ -175,20 +175,23 @@ exports.deleteArchive = async (req, res) => {
         await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
         await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archiveName}`);
         
+
+    } catch (err) {
+        // TODO : Logga ev fel?
+        // console.log(err);
+        // ENOENT === No such file or directory
+        // if (err.code !== 'ENOENT') {
+            // res.status(400)
+            //     .json({
+            //         message: 'Kunde inte radera arkiveringen.',
+            //         danger: true
+            //     });
+        // }
+    } finally {
         res.status(200).json({
             message: 'Arkiveringen är raderad.',
             success: true
         });
-    } catch (err) {
-        console.log(err);
-        // ENOENT === No such file or directory
-        if (err.code != 'ENOENT') {
-            res.status(400)
-                .json({
-                    message: 'Kunde inte radera arkiveringen.',
-                    danger: true
-                });
-        }
     }
 };
 

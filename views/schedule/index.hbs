@@ -1,41 +1,42 @@
 {{> deleteModal }}
-
 <h3 class="subtitle is-3">Mina schemalagda arkiveringar</h3>
-<div class="table-wrapper"> <!--mobile fix -->
-<table class="table is-fullwidth is-striped">
-    <thead>
-        <tr>
-            <th>URL</th>
-            <th>Sub-URL</th>
-            <th>Exkludera</th>
-            <th>Schemalagd</th>
-            <th>Senast uppdaterad</th>
-            <th class="has-text-right">Radera</th>
-        </tr>
-    </thead>
-    <tbody class="table-row-hover">
-        {{#each docs}}
-            <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
-                <td>{{friendlyUrl}}</td>
-                <td>{{friendlyIncludeDomains}}</td>
-                <td>{{excludePaths}}</td>
-                <td>{{scheduleName}}</td>
-                <td><span title="{{updatedAt}}">{{timeSince updatedAt}}</span></td>
-                <td>
-                    <div class="field is-grouped is-pulled-right">
-                        <a href="/schedules/edit/{{_id}}"></a>
-                        <button class="table-row-delete-btn button is-inverted is-rounded is-danger modal-button action-delete" data-route="schedules" data-id="{{ _id }}"
-                            title="Radera schemaläggning">
-                            <span class="icon is-small">
-                                <i class="fas fa-times"></i>
-                            </span>
-                        </button>
-                    </div>
-                </td>
+<div class="table-container">
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>URL</th>
+                <th>Sub-URL</th>
+                <th>Exkludera</th>
+                <th>Schemalagd</th>
+                <th>Senast uppdaterad</th>
+                <th class="has-text-right">Radera</th>
             </tr>
-        {{/each}}
-    </tbody>
-</table>
+        </thead>
+        <tbody class="table-row-hover">
+            {{#each docs}}
+                <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
+                    <td>{{friendlyUrl}}</td>
+                    <td>{{friendlyIncludeDomains}}</td>
+                    <td>{{excludePaths}}</td>
+                    <td>{{scheduleName}}</td>
+                    <td>
+                        <span title="{{updatedAt}}">{{timeSince updatedAt}}</span>
+                    </td>
+                    <td>
+                        <div class="field is-grouped is-pulled-right">
+                            <a href="/schedules/edit/{{_id}}"></a>
+                            <button class="table-row-delete-btn button is-inverted is-rounded is-danger modal-button action-delete" data-route="schedules"
+                                data-id="{{ _id }}" title="Radera schemaläggning">
+                                <span class="icon is-small">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </div>
 <br>
 {{> pagination }}
