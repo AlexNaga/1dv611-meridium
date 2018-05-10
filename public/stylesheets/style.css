@@ -88,12 +88,6 @@ body {
 .table-row-paused {
     background-color:rgba(255, 221, 87, 0.4) !important;
 }
-.table-row-delete-btn {
-    background-color:rgba(255, 221, 87, 0) !important;
-}
-.table-row-delete-btn:hover {
-    background-color:rgba(0,0,0,0.05) !important;
-}
 
 .notification-container {
     position: fixed;

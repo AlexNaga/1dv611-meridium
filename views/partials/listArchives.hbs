@@ -1,17 +1,17 @@
 {{> deleteModal }}
-<h3 class="subtitle is-3">Mina tidigare arkiveringar</h3>
+<h3 class="subtitle is-3">Tidigare arkiveringar</h3>
 <div class="table-container">
     <table class="table is-fullwidth is-striped">
         <thead>
             <tr>
                 <th>URL</th>
                 <th>Datum</th>
-                <th>Förhandsgranska</th>
-                <th>Ladda ner</th>
-                <th class="has-text-right">Radera</th>
+                <th class="has-text-right is-narrow"><span class="is-hidden-tablet-only">Förhandsgranska</span></th>
+                <th class="has-text-centered is-hidden-mobile is-narrow"><span class="is-hidden-tablet-only">Ladda ner</span></th>
+                <th class="has-text-right is-narrow"><span class="is-hidden-tablet-only">Radera</span></th>
             </tr>
         </thead>
-        <tbody id="archiveList">
+        <tbody>
             {{#each archives as |archive|}}
                 <tr>
                     <td>
@@ -24,25 +24,23 @@
                             {{ archive.date }}
                         </p>
                     </td>
-                    <td>
-                        <a class="button is-link is-outlined is-rounded is-small" href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
-                            Förhandsgranska
+                    <td class="has-text-right">
+                        <a class="button is-info is-outlined is-rounded is-small" href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
+                            <i class="fas fa-search"></i>&nbsp;<span class="is-hidden-tablet-only">Förhandsgranska</span>
                         </a>
                     </td>
-                    <td>
+                    <td class="has-text-right is-hidden-mobile">
                         <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.downloadPath }}" title="Ladda ner arkiv">
-                            Ladda ner ({{ archive.fileSize}})
+                            <i class="fas fa-download"></i><span class="is-hidden-tablet-only">&nbsp;Ladda ner</span>&nbsp;({{ archive.fileSize }})
                         </a>
                     </td>
-                    <td>
-                        <div class="field is-pulled-right">
-                            <button class="table-row-delete-btn button is-inverted is-rounded is-danger is-small modal-button action-delete" data-route="archives"
-                                data-id="{{ archive.id }}" title="Radera arkiv">
-                                <span class="icon">
-                                    <i class="fas fa-lg fa-times"></i>
-                                </span>
-                            </button>
-                        </div>
+                    <td class="has-text-right">
+                        <a class="button is-outlined is-rounded is-danger is-small modal-button" data-route="archives"
+                            data-id="{{ archive.id }}" title="Radera arkiv">
+                            <span class="icon">
+                                <i class="fas fa-lg fa-times"></i>
+                            </span>
+                        </a>
                     </td>
                 </tr>
             {{/each}}
