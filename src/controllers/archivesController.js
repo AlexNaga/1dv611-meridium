@@ -23,8 +23,8 @@ exports.createArchive = async (req, res) => {
         req.session.flash = {
             message: err.message,
             danger: true
-        }
-        return res.redirect('/');
+        };
+        return res.redirect('/archive');
     }
 
     // action = name of buttons. 0 = Arkivera, 1 = Spara
@@ -33,8 +33,8 @@ exports.createArchive = async (req, res) => {
         req.session.flash = {
             message: 'Falaktig metod, välj arkivera eller spara.',
             danger: true
-        }
-        return res.redirect('/');
+        };
+        return res.redirect('/archive');
     }
 
     // If user clicked 'Spara' --> Save schedule in db
@@ -69,24 +69,24 @@ exports.createArchive = async (req, res) => {
                 message: 'Schemaläggningen har sparats.',
                 success: true
             };
-            return res.redirect('/');
+            return res.redirect('/archive');
         } catch (err) {
             console.log(err);
             req.session.flash = {
                 message: 'Schemaläggningen kunde inte sparas.',
                 danger: true
             };
-            return res.redirect('/');
+            return res.redirect('/archive');
         }
     }
 
     // If user clicked 'Arkivera' --> Create archive
     if (action === 0) {
         req.session.flash = {
-            message: `Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.`,
+            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
             info: true
         };
-        res.redirect('/');
+        res.redirect('/archive');
 
         httrackWrapper.archive(httrackSettings);
     }
