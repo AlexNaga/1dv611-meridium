@@ -48,6 +48,7 @@ body {
     background-color: transparent;
     font-size: 1rem;
     height: 100%;
+    width: 100%;
 }
 .navbar-logout-btn:hover {
     background-color: rgb(232,232,232);
@@ -58,7 +59,8 @@ body {
     background-color: rgb(232, 232, 232) !important;
 }
 .active-page > span.icon {
-    color:#DC3E2A;
+    color:#DC3E2A !important;
+    font-weight: 900;
 }
 
 .is-disabled {

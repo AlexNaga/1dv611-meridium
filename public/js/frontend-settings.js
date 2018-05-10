@@ -1,37 +1,38 @@
-function showSettings() {
-    let settingsDiv = document.getElementById('settings');
+let settingsTab = document.getElementById('settings-tab');
+let settingsDiv = document.getElementById('settings');
+let advSettingsTab = document.getElementById('advancedSettings-tab');
+let advSettingsDiv = document.getElementById('advancedSettings');
 
-    if (settingsDiv.style.display === 'none') {
-        document.querySelector('#settings-li').classList.add('is-active');
-        document.querySelector('#advancedSettings-li').classList.remove('is-active');
-        
-        document.getElementById('advancedSettings').style.display = 'none';
+// standard settings for archiving
+settingsTab.addEventListener('click', () => {
+    if (settingsDiv.classList.contains('hidden')) {
+        settingsTab.classList.add('is-active');
+        advSettingsTab.classList.remove('is-active');
 
-        settingsDiv.style.display = 'block';
+        settingsDiv.classList.remove('hidden');
+        advSettingsDiv.classList.add('hidden');
     } else {
-        if (document.querySelector('#settings-li').classList.contains('is-active')) {
+        if (settingsTab.classList.contains('is-active')) {
+            // clicking on the active tab
             return;
         }
-        settingsDiv.style.display = 'none';
+        settingsDiv.classList.remove('hidden');
     }
-}
+});
 
-function showAdvancedSettings() {
-    let advancedSettingsDiv = document.getElementById('advancedSettings');
+// advanced settings for archiving
+advSettingsTab.addEventListener('click', () => {
+    if (advSettingsDiv.classList.contains('hidden')) {
+        settingsTab.classList.remove('is-active');
+        advSettingsTab.classList.add('is-active');
 
-    if (advancedSettingsDiv.style.display === 'none') {
-        document.querySelector('#advancedSettings-li').classList.add('is-active');
-        document.querySelector('#settings-li').classList.remove('is-active');
-        
-        document.getElementById('settings').style.display = 'none';
-
-        advancedSettingsDiv.style.display = 'block';
+        settingsDiv.classList.add('hidden');
+        advSettingsDiv.classList.remove('hidden');
     } else {
-        if (document.querySelector('#advancedSettings-li').classList.contains('is-active')) {
+        if (advSettingsTab.classList.contains('is-active')) {
+            // clicking on the active tab
             return;
         }
-        advancedSettingsDiv.style.display = 'none';
+        advSettingsDiv.classList.remove('hidden');
     }
-}
-
-showSettings();
+});

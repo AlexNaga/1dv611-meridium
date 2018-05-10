@@ -9,13 +9,13 @@
     <div id="navMenu" class="navbar-menu">
         <div class="navbar-start">
             <a class="navbar-item has-text-centered{{#if active.home}} active-page{{/if}}" href="/">
-                <span class="icon">
+                <span class="icon has-text-dark">
                     <i class="fas fa-home"></i>
                 </span>
                 <span>Hem</span>
             </a>
             <a class="navbar-item has-text-centered{{#if active.about}} active-page{{/if}}" href="/about">
-                <span class="icon">
+                <span class="icon has-text-dark">
                     <i class="far fa-address-card"></i>
                 </span>
                 <span>Om oss</span>
@@ -24,32 +24,26 @@
         {{#if user}}
             <div class="navbar-end">
                 <a class="navbar-item has-text-centered{{#if active.archive}} active-page{{/if}}" href="/archive">
-                    <span class="icon">
+                    <span class="icon has-text-dark">
                         <i class="far fa-file-archive"></i>
                     </span>
                     <span>Arkivera</span>
                 </a>
                 <a class="navbar-item has-text-centered{{#if active.schedule}} active-page{{/if}}" href="/schedules">
-                    <span class="icon">
-                        <i class="far fa-calendar-alt"></i>
-                    </span>
-                    <span>Mina schemaläggningar</span>
-                </a>
-                <a class="navbar-item has-text-centered{{#if active.archives}} active-page{{/if}}" href="/archives">
-                    <span class="icon">
+                    <span class="icon has-text-dark">
                         <i class="far fa-folder"></i>
                     </span>
                     <span>Mina arkiveringar</span>
                 </a>
                 <a class="navbar-item has-text-centered{{#if active.profile}} active-page{{/if}}" href="/profile/edit">
-                    <span class="icon">
+                    <span class="icon has-text-dark">
                         <i class="far fa-user"></i>
                     </span>
                     <span>Min profil</span>
                 </a>
                 <form action="/account/logout" method="POST">
                     <button class="navbar-logout-btn navbar-item is-link has-text-centered" style="padding-top:5px;">
-                        <span class="icon">
+                        <span class="icon has-text-dark">
                             <i class="fas fa-sign-out-alt"></i>
                         </span>
                         <span>Logga ut</span>
@@ -59,13 +53,13 @@
         {{else}}
             <div class="navbar-end">
                 <a class="navbar-item has-text-centered{{#if active.register}} active-page{{/if}}" href="/account/register">
-                    <span class="icon">
-                        <i class="fas fa-user"></i>
+                    <span class="icon has-text-dark">
+                        <i class="far fa-user"></i>
                     </span>
                     <span>Registrera</span>
                 </a>
                 <a class="navbar-item has-text-centered{{#if active.login}} active-page{{/if}}" href="/account/login">
-                    <span class="icon">
+                    <span class="icon has-text-dark">
                         <i class="fas fa-sign-in-alt"></i>
                     </span>
                     <span>Logga in</span>

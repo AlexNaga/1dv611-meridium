@@ -20,18 +20,20 @@ closeNotification(); // Add event listener for closing notifications
 
 
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
-let navbar = document.querySelector('.navbar');
-let sticky = navbar.offsetTop;
-window.onscroll = function () {
-    if (window.pageYOffset >= sticky) {
-        navbar.classList.add('sticky');
-        navbar.firstElementChild.classList.add('is-dark');
-        navbar.firstElementChild.classList.add('is-bold');
-    } else {
-        navbar.classList.remove('sticky');
-        navbar.firstElementChild.classList.remove('is-dark');
-        navbar.firstElementChild.classList.remove('is-bold');
-    }
+window.onload = () => {
+    let navbar = document.querySelector('.navbar');
+    let stickyHeight = navbar.offsetTop;
+    window.onscroll = function () {
+        if (window.pageYOffset >= stickyHeight) {
+            navbar.classList.add('sticky');
+            navbar.firstElementChild.classList.add('is-dark');
+            navbar.firstElementChild.classList.add('is-bold');
+        } else {
+            navbar.classList.remove('sticky');
+            navbar.firstElementChild.classList.remove('is-dark');
+            navbar.firstElementChild.classList.remove('is-bold');
+        }
+    };
 };
 
 // Table row clickable
