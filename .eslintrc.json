@@ -8,7 +8,8 @@
         "ecmaVersion": 8,
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true
-        }
+        },
+        "sourceType": "module"
     },
     "extends": "eslint:recommended",
     "rules": {
