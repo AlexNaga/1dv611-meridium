@@ -89,7 +89,7 @@ module.exports = function (pw, confirmPw, rules) {
             let last = reasons[reasons.length - 1].part;
             return start + reasons.slice(0, -1).map((r) => {
                 return r.part;
-            }).join(', ') + ', och ' + last + '.';
+            }).join(', ') + ' och ' + last + '.';
         }
     }
 };

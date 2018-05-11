@@ -44,7 +44,7 @@ exports.createArchive = async (req, res) => {
         await schedule.save();
 
         req.session.flash = {
-            message: 'Arkiveringen är startad. Du kommer notifieras via email när arkiveringen är klar.',
+            message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
             info: true
         };
         res.redirect('/archive');

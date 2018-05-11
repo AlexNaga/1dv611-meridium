@@ -18,7 +18,7 @@ let validatePassword = async (password, confirmPassword) => {
 };
 
 /**
- * POST /profile/edit
+ * POST /profile
  */
 exports.editUser = async (req, res) => {
     const email = req.session.user.email;
@@ -26,26 +26,17 @@ exports.editUser = async (req, res) => {
     const newPassword = req.body.newPassword;
     const confirmNewPassword = req.body.confirmNewPassword;
     try {
+        let user = await User.findOne({ email: email });
+        let result = await bcrypt.compare(oldPassword, user.password);
+        if (result === false) throwError(401, 'Gamla lösenordet är fel.');
+
         await validatePassword(newPassword, confirmNewPassword);
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        const updateParams = {
-            password: hashedPassword
-        };
-
-        let user = await User.findOne({
-            email: email
-        });
-        let result = await bcrypt.compare(oldPassword, user.password);
-        if (result === false) throwError(401, 'Fel lösenord.');
-
-        let updateUser = await User.findOneAndUpdate({
-            email: email
-        }, {
-            $set: updateParams
-        }, {
-            new: true
-        });
+        let updateUser = await User.findOneAndUpdate({ email: email },
+            { $set: { password: hashedPassword } },
+            { new: true }
+        );
         await updateUser.save();
 
         req.session.flash = {
@@ -60,12 +51,12 @@ exports.editUser = async (req, res) => {
             danger: true
         };
 
-        return res.redirect('/profile/edit');
+        return res.redirect('/profile');
     }
 };
 
 /**
- * GET /profile/edit
+ * GET /profile
  */
 exports.getEditPage = (req, res) => {
     res.render('profile/edit', {

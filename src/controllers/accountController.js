@@ -51,9 +51,7 @@ exports.createUser = async (req, res) => {
     const confirmPassword = req.body.password[1];
 
     try {
-        let user = await User.findOne({
-            email: email
-        });
+        let user = await User.findOne({ email: email });
         if (user) {
             req.session.flash = {
                 message: 'Du kan inte skapa ett konto med den här epostadressen',
@@ -99,9 +97,7 @@ exports.loginUser = async (req, res) => {
     const password = req.body.password;
 
     try {
-        let user = await User.findOne({
-            email: email
-        }).exec();
+        let user = await User.findOne({ email: email }).exec();
         if (!user) throwError(401, 'Felaktiga inloggningsuppgifter.');
 
         let success = await bcrypt.compare(password, user.password);
@@ -141,7 +137,8 @@ exports.resetPassword = async (req, res) => {
 
         const link = process.env.SERVER_DOMAIN;
         let resetLink = link + '/account/reset-password/' + tempCode;
-        let duration = 60 * 60 * 2; // duration in seconds (2 hours)
+        let hours = 2;
+        let duration = 60 * 60 * hours; // duration in seconds
         let tempValue = {
             resetPasswordCode: tempCode,
             resetPasswordDate: Date.now() / 1000 + duration
@@ -150,14 +147,15 @@ exports.resetPassword = async (req, res) => {
         try {
             if (user) {
                 await User.findOneAndUpdate({ email: email },
-                    { $set: tempValue }).exec();
+                    { $set: tempValue }
+                ).exec();
 
                 let emailSettings = {
                     to: email,
                     subject: 'Återställ ditt lösenord',
                     message: `<p>Hej,</p>
                           <p>Du har fått detta e-postmeddelande eftersom du har begärt ett nytt lösenord för ditt konto på Arkivdium.</p>
-                          <a href="${resetLink}">Klicka på denna länk för att skapa ditt nya lösenord</a>
+                          <a href="${resetLink}">Klicka på denna länk för att skapa ditt nya lösenord</a> Länken är giltig i ${hours} timmar.
                           <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p>`
                 };
 
@@ -198,7 +196,7 @@ exports.resetPassword = async (req, res) => {
 exports.validateLink = async (req, res) => {
     let resetUrl = {
         body: req.params.temporaryCode
-    }
+    };
     if (await isValidCode(req.params.temporaryCode)) {
         return res.render('account/update-password', {
             loadValidation: true,
