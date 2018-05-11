@@ -11,7 +11,8 @@
             </form>
         </div>
         <div class="level-item">
-            <button id="pause" class="schedule-edit-btn pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">
+            <button id="pause" class="schedule-edit-btn pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}"
+                data-id="{{schedule._id}}">
                 <span class="icon is-small">
                     <i class="fas fa-pause"></i>
                     <i class="fas fa-spinner fa-pulse hidden"></i>
@@ -19,7 +20,8 @@
                 </span>
                 <span>Pausa</span>
             </button>
-            <button id="start" class="schedule-edit-btn pause-state-buttons button is-success{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">
+            <button id="start" class="schedule-edit-btn pause-state-buttons button is-success{{#unless schedule.isPaused}} hidden{{/unless}}"
+                data-id="{{schedule._id}}">
                 <span class="icon is-small">
                     <i class="fas fa-play"></i>
                     <i class="fas fa-spinner fa-pulse hidden"></i>
@@ -37,14 +39,14 @@
             </a>
         </div>
     </nav>
-    {{#unlessEq schedule.typeOfSchedule 0 }}
-        <div class="has-text-centered is-size-4 is-italic">{{countDown schedule}} kvar till nästa arkivering</div>
-    {{/unlessEq}}
+    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</p>
+    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">Arkiveringen är pausad</p>
 </div>
 <div class="columns">
     <div class="column is-full-mobile is-one-third-tablet">
         {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
-        {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings}} {{/eq}}
+        {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings}}
+        {{/eq}}
     </div>
     <div class="column is-two-thirds-tablet">
         {{> listArchives }}

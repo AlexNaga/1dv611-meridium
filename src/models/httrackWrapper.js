@@ -33,8 +33,8 @@ exports.archive = async (settings) => {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
     const previewCommand = `${httrack} ${urls[0]} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original"`;
 
-    console.log('command', command);
-    console.log('previewCommand', previewCommand);
+    console.log('command: ', command);
+    console.log('previewCommand: ', previewCommand);
 
     try {
         // Preview

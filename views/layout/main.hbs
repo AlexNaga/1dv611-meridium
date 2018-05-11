@@ -10,11 +10,17 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/stylesheets/fontawesome-all.min.css">
     <script defer src="/js/scripts.js"></script>
-    <script defer src="/js/modal-scripts.js"></script> {{#if user }} {{#if loadIndexScripts }}
-    <script defer src="/js/frontend-settings.js"></script> {{/if}} {{#if loadArchiveScripts }}
-    <script defer src="/js/archive-scripts.js"></script> {{/if}} {{#if loadScheduleScripts }}
-    <script defer src="/js/schedule-scripts.js"></script> {{/if}} {{/if}} {{#if loadValidation }}
-    <script defer src="/js/validate.js"></script> {{/if}} {{> hero }} {{> navbar }}
+    <script defer src="/js/modal-scripts.js"></script>
+    {{#if user }}
+        {{#if loadIndexScripts }}
+            <script defer src="/js/frontend-settings.js"></script> {{/if}}
+        {{#if loadArchiveScripts }}
+            <script defer src="/js/archive-scripts.js"></script> {{/if}}
+        {{#if loadScheduleScripts }}
+            <script defer src="/js/schedule-scripts.js"></script> {{/if}}
+    {{/if}}
+    {{#if loadValidation }}
+        <script defer src="/js/validate.js"></script> {{/if}} {{> hero }} {{> navbar }}
     <div class="section wrapper">
         <div class="container">
             {{{ body }}}
@@ -23,7 +29,7 @@
     <footer class="footer">
         <div class="container">
             <div class="columns">
-                <div class="column">
+                <div class="column is-offset-1">
                     <div class="block">
                         <img src="/images/meridium.png" alt="Meridium" height="80" width="150">
                     </div>
@@ -48,19 +54,21 @@
                         </ul>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column is-offset-1">
                     <div class="block">
                         <img src="/images/linneuniversitetet.png" alt="Linnéuniversitetet" height="80" width="180">
                     </div>
                     <div class="block">
                         <ul>
-                            <li><i>Alex Naga, Frida Melin, Rosa Ekström, Simon Österdahl och Robin Nowakowski</i></li>
+                            <li>
+                                <i>Alex Naga, Frida Melin, Rosa Ekström, Simon Österdahl och Robin Nowakowski</i>
+                            </li>
                         </ul>
                     </div>
                 </div>
+                <div class="column is-1"></div>
             </div>
         </div>
     </footer>
     {{> flash }}
-
 </html>
