@@ -132,19 +132,16 @@ exports.listArchives = async (req, res) => {
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
-    let archiveName;
     try {
         let archive = await Archive.findOneAndRemove({
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
 
-        archiveName = archive.fileName;
         const deleteFolder = require('util').promisify(fs.remove);
         const deleteFile = require('util').promisify(fs.unlink);
         await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
-        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archiveName}`);
-        
+        await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archive.fileName}`);
 
     } catch (err) {
         // TODO : Logga ev fel?
