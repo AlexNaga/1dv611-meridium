@@ -44,7 +44,8 @@
 </div>
 <div class="columns">
     <div class="column is-full-mobile is-one-third-tablet">
-        {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}} {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings}}
+        {{#eq schedule.typeOfSetting 0}} {{> updateSettings }} {{/eq}}
+        {{#eq schedule.typeOfSetting 1}} {{> updateAdvancedSettings}}
         {{/eq}}
     </div>
     <div class="column is-two-thirds-tablet">

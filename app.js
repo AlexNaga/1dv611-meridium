@@ -62,7 +62,7 @@ require('./src/utils/scheduler').nodeSchedule;
 require('./src/routes')(app);
 app.use('/archives/preview/', express.static('previews')); // Make previews folder accessible
 
-app.use((req, res, next, err) => {
+app.use((err, req, res, next) => {
     console.log('err', err);
 
     // req.session.flash = { message: '404', danger: true };
