@@ -12,6 +12,7 @@ yarn-error.log*
 
 # Build files
 build
+dist
 
 # Runtime data
 pids
