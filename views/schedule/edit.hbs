@@ -39,8 +39,10 @@
             </a>
         </div>
     </nav>
-    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</p>
     <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">Arkiveringen är pausad</p>
+    {{#unlessEq schedule.typeOfSchedule 0 }}
+    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</p>
+    {{/unlessEq}}
 </div>
 <div class="columns">
     <div class="column is-full-mobile is-one-third-tablet">
