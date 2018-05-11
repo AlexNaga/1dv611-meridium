@@ -32,4 +32,4 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   ### Build for production
   - Build the client files for production by typing `npm run build`
 
-  This will create a folder named `dist` (stands for distribution). The folder will include a bundled / minified version of the JavaScript and CSS.
+  This will create a folder named `dist` (stands for *distribution*). The folder will include a bundled / minified version of the JavaScript and CSS.
