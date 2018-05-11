@@ -198,10 +198,7 @@ exports.validateLink = async (req, res) => {
         body: req.params.temporaryCode
     };
     if (await isValidCode(req.params.temporaryCode)) {
-        return res.render('account/update-password', {
-            loadValidation: true,
-            resetUrl: resetUrl
-        });
+        return res.render('account/update-password', { resetUrl: resetUrl });
     }
     req.session.flash = {
         message: 'Länken har utgått!',
@@ -262,12 +259,7 @@ exports.logoutUser = (req, res) => {
  * GET /account/register
  */
 exports.getRegisterPage = (req, res) => {
-    res.render('account/register', {
-        loadValidation: true,
-        active: {
-            register: true
-        },
-    });
+    res.render('account/register', { active: { register: true } });
 };
 
 /**
@@ -285,7 +277,5 @@ exports.getLoginPage = (req, res) => {
  * GET /account/forgot-password
  */
 exports.getPasswordResetPage = (req, res) => {
-    res.render('account/forgot-password', {
-        loadValidation: true
-    });
+    res.render('account/forgot-password');
 };
