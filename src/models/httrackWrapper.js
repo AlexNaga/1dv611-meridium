@@ -137,13 +137,15 @@ function runCommand(command) {
 
 function createCommand(s) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
+    let include = s.includeDomains[0] !== '' ? s.includeDomains.map(domain => `${domain}`) : '';
+    let exclude = s.excludePaths[0] !== '' ? s.excludePaths.map(path => `-*${path}/*`) : '';
 
     if (s.typeOfSetting === Setting.STANDARD) {
         let command = [
             httrack,
             s.url, // Url to crawl.
             ...s.includeDomains, // Domains to include.
-            ...s.excludePaths, // Paths to exclude.
+            ...exclude, // Paths to exclude.
             `-s${s.robots}`, // 0 = ignore all metadata and robots.txt. 1 = check all file types without directories. 2 = check all file types including directories.
             `-N${s.structure}`, // Site structure. 0 = default site structure.
             `-A${100000000000}`, // Maximum transfer rate in bytes/seconds.
