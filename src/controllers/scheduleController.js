@@ -2,6 +2,7 @@ const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const httrackWrapper = require('../models/httrackWrapper');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
+const fs = require('fs-extra');
 
 /**
  * GET /schedules/
@@ -153,6 +154,19 @@ exports.deleteSchedule = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
+
+        let archives = await Archive.find({
+            fromSchedule: schedule.id
+        }).exec();
+
+        for (let i = 0; i < archives.length; i++) {
+            const archive = archives[i];
+            const deleteFolder = require('util').promisify(fs.remove);
+            const deleteFile = require('util').promisify(fs.unlink);
+            await deleteFolder(`./${process.env.PREVIEWS_FOLDER}/${archive.id}`);
+            await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archive.fileName}`);
+            archive.remove();
+        }
 
         res.status(200).json({
             message: 'Schemaläggningen är raderad.',
