@@ -28,3 +28,8 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
   ```
   4. Start the application by typing `npm start` (or `npm run dev` for development)
   5. The application is now running at [http://localhost:3000](http://localhost:3000)
+
+  ### Build for production
+  - Build the client files for production by typing `npm run build`
+
+  This will create a folder named `dist` (stands for distribution). The folder will include a bundled / minified version of the JavaScript and CSS.
