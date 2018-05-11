@@ -10,11 +10,17 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="/stylesheets/fontawesome-all.min.css">
     <script defer src="/js/scripts.js"></script>
-    <script defer src="/js/modal-scripts.js"></script> {{#if user }} {{#if loadIndexScripts }}
-    <script defer src="/js/frontend-settings.js"></script> {{/if}} {{#if loadArchiveScripts }}
-    <script defer src="/js/archive-scripts.js"></script> {{/if}} {{#if loadScheduleScripts }}
-    <script defer src="/js/schedule-scripts.js"></script> {{/if}} {{/if}} {{#if loadValidation }}
-    <script defer src="/js/validate.js"></script> {{/if}} {{> hero }} {{> navbar }}
+    <script defer src="/js/modal-scripts.js"></script>
+    {{#if user }}
+        {{#if loadIndexScripts }}
+            <script defer src="/js/frontend-settings.js"></script> {{/if}}
+        {{#if loadArchiveScripts }}
+            <script defer src="/js/archive-scripts.js"></script> {{/if}}
+        {{#if loadScheduleScripts }}
+            <script defer src="/js/schedule-scripts.js"></script> {{/if}}
+    {{/if}}
+    {{#if loadValidation }}
+        <script defer src="/js/validate.js"></script> {{/if}} {{> hero }} {{> navbar }}
     <div class="section wrapper">
         <div class="container">
             {{{ body }}}
@@ -54,7 +60,9 @@
                     </div>
                     <div class="block">
                         <ul>
-                            <li><i>Alex Naga, Frida Melin, Rosa Ekström, Simon Österdahl och Robin Nowakowski</i></li>
+                            <li>
+                                <i>Alex Naga, Frida Melin, Rosa Ekström, Simon Österdahl och Robin Nowakowski</i>
+                            </li>
                         </ul>
                     </div>
                 </div>
