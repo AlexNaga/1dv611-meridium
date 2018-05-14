@@ -232,6 +232,49 @@ exports.downloadArchive = async (req, res) => {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * GET /archives/
+ */
+exports.listArchives = async (req, res) => {
+    try {
+        let page = req.query.p || 1;
+        let itemsPerPage = 10;
+
+        let archives = await Archive.paginate({
+            ownerId: req.session.user.id
+        }, {
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
+
+        res.render('archives/index', {
+            active: {
+                archives: true
+            },
+            archives: archives.docs,
+            total: archives.total,
+            limit: archives.limit,
+            pagination: {
+                page: archives.page,
+                pageCount: archives.pages
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        req.session.flash = {
+            message: 'Kunde inte lista dina arkiveringar!',
+            danger: true
+        };
+        return res.redirect('/');
+    }
+};
+
+/**
+>>>>>>> bd663f37bc1277568be33ce0d6e64f3053faf98e
  * DELETE /archives/:id
  */
 exports.deleteArchive = async (req, res) => {
