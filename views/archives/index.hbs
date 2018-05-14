@@ -1,1 +1,42 @@
- {{> listArchives }}
+{{> deleteModal }}
+<h3 class="subtitle is-3">Mina arkiveringar</h3>
+<div class="table-container">
+    <table class="table is-fullwidth is-striped">
+        <thead>
+            <tr>
+                <th>URL</th>
+                <th class="is-hidden-touch">Sub-URL</th>
+                <th class="is-hidden-touch">Exkludera</th>
+                <th>Schemalagd</th>
+                <th>Senast uppdaterad</th>
+                <th class="has-text-right">Radera</th>
+            </tr>
+        </thead>
+        <tbody class="table-row-hover">
+            {{#each docs}}
+                <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
+                    <td>{{friendlyUrl}}</td>
+                    <td class="is-hidden-touch">{{friendlyIncludeDomains}}</td>
+                    <td class="is-hidden-touch">{{excludePaths}}</td>
+                    <td>{{scheduleName}}</td>
+                    <td>
+                        <span title="{{updatedAt}}">{{timeSince updatedAt}}</span>
+                    </td>
+                    <td>
+                        <div class="field is-grouped is-pulled-right">
+                            <a href="/archives/edit/{{_id}}"></a>
+                            <a class="button is-outlined is-rounded is-danger is-small modal-button" data-route="archives"
+                                data-id="{{ _id }}" title="Radera schemaläggning">
+                                <span class="icon is-small">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<br>
+{{> pagination }}

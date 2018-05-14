@@ -6,7 +6,13 @@ module.exports = (app, baseRoute) => {
     app.post(baseRoute + '/', isLoggedIn, ArchivesController.createArchive);
 
     // Lists all archives
-    app.get(baseRoute + '/', isLoggedIn, ArchivesController.listArchives);
+    app.get(baseRoute + '/', isLoggedIn, ArchivesController.listSchedule);
+    
+     // Get a specific schedule
+    app.get(baseRoute + '/edit/:id', isLoggedIn, ArchivesController.getSchedule);
+
+    // Update a specific schedule
+    app.post(baseRoute + '/edit/:id', isLoggedIn, ArchivesController.updateSchedule);
 
     // Download a specific archive
     app.get(baseRoute + '/:id', isLoggedIn, ArchivesController.downloadArchive);

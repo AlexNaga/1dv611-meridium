@@ -34,6 +34,10 @@ body {
     flex:1;
 }
 
+.tooltip.is-tooltip-multiline {
+    text-align: center;
+}
+
 #recent-list ul li {
     margin-bottom: 10px;
 }
