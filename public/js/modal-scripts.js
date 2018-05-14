@@ -27,10 +27,16 @@ class Modal {
             let oldElem = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
             oldElem.parentNode.replaceChild(oldElem.cloneNode(true), oldElem);
 
-            let id = elem.getAttribute('data-id');
             this.route = elem.getAttribute('data-route');
             this.redirectRoute = elem.getAttribute('data-redirect-route');
-            let elemRow = this.findParentRow(elem, 'scheduleRow');
+
+            let id = elem.getAttribute('data-id');
+            let elemRow = elem.parentNode.parentNode.parentNode;
+
+            if (this.route === 'archives') {
+                elemRow = elem.parentNode.parentNode;
+            }
+
             let modalRemoveBtn = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
             let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // When editing a schedule
 
@@ -84,22 +90,6 @@ class Modal {
         modals.forEach((elem) => {
             elem.classList.remove('is-active');
         });
-    }
-
-    /**
-     * 
-     * @param {*} elem        // The start elem
-     * @param {*} classToFind // The elem class to find and match with
-     */
-    findParentRow(elem, classToFind) {
-        while (elem.parentNode) {
-            elem = elem.parentNode;
-            let elemClass = elem.classList[0];
-            if (elemClass === classToFind) {
-                return elem;
-            }
-        }
-        return null;
     }
 
     static getAll(selector) {
