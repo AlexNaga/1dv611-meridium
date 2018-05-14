@@ -68,8 +68,8 @@ exports.archive = async (settings) => {
         await removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
         // Send success email
-        let downloadUrl = `${process.env.SERVER_DOMAIN}/archives/${archive.id}`;
-        let scheduleUrl = `${process.env.SERVER_DOMAIN}/schedules/edit/${archive.fromSchedule}`;
+        let downloadUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/${archive.id}`;
+        let scheduleUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/edit/${archive.fromSchedule}`;
         let emailSettings = {
             to: settings.email,
             subject: 'Arkiveringen är klar ✔',
