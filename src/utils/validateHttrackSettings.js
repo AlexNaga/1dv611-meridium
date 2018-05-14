@@ -44,7 +44,7 @@ module.exports = (settings) => {
         }
 
         // include domains
-        settings.includeDomains = settings.includeDomains.replace(' ', '').split(',');
+        settings.includeDomains = settings.includeDomains.replace(/ /g, '').split(',');
         if (settings.includeDomains[0] !== '') {
             if (settings.includeDomains.every(domain => validUrl.isUri(domain)) === false) {
                 throw new Error('En subdomän att arkivera är inte korrekt.');
@@ -52,7 +52,7 @@ module.exports = (settings) => {
         }
 
         // exclude paths
-        settings.excludePaths = settings.excludePaths.replace(' ', '').split(',');
+        settings.excludePaths = settings.excludePaths.replace(/ /g, '').split(',');
 
         // robots
         settings.robots = parseInt(settings.robots);

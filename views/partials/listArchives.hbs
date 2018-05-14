@@ -12,38 +12,38 @@
             </tr>
         </thead>
         <tbody>
-            {{#each archives as |archive|}}
-                <tr class="scheduleRow">
-                    <td>
-                        <p title="Arkivets namn">
-                            {{ archive.prettyName }}
-                        </p>
-                    </td>
-                    <td>
-                        <p title="Arkivets datum">
-                            {{ archive.date }}
-                        </p>
-                    </td>
-                    <td class="has-text-right">
-                        <a class="button is-info is-outlined is-rounded is-small" href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
-                            <i class="fas fa-search"></i>&nbsp;<span class="is-hidden-tablet-only">Förhandsgranska</span>
-                        </a>
-                    </td>
-                    <td class="has-text-right is-hidden-mobile">
-                        <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.downloadPath }}" title="Ladda ner arkiv">
-                            <i class="fas fa-download"></i><span class="is-hidden-tablet-only">&nbsp;Ladda ner</span>&nbsp;({{ archive.fileSize }})
-                        </a>
-                    </td>
-                    <td class="has-text-right">
-                        <a class="button is-outlined is-rounded is-danger is-small modal-button" data-route="archives"
-                            data-id="{{ archive.id }}" title="Radera arkiv">
-                            <span class="icon">
-                                <i class="fas fa-lg fa-times"></i>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
-            {{/each}}
+                {{#each archives as |archive|}}
+                    <tr>
+                        <td>
+                            <p title="Arkivets namn">
+                                {{ archive.prettyName }}
+                            </p>
+                        </td>
+                        <td>
+                            <p title="Arkivets datum">
+                                {{ archive.date }}
+                            </p>
+                        </td>
+                        <td class="has-text-right">
+                            <a class="button is-info is-outlined is-rounded is-small" href="/archives/preview/{{ archive.id }}" target="_blank" title="Förhandsgranska arkiv">
+                                <i class="fas fa-search"></i>&nbsp;<span class="is-hidden-tablet-only">Förhandsgranska</span>
+                            </a>
+                        </td>
+                        <td class="has-text-right is-hidden-mobile">
+                            <a class="button is-outlined is-primary is-rounded is-small" href="{{ archive.downloadPath }}" title="Ladda ner arkiv">
+                                <i class="fas fa-download"></i><span class="is-hidden-tablet-only">&nbsp;Ladda ner</span>&nbsp;({{ archive.fileSize }})
+                            </a>
+                        </td>
+                        <td class="has-text-right">
+                            <a class="button is-outlined is-rounded is-danger is-small modal-button" data-route="archives"
+                                data-id="{{ archive.id }}" title="Radera arkiv">
+                                <span class="icon">
+                                    <i class="fas fa-lg fa-times"></i>
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                {{/each}}
         </tbody>
     </table>
 </div>

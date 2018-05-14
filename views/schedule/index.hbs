@@ -14,7 +14,7 @@
         </thead>
         <tbody class="table-row-hover">
             {{#each docs}}
-                <tr title="Ändra schemaläggning" class="scheduleRow {{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
+                <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
                     <td>{{friendlyUrl}}</td>
                     <td class="is-hidden-touch">{{friendlyIncludeDomains}}</td>
                     <td class="is-hidden-touch">{{excludePaths}}</td>
