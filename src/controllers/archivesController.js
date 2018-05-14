@@ -51,7 +51,7 @@ exports.listSchedule = async (req, res) => {
 };
 
 /**
- * GET /schedules/edit/:id
+ * GET /archives/edit/:id
  */
 exports.getSchedule = async (req, res) => {
     try {
@@ -99,7 +99,7 @@ exports.getSchedule = async (req, res) => {
 };
 
 /**
- * POST /schedules/edit/:id
+ * POST /archives/edit/:id
  */
 exports.updateSchedule = async (req, res) => {
     try {
