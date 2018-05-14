@@ -70,59 +70,27 @@ exports.archive = async (settings) => {
         // Send success email
         let downloadUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/${archive.id}`;
         let scheduleUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/edit/${archive.fromSchedule}`;
-        let emailSettings = {
-            to: settings.email,
-            subject: 'Arkiveringen är klar ✔',
-            message: `<p>Hej,</p>
-                      <p>Din arkivering av <b><a href="${urls[0]}">${urls[0]}</a></b> är klar.</p>
-                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                              <td style="padding-bottom:10px;">
-                                  <table border="0" cellspacing="0" cellpadding="0">
-                                      <tr>
-                                          <td align="center" style="border-radius: 3px;" bgcolor="#00d1b2">
-                                              <a href="${downloadUrl}" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
-                                                 text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #00d1b2;display: inline-block;">
-                                                 Ladda ned arkiv (${prettyFileSize(fileSize)})</a>
-                                          </td>
-                                      </tr>
-                                  </table>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td>
-                                <table border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <td align="center" style="border-radius: 3px;" bgcolor="#209cee">
-                                            <a href="${scheduleUrl}" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
-                                                text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #209cee;display: inline-block;">
-                                                Redigera schemaläggning</a>
-                                        </td>
-                                    </tr>
-                                </table>  
-                              </td>
-                          </tr>
-                      </table>
-                      <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p><br>`
-        };
-        EmailModel.sendMail(emailSettings);
+        sendSuccessEmail({
+            email: settings.email,
+            fileSize: fileSize,
+            url: urls[0],
+            downloadUrl: downloadUrl,
+            scheduleUrl: scheduleUrl
+        });
     } catch (err) {
         console.log(err);
 
         // Send error mail
-        let emailSettings = {
-            to: settings.email,
-            subject: 'Din schemalagda arkivering kunde inte slutföras!',
-            message: `<p><b>Din schemalagda arkivering av
-            <a href="${settings.url}">${settings.url}</a> kunde inte slutföras.</b></p>`
-        };
-        EmailModel.sendMail(emailSettings);
+        sendErrorEmail({
+            email: settings.email,
+            url: settings.url
+        });
     }
 };
 
 function getTimestamp() {
     let date = dayjs().toObject();
-    return `${date.years}-${date.months}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
+    return `${date.years}-${date.months + 1}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
 }
 
 /**
@@ -191,4 +159,53 @@ function createCommand(s) {
     } else if (s.typeOfSetting === Setting.ADVANCED) {
         return `${httrack} ${s.advancedSetting}`;
     }
+}
+
+function sendSuccessEmail(settings) {
+    let emailSettings = {
+        to: settings.email,
+        subject: 'Arkiveringen är klar ✔',
+        message: `<p>Hej,</p>
+                  <p>Din arkivering av <b><a href="${settings.url}">${settings.url}</a></b> är klar.</p>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                          <td style="padding-bottom:10px;">
+                              <table border="0" cellspacing="0" cellpadding="0">
+                                  <tr>
+                                      <td align="center" style="border-radius: 3px;" bgcolor="#00d1b2">
+                                          <a href="${settings.downloadUrl}" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
+                                             text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #00d1b2;display: inline-block;">
+                                             Ladda ned arkiv (${prettyFileSize(settings.fileSize)})</a>
+                                      </td>
+                                  </tr>
+                              </table>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="center" style="border-radius: 3px;" bgcolor="#209cee">
+                                        <a href="${settings.scheduleUrl}" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
+                                            text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #209cee;display: inline-block;">
+                                            Redigera schemaläggning</a>
+                                    </td>
+                                </tr>
+                            </table>  
+                          </td>
+                      </tr>
+                  </table>
+                  <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p><br>`
+    };
+    EmailModel.sendMail(emailSettings);
+}
+
+function sendErrorEmail(settings) {
+    let emailSettings = {
+        to: settings.email,
+        subject: 'Din schemalagda arkivering kunde inte slutföras!',
+        message: `<p><b>Din schemalagda arkivering av
+        <a href="${settings.url}">${settings.url}</a> kunde inte slutföras.</b></p>`
+    };
+    EmailModel.sendMail(emailSettings);
 }
