@@ -1,5 +1,4 @@
 // JS imports
-import '../js/archive-scripts';
 import '../js/frontend-settings';
 import '../js/modal-scripts';
 import '../js/schedule-scripts';

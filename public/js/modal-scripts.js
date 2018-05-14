@@ -29,9 +29,10 @@ class Modal {
 
             let id = elem.getAttribute('data-id');
             this.route = elem.getAttribute('data-route');
-            let elemRow = elem.parentNode.parentNode.parentNode;
+            this.redirectRoute = elem.getAttribute('data-redirect-route');
+            let elemRow = this.findParentRow(elem, 'scheduleRow');
             let modalRemoveBtn = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
-            let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // when editing a schedule
+            let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // When editing a schedule
 
             modalRemoveBtn.addEventListener('click', () => {
                 fetchUrl(`/${this.route}/delete/` + id, {
@@ -46,11 +47,10 @@ class Modal {
                         flashMessage(err.message, err);
                     })
                     .finally(() => {
-
                         // Redirect if a schedule was deleted from the edit page, else remove row
                         if (isScheduleDeleted) {
                             // This will also show the flash message upon reload
-                            window.location = window.location.origin + '/' + this.route;
+                            window.location = window.location.origin + '/' + this.redirectRoute;
                         } else {
                             this.closeModals();
                         }
@@ -84,6 +84,22 @@ class Modal {
         modals.forEach((elem) => {
             elem.classList.remove('is-active');
         });
+    }
+
+    /**
+     * 
+     * @param {*} elem        // The start elem
+     * @param {*} classToFind // The elem class to find and match with
+     */
+    findParentRow(elem, classToFind) {
+        while (elem.parentNode) {
+            elem = elem.parentNode;
+            let elemClass = elem.classList[0];
+            if (elemClass === classToFind) {
+                return elem;
+            }
+        }
+        return null;
     }
 
     static getAll(selector) {

@@ -1,4 +1,4 @@
-new Modal();
+new Modal(); // Script for Modal messages
 
 /**
  * Pause / Start scheduled archive
@@ -15,7 +15,7 @@ function setupPauseListener() {
                     .then((data) => {
                         if (data.success) {
                             for (let b of pausePlayButtons) {
-                                b.classList.toggle('hidden'); // switch buttons
+                                b.classList.toggle('hidden'); // Switch buttons
                             }
                         } else {
                             toggleError(icons);
@@ -28,10 +28,10 @@ function setupPauseListener() {
     }
 }
 function toggleError(target) {
-    target.parentElement.classList.add('is-danger');    // show red button color
-    target.children[2].classList.remove('hidden');      // show exclamation icon
-    target.children[0].classList.add('hidden');         // hide pause/play icon
-    target.children[1].classList.add('hidden');         // hide spinner
+    target.parentElement.classList.add('is-danger'); // Show red button color
+    target.children[2].classList.remove('hidden');   // Show exclamation icon
+    target.children[0].classList.add('hidden');      // Hide pause/play icon
+    target.children[1].classList.add('hidden');      // Hide spinner
 
 }
 

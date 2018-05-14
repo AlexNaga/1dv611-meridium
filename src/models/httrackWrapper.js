@@ -1,13 +1,14 @@
-const zipFolder = require('../utils/zipFolder');
-const EmailModel = require('../models/emailModel');
-const Archive = require('../models/archive');
-const { URL } = require('url');
 const { exec } = require('child_process');
-const fs = require('fs-extra');
+const { URL } = require('url');
+const Archive = require('../models/archive');
 const dayjs = require('dayjs');
-const path = require('path');
+const EmailModel = require('../models/emailModel');
+const fs = require('fs-extra');
 const getUrls = require('get-urls');
+const path = require('path');
+const prettyFileSize = require('prettysize');
 const Setting = require('../models/enums').setting;
+const zipFolder = require('../utils/zipFolder');
 
 /**
  *
@@ -67,15 +68,44 @@ exports.archive = async (settings) => {
         await removeFolder(`${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original`);
 
         // Send success email
-        let downloadUrl = `${process.env.SERVER_DOMAIN}/archives/${archive.id}`;
+        let downloadUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/${archive.id}`;
+        let scheduleUrl = `${process.env.SERVER_DOMAIN}/${process.env.ARCHIVES_FOLDER}/edit/${archive.fromSchedule}`;
         let emailSettings = {
             to: settings.email,
             subject: 'Arkiveringen är klar ✔',
-            message: `<p><b>Din arkivering av
-            <a href="${urls[0]}">${urls[0]}</a> är klar!</b></p>
-            <p><a href="${downloadUrl}">Ladda ned som .zip</a></p>`
+            message: `<p>Hej,</p>
+                      <p>Din arkivering av <b><a href="${urls[0]}">${urls[0]}</a></b> är klar.</p>
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                              <td style="padding-bottom:10px;">
+                                  <table border="0" cellspacing="0" cellpadding="0">
+                                      <tr>
+                                          <td align="center" style="border-radius: 3px;" bgcolor="#00d1b2">
+                                              <a href="${downloadUrl}" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
+                                                 text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #00d1b2;display: inline-block;">
+                                                 Ladda ned arkiv (${prettyFileSize(fileSize)})</a>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+                                <table border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td align="center" style="border-radius: 3px;" bgcolor="#209cee">
+                                            <a href="${scheduleUrl}" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
+                                                text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #209cee;display: inline-block;">
+                                                Redigera schemaläggning</a>
+                                        </td>
+                                    </tr>
+                                </table>  
+                              </td>
+                          </tr>
+                      </table>
+                      <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p><br>`
         };
-         EmailModel.sendMail(emailSettings);
+        EmailModel.sendMail(emailSettings);
     } catch (err) {
         console.log(err);
 

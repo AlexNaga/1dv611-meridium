@@ -4,146 +4,6 @@ const httrackWrapper = require('../models/httrackWrapper');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
 const fs = require('fs-extra');
 
-/**
- * GET /schedules/
- */
-exports.listSchedule = async (req, res) => {
-    try {
-        let page = req.query.p || 1;
-        let itemsPerPage = 10;
-        let schedule = await Schedule.paginate({
-            ownerId: req.session.user.id
-        }, {
-                sort: {
-                    createdAt: 'desc'
-                },
-                page: page,
-                limit: itemsPerPage
-            });
-
-        res.render('schedule/index', {
-            active: {
-                schedule: true
-            },
-            loadScheduleScripts: true,
-
-            // Pagination below
-            docs: schedule.docs,
-            total: schedule.total,
-            limit: schedule.limit,
-            pagination: {
-                page: schedule.page,
-                pageCount: schedule.pages,
-            }
-        });
-    } catch (err) {
-        req.session.flash = {
-            message: 'Kunde inte lista sparade schemalagda arkiveringar!',
-            danger: true
-        };
-        return res.redirect('/');
-    }
-};
-
-/**
- * GET /schedules/edit/:id
- */
-exports.getSchedule = async (req, res) => {
-    try {
-        let page = req.query.p || 1;
-        let itemsPerPage = 10;
-
-        let schedule = await Schedule.findOne({
-            _id: req.params.id,
-            ownerId: req.session.user.id
-        }).exec();
-
-        let archives = await Archive.paginate({
-            ownerId: req.session.user.id,
-            fromSchedule: schedule._id
-        }, {
-                sort: {
-                    createdAt: 'desc'
-                },
-                page: page,
-                limit: itemsPerPage
-            });
-
-        res.render('schedule/edit', {
-            schedule: schedule,
-            active: {
-                schedule: true
-            },
-            loadScheduleScripts: true,
-            // Pagination below
-            archives: archives.docs,
-            total: archives.total,
-            limit: archives.limit,
-            pagination: {
-                page: archives.page,
-                pageCount: archives.pages,
-            }
-        });
-    } catch (err) {
-        req.session.flash = {
-            message: 'Något gick fel vid hämtning av schemaläggningen!',
-            danger: true
-        };
-        return res.redirect('/schedules');
-    }
-};
-
-/**
- * POST /schedules/edit/:id
- */
-exports.updateSchedule = async (req, res) => {
-    try {
-        let httrackSettings = {
-            ...req.body,
-            ownerId: req.session.user.id
-        };
-        validateHttrackSettings(httrackSettings);
-    } catch (err) {
-        console.log(err);
-        req.session.flash = {
-            message: err.message,
-            danger: true
-        };
-        return res.redirect(`/schedules/edit/${req.params.id}`);
-    }
-
-    try {
-        await Schedule.findOneAndUpdate({
-            _id: req.params.id,
-            ownerId: req.session.user.id
-        }, {
-                $set: {
-                    url: req.body.url,
-                    advancedSetting: req.body.advancedSetting,
-                    includeDomains: req.body.includeDomains,
-                    excludePaths: req.body.excludePaths,
-                    robots: req.body.robots,
-                    structure: req.body.structure,
-                    typeOfSchedule: req.body.typeOfSchedule,
-                    email: req.body.email,
-                    shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
-                }
-            }).exec();
-
-        req.session.flash = {
-            message: 'Schemaläggningen har uppdaterats!',
-            success: true
-        };
-        return res.redirect(`/schedules/edit/${req.params.id}`);
-    } catch (err) {
-
-        req.session.flash = {
-            message: 'Vi kunde inte uppdatera schemainställningarna!',
-            danger: true
-        };
-        return res.redirect('/schedules');
-    }
-};
 
 /**
  * DELETE /schedules/delete/:id
@@ -208,14 +68,14 @@ exports.runSchedule = async (req, res) => {
             message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
             info: true
         };
-        res.redirect('/schedules/edit/' + req.params.id);
+        res.redirect('/archives/edit/' + req.params.id);
     } catch (err) {
         console.log(err);
         req.session.flash = {
             message: 'Kunde inte starta arkiveringen!',
             danger: true
         };
-        res.redirect('/schedules/edit/' + req.params.id);
+        res.redirect('/archives/edit/' + req.params.id);
     }
 };
 
