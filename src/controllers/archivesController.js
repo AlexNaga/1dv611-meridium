@@ -131,10 +131,9 @@ exports.updateSchedule = async (req, res) => {
                 structure: req.body.structure,
                 typeOfSchedule: req.body.typeOfSchedule,
                 email: req.body.email,
-                shouldNotify: req.body.shouldNotify === 'on', // checked = 'on', else shouldNotify is omitted
+                shouldNotify: req.body.shouldNotify === 'on' // checked = 'on', else shouldNotify is omitted
             }
         }).exec();
-
         req.session.flash = {
             message: 'Schemaläggningen har uppdaterats!',
             success: true
@@ -186,12 +185,14 @@ exports.createArchive = async (req, res) => {
             ownerId: httrackSettings.ownerId,
             typeOfSchedule: httrackSettings.typeOfSchedule
         });
-        await schedule.save();
 
-        req.session.flash = {
-            message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
-            info: true
-        };
+        console.log('req.body; ')
+        await schedule.save();
+            req.session.flash = {
+                message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
+                info: true
+            };
+        
         res.redirect('/archive');
 
         // Create the archive
