@@ -11,24 +11,26 @@
             </form>
         </div>
         <div class="level-item">
-            <button id="pause" class="schedule-edit-btn pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}"
-                data-id="{{schedule._id}}">
-                <span class="icon is-small">
-                    <i class="fas fa-pause"></i>
-                    <i class="fas fa-spinner fa-pulse hidden"></i>
-                    <i class="fas fa-exclamation-triangle hidden"></i>
-                </span>
-                <span>Pausa</span>
-            </button>
-            <button id="start" class="schedule-edit-btn pause-state-buttons button is-success{{#unless schedule.isPaused}} hidden{{/unless}}"
-                data-id="{{schedule._id}}">
-                <span class="icon is-small">
-                    <i class="fas fa-play"></i>
-                    <i class="fas fa-spinner fa-pulse hidden"></i>
-                    <i class="fas fa-exclamation-triangle hidden"></i>
-                </span>
-                <span>Starta</span>
-            </button>
+            {{#unlessEq schedule.typeOfSchedule 0}}
+                <button id="pause" class="schedule-edit-btn pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}"
+                    data-id="{{schedule._id}}">
+                    <span class="icon is-small">
+                        <i class="fas fa-pause"></i>
+                        <i class="fas fa-spinner fa-pulse hidden"></i>
+                        <i class="fas fa-exclamation-triangle hidden"></i>
+                    </span>
+                    <span>Pausa</span>
+                </button>
+                <button id="start" class="schedule-edit-btn pause-state-buttons button is-success{{#unless schedule.isPaused}} hidden{{/unless}}"
+                    data-id="{{schedule._id}}">
+                    <span class="icon is-small">
+                        <i class="fas fa-play"></i>
+                        <i class="fas fa-spinner fa-pulse hidden"></i>
+                        <i class="fas fa-exclamation-triangle hidden"></i>
+                    </span>
+                    <span>Starta</span>
+                </button>
+            {{/unlessEq}}
         </div>
         <div class="level-item">
             <a class="schedule-edit-btn button is-danger modal-button" data-id="{{schedule._id}}" data-route="schedules" data-redirect-route="archives" title="Radera schemaläggning">
@@ -39,9 +41,9 @@
             </a>
         </div>
     </nav>
-    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">Arkiveringen är pausad</p>
-    {{#unlessEq schedule.typeOfSchedule 0 }}
-    <p class="pause-state-buttons has-text-centered is-size-4 is-italic{{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</p>
+    {{#unlessEq schedule.typeOfSchedule 0}}
+        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">Arkiveringen är pausad</fieldset>
+        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</fieldset>
     {{/unlessEq}}
 </div>
 <div class="columns">
