@@ -90,6 +90,7 @@ exports.archive = async (settings) => {
 
 function getTimestamp() {
     let date = dayjs().toObject();
+    // Months + 1 because it starts at 0. E.g. May = 4
     return `${date.years}-${date.months + 1}-${date.date}_${date.hours}-${date.minutes}-${date.seconds}-${date.milliseconds}`; // 2018-03-29_22-29-21-424
 }
 

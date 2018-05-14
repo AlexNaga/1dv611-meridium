@@ -19,12 +19,12 @@ exports.listSchedule = async (req, res) => {
         let schedule = await Schedules.paginate({
             ownerId: req.session.user.id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('archives/index', {
             active: {
@@ -67,12 +67,12 @@ exports.getSchedule = async (req, res) => {
             ownerId: req.session.user.id,
             fromSchedule: schedule._id
         }, {
-            sort: {
-                createdAt: 'desc'
-            },
-            page: page,
-            limit: itemsPerPage
-        });
+                sort: {
+                    createdAt: 'desc'
+                },
+                page: page,
+                limit: itemsPerPage
+            });
 
         res.render('archives/edit', {
             schedule: schedule,
@@ -122,18 +122,18 @@ exports.updateSchedule = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }, {
-            $set: {
-                url: req.body.url,
-                advancedSetting: req.body.advancedSetting,
-                includeDomains: req.body.includeDomains,
-                excludePaths: req.body.excludePaths,
-                robots: req.body.robots,
-                structure: req.body.structure,
-                typeOfSchedule: req.body.typeOfSchedule,
-                email: req.body.email,
-                shouldNotify: req.body.shouldNotify === 'on' // checked = 'on', else shouldNotify is omitted
-            }
-        }).exec();
+                $set: {
+                    url: req.body.url,
+                    advancedSetting: req.body.advancedSetting,
+                    includeDomains: req.body.includeDomains,
+                    excludePaths: req.body.excludePaths,
+                    robots: req.body.robots,
+                    structure: req.body.structure,
+                    typeOfSchedule: req.body.typeOfSchedule,
+                    email: req.body.email,
+                    shouldNotify: req.body.shouldNotify === 'on' // checked = 'on', else shouldNotify is omitted
+                }
+            }).exec();
         req.session.flash = {
             message: 'Schemaläggningen har uppdaterats!',
             success: true
@@ -186,13 +186,12 @@ exports.createArchive = async (req, res) => {
             typeOfSchedule: httrackSettings.typeOfSchedule
         });
 
-        console.log('req.body; ')
         await schedule.save();
-            req.session.flash = {
-                message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
-                info: true
-            };
-        
+        req.session.flash = {
+            message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
+            info: true
+        };
+
         res.redirect('/archive');
 
         // Create the archive
