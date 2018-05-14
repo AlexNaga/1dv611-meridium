@@ -2,7 +2,7 @@
     <input type="hidden" name="typeOfSetting" value="0">
     <div class="field">
         <label class="label">Huvuddomän
-             <span class="tooltip invisbleButton" data-tooltip="Webbplats att arkivera."><i class="far fa-question-circle"></i></span>
+             <span class="tooltip is-tooltip-right is-tooltip-multiline invisbleButton" data-tooltip="Beroende på adresstruktur kan det uppkomma oväntade effekter på förhandsgranskningen."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="url" type="url" required name="url" placeholder="Ange din webbadress" value="{{ schedule.url }}">
@@ -13,7 +13,7 @@
     </div>
     <div class="field">
         <label class="label">Subdomäner
-            <span class="tooltip invisbleButton" data-tooltip="Subdomäner att arkivera."><i class="far fa-question-circle"></i></span>
+            <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Subdomäner att arkivera."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="includeDomains" type="url" name="includeDomains" placeholder="https://www1.exempel.se, https://www2.exempel.se"
@@ -25,7 +25,7 @@
     </div>
     <div class="field">
         <label class="label">Sidor att exkludera
-           <span class="tooltip invisbleButton" data-tooltip="Sidor som inte ska arkiveras."><i class="far fa-question-circle"></i></span>
+           <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Sidor som inte ska arkiveras."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <input class="input normal" id="excludePaths" type="text" name="excludePaths" placeholder="/fredag, /torsdag, /onsdag" value="{{ schedule.excludePaths }}">
@@ -36,7 +36,7 @@
     </div>
     <div class="field">
         <label class="label">Följ webbplatsens regler
-            <span class="tooltip invisbleButton" data-tooltip="Följ robots.txt och meta-taggar."><i class="far fa-question-circle"></i></span>
+            <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Följ robots.txt och meta-taggar."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control">
             <label class="radio">
@@ -52,7 +52,7 @@
     </div>
     <div class="field">
         <label class="label">Mappstruktur
-            <span class="tooltip invisbleButton" data-tooltip="Arkiveringen sparas i denna struktur."><i class="far fa-question-circle"></i></span>
+            <span class="tooltip is-tooltip-right is-tooltip-multiline invisbleButton" data-tooltip="Annat än standard kan ha oväntade effekter på förhandsgranskningen."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <div class="select">
@@ -72,7 +72,7 @@
     </div>
     <div class="field">
         <label class="label">Schemaläggning
-            <span class="tooltip invisbleButton" data-tooltip="Webbplatsen arkiveras automatiskt vid valda tillfällen."><i class="far fa-question-circle"></i></span>
+            <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Webbplatsen arkiveras automatiskt vid valda tillfällen."><i class="far fa-question-circle"></i></span>
         </label>
         <div class="control has-icons-left">
             <div class="select">
