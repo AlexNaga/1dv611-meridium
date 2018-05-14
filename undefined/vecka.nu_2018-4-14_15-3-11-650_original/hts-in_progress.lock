@@ -1,0 +1,5 @@
+Mirror in progress since Mon, 14 May 2018 15:03:11 .. please wait!
+C:\Users\rjosi\OneDrive\Dokument\1dv611\1dv611-meridium/httrack/httrack.exe https://vecka.nu -* +*.html +*.css +*.js +*.jpg*[<150] +*.png*[<150] -O C:\Users\rjosi\OneDrive\Dokument\1dv611\1dv611-meridium\undefined/vecka.nu_2018-4-14_15-3-11-650_original 
+To pause the engine: create an empty file named 'hts-stop.lock'
+PID=8432
+START=1526302991

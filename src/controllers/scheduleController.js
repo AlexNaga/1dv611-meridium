@@ -88,7 +88,6 @@ exports.pauseSchedule = async (req, res) => {
             _id: req.params.id,
             ownerId: req.session.user.id
         }).exec();
-
         schedule.isPaused = !schedule.isPaused;
         await schedule.save();
 
