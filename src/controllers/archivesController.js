@@ -108,8 +108,6 @@ exports.listArchives = async (req, res) => {
             active: {
                 archives: true
             },
-            loadArchiveScripts: true,
-
             archives: archives.docs,
             total: archives.total,
             limit: archives.limit,

@@ -31,7 +31,7 @@ class Modal {
             this.route = elem.getAttribute('data-route');
             let elemRow = elem.parentNode.parentNode.parentNode;
             let modalRemoveBtn = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
-            let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // when editing a schedule
+            let isScheduleDeleted = elemRow.constructor.name === 'HTMLDivElement'; // When editing a schedule
 
             modalRemoveBtn.addEventListener('click', () => {
                 fetchUrl(`/${this.route}/delete/` + id, {
@@ -46,7 +46,6 @@ class Modal {
                         flashMessage(err.message, err);
                     })
                     .finally(() => {
-
                         // Redirect if a schedule was deleted from the edit page, else remove row
                         if (isScheduleDeleted) {
                             // This will also show the flash message upon reload
