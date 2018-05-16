@@ -1,38 +1,5 @@
-<form action="/schedules/edit/{{schedule._id}}" method="post" id="updateAdvancedSettings">
-    <input type="hidden" name="typeOfSetting" value="1">
-    <div class="field">
-        <label class="label">Kommando
-            <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Webbplats och webbplatsens subdomäner som ska arkiveras">
-                <i class="far fa-question-circle"></i>
-            </span>
-        </label>
-        <div class="control has-icons-left">
-            <input class="input" id="advancedSetting" type="text" required name="advancedSetting" placeholder="Kommando" value="{{ schedule.advancedSetting }}">
-            <span class="icon is-small is-left">
-                <i class="fas fa-code"></i>
-            </span>
-        </div>
-    </div>
-    <div class="field">
-        <label class="label">Schemaläggning
-            <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen">
-                <i class="far fa-question-circle"></i>
-            </span>
-        </label>
-        <div class="control has-icons-left">
-            <div class="select">
-                <select name="typeOfSchedule">
-                    <option {{#eq schedule.typeOfSchedule 0}} selected="selected" {{/eq}} value="0">Ingen schemaläggning</option>
-                    <option {{#eq schedule.typeOfSchedule 1}} selected="selected" {{/eq}} value="1">Varje dag</option>
-                    <option {{#eq schedule.typeOfSchedule 2}} selected="selected" {{/eq}} value="2">Varje vecka</option>
-                    <option {{#eq schedule.typeOfSchedule 3}} selected="selected" {{/eq}} value="3">Varje månad</option>
-                </select>
-                <div class="icon is-small is-left">
-                    <i class="far fa-calendar-alt"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+<form action="/archives/edit/{{schedule._id}}" method="post" id="updateAdvancedSettings">
+    {{> advancedSettings }}
     <div class="field">
         <label class="label">E-post</label>
         <div class="control has-icons-left">
@@ -45,9 +12,12 @@
     </div>
     <div class="field">
         <div class="control">
-            <label class="checkbox">
-                <input type="checkbox" name="shouldNotify" {{#if schedule.shouldNotify }} checked {{/if}}> Skicka notifikationer
-            </label>
+            <div class="b-checkbox">
+                <input id="checkbox" class="styled" name="shouldNotify" {{#if schedule.shouldNotify }} checked {{/if}} type="checkbox">
+                <label for="checkbox">
+                    Skicka notifikationer
+                </label>
+            </div>
         </div>
     </div>
     <div class="field">
