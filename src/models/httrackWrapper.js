@@ -19,25 +19,25 @@ exports.archive = async (settings) => {
     let ARCHIVES_FOLDER = path.join(__dirname + `/../../${process.env.ARCHIVES_FOLDER}`);
     let ARCHIVE_ID = '';
 
-    let command = createCommand(settings);
-
-    let urls = [...getUrls(command)];
-    let hostnames = urls.map(url => new URL(url).hostname);
-
-    let timestamp = getTimestamp(); // 2018-03-29_22-29-21-424
-    ARCHIVE_ID = `${hostnames[0]}_${timestamp}`;
-
-    command = `${command} -O "${ARCHIVES_FOLDER}/${ARCHIVE_ID}"`;
-
-    let archivedFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
-
-    let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
-    const previewCommand = `${httrack} ${urls[0]} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original"`;
-
-    console.log('command: ', command);
-    console.log('previewCommand: ', previewCommand);
-
     try {
+        let command = createCommand(settings);
+
+        let urls = [...getUrls(command)];
+        let hostnames = urls.map(url => new URL(url).hostname);
+
+        let timestamp = getTimestamp(); // 2018-03-29_22-29-21-424
+        ARCHIVE_ID = `${hostnames[0]}_${timestamp}`;
+
+        command = `${command} -O "${ARCHIVES_FOLDER}/${ARCHIVE_ID}"`;
+
+        let archivedFolder = `${ARCHIVES_FOLDER}/${ARCHIVE_ID}`;
+
+        let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
+        let previewCommand = `${httrack} ${urls[0]} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original"`;
+
+        // console.log('command: ', command);
+        // console.log('previewCommand: ', previewCommand);
+
         // Preview
         await runCommand(previewCommand);
 
@@ -136,8 +136,8 @@ function runCommand(command) {
 
 function createCommand(s) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
-    let include = s.includeDomains[0] !== '' ? s.includeDomains.map(domain => `${domain}`) : '';
-    let exclude = s.excludePaths[0] !== '' ? s.excludePaths.map(path => `-*${path}/*`) : '';
+    let include = s.includeDomains && s.includeDomains[0] !== '' ? s.includeDomains.map(domain => `${domain}`) : '';
+    let exclude = s.excludePaths && s.excludePaths[0] !== '' ? s.excludePaths.map(path => `-*${path}/*`) : '';
 
     if (s.typeOfSetting === Setting.STANDARD) {
         let command = [

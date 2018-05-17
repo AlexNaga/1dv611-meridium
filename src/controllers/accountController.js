@@ -54,7 +54,7 @@ exports.createUser = async (req, res) => {
         let user = await User.findOne({ email: email });
         if (user) {
             req.session.flash = {
-                message: 'Du kan inte skapa ett konto med den här epostadressen',
+                message: 'Du kan inte skapa ett konto med den här e-postadressen',
                 danger: true
             };
             return res.redirect('/account/register');

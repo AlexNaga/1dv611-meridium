@@ -34,7 +34,7 @@ module.exports = (settings) => {
 
     // email
     if (validEmail.validate(settings.email) === false) {
-        throw new Error('Fel epost!');
+        throw new Error('Fel e-post!');
     }
 
     if (settings.typeOfSetting === Setting.STANDARD) {
@@ -81,7 +81,11 @@ module.exports = (settings) => {
     }
 
     if (settings.typeOfSetting === Setting.ADVANCED) {
+        console.log(settings.advancedSetting);
+
         let url = settings.advancedSetting.split(' ')[0];
+        console.log(settings.advancedSetting.split(' '));
+
         if (!validUrl.isUri(url)) {
             throw new Error('Felaktig url.');
         }
