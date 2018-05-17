@@ -81,15 +81,11 @@ module.exports = (settings) => {
     }
 
     if (settings.typeOfSetting === Setting.ADVANCED) {
-        console.log(settings.advancedSetting);
-
         let url = settings.advancedSetting.split(' ')[0];
-        console.log(settings.advancedSetting.split(' '));
 
         if (!validUrl.isUri(url)) {
             throw new Error('Felaktig url.');
         }
-
         if (settings.advancedSetting.includes('-O')) {
             throw new Error('Inte tillåtet att använda flagga "-O".');
         }
