@@ -12,9 +12,12 @@
     </div>
     <div class="field">
         <div class="control">
-            <label class="checkbox">
-                <input type="checkbox" name="shouldNotify" {{#if schedule.shouldNotify }} checked {{/if}}> Skicka notifikationer
-            </label>
+            <div class="b-checkbox">
+                <input id="checkbox" class="styled" name="shouldNotify" {{#if schedule.shouldNotify }} checked {{/if}} type="checkbox">
+                <label for="checkbox">
+                    Skicka notifikationer
+                </label>
+            </div>
         </div>
     </div>
     <div class="field">

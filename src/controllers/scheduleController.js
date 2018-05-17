@@ -33,17 +33,19 @@ exports.deleteSchedule = async (req, res) => {
             success: true
         });
     } catch (err) {
-        // err.code ENOENT = No such file on disk, but entry removed from db.
-        let notFound = 'ENOENT';
-        // req.session.flash = {
-        //     message: 'Kunde inte ta bort schemainställningen!',
-        //     danger: true
-        // };
-        res.status(err.code === notFound ? 404 : 400)
-            .json({
-                message: 'Kunde inte radera Schemaläggningen.',
-                danger: true
+        if (err.code === 'ENOENT') {
+            // err.code ENOENT = No such file on disk, but entry removed from db.
+            res.status(200).json({
+                message: 'Schemaläggningen är raderad.',
+                success: true
             });
+        } else {
+            res.status(400)
+                .json({
+                    message: 'Kunde inte radera Schemaläggningen.',
+                    danger: true
+                });
+        }
     }
 };
 

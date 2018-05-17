@@ -2,7 +2,7 @@
     <nav class="level">
         <div class="level-item">
             <form action="/schedules/run/{{schedule._id}}" method="POST">
-                <button type="submit" name="action" class="schedule-edit-btn button is-info">
+                <button type="submit" name="action" class="schedule-edit-btn button is-link">
                     <span class="icon is-small">
                         <i class="fas fa-cloud-download-alt"></i>
                     </span>
@@ -33,7 +33,8 @@
             {{/unlessEq}}
         </div>
         <div class="level-item">
-            <a class="schedule-edit-btn button is-danger modal-button" data-id="{{schedule._id}}" data-route="schedules" data-redirect-route="archives" title="Radera schemaläggning">
+            <a class="schedule-edit-btn button is-danger modal-button" data-id="{{schedule._id}}" data-route="schedules" data-redirect-route="archives"
+                title="Radera schemaläggning">
                 <span class="icon is-small">
                     <i class="fas fa-times"></i>
                 </span>
@@ -42,8 +43,10 @@
         </div>
     </nav>
     {{#unlessEq schedule.typeOfSchedule 0}}
-        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#unless schedule.isPaused}} hidden{{/unless}}" data-id="{{schedule._id}}">Arkiveringen är pausad</fieldset>
-        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#if schedule.isPaused}} hidden{{/if}}" data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</fieldset>
+        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#unless schedule.isPaused}} hidden{{/unless}}"
+            data-id="{{schedule._id}}">Arkiveringen är pausad</fieldset>
+        <fieldset style="border:none" disabled class="pause-state-buttons has-text-centered is-size-4 is-italic {{#if schedule.isPaused}} hidden{{/if}}"
+            data-id="{{schedule._id}}">{{countDown schedule}} kvar till nästa arkivering</fieldset>
     {{/unlessEq}}
 </div>
 <div class="columns">
