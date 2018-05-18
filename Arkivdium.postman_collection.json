@@ -159,32 +159,18 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Login",
+					"name": "1.1 Create an archive with no settings",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "8adc8867-d0ca-4b7c-9e6c-a469b3efc40a",
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
 								"type": "text/javascript",
 								"exec": [
-									"let stringToCheck = \"Logga ut\";",
-									"let stringToCheck1 = \"Logga in\";",
-									"let stringToCheck2 = \"Registrera\";",
+									"let stringToCheck = \"Arkiveringen är startad.\";",
 									"",
 									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
 									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
-									"});",
-									"",
-									"pm.test(\"Body does not contain string '\"+ stringToCheck1 + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.not.include(stringToCheck1);",
-									"});",
-									"",
-									"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
-									"});",
-									"",
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
 									"});"
 								]
 							}
@@ -195,41 +181,27 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
+								"value": "application/json"
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "{{USER_EMAIL}}",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{USER_PASSWORD}}",
-									"description": "",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"\",\r\n  \"excludePaths\": \"\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}/account/login",
+							"raw": "{{APP_URL}}/archives",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
-								"account",
-								"login"
+								"archives"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create an archive",
+					"name": "1.2 Create an archive with user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -271,175 +243,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an advanced archive",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
-								"type": "text/javascript",
-								"exec": [
-									"let stringToCheck = \"Arkiveringen är startad.\";",
-									"",
-									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \r\n  \"typeOfSetting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{APP_URL}}/archives",
-							"host": [
-								"{{APP_URL}}"
-							],
-							"path": [
-								"archives"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a daily schedule",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "8f9f2a07-060a-4556-a063-de7207c1c809",
-								"type": "text/javascript",
-								"exec": [
-									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
-									"",
-									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_DAILY}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{APP_URL}}/archives",
-							"host": [
-								"{{APP_URL}}"
-							],
-							"path": [
-								"archives"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a weekly schedule",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "a39b6f46-28e3-4e86-be38-5d7940045dd7",
-								"type": "text/javascript",
-								"exec": [
-									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
-									"",
-									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_WEEKLY}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{APP_URL}}/archives",
-							"host": [
-								"{{APP_URL}}"
-							],
-							"path": [
-								"archives"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create a monthly schedule",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "7a474998-7512-418e-9e9f-27d6036e57bb",
-								"type": "text/javascript",
-								"exec": [
-									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
-									"",
-									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
-									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
-									"});"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_MONTHLY}}\"\r\n}"
-						},
-						"url": {
-							"raw": "{{APP_URL}}/archives",
-							"host": [
-								"{{APP_URL}}"
-							],
-							"path": [
-								"archives"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create an archive robots 1",
+					"name": "2.1 Create an archive robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -481,7 +285,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive robots 2",
+					"name": "2.2 Create an archive robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -523,7 +327,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 1",
+					"name": "2.3 Create an archive structure 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -565,7 +369,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 1 robots 1",
+					"name": "2.4 Create an archive structure 1 robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -607,7 +411,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 1 robots 2",
+					"name": "2.5 Create an archive structure 1 robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -649,7 +453,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 2",
+					"name": "2.6 Create an archive structure 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -691,7 +495,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 2 robots 1",
+					"name": "2.7 Create an archive structure 2 robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -733,7 +537,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 2 robots 2",
+					"name": "2.8 Create an archive structure 2 robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -775,7 +579,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 3",
+					"name": "2.9 Create an archive structure 3 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -817,7 +621,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 3 robots 1",
+					"name": "2.10 Create an archive structure 3 robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -859,7 +663,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 3 robots 2",
+					"name": "2.11 Create an archive structure 3 robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -901,7 +705,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 4",
+					"name": "2.12 Create an archive structure 4 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -943,7 +747,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 4 robots 1",
+					"name": "2.13 Create an archive structure 4 robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -985,7 +789,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 4 robots 2",
+					"name": "2.14 Create an archive structure 4 robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -1027,7 +831,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 5",
+					"name": "2.15 Create an archive structure 5 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -1069,7 +873,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 5 robots 1",
+					"name": "2.16 Create an archive structure 5 robots 1 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -1111,7 +915,7 @@
 					"response": []
 				},
 				{
-					"name": "Create an archive structure 5 robots 2",
+					"name": "2.17 Create an archive structure 5 robots 2 + user settings",
 					"event": [
 						{
 							"listen": "test",
@@ -1139,6 +943,300 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"2\",\r\n  \"structure\": \"5\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 Create an advanced archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_NONE}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.1 Create a daily archive + user settings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8f9f2a07-060a-4556-a063-de7207c1c809",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_DAILY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Create a weekly archive + user settings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a39b6f46-28e3-4e86-be38-5d7940045dd7",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_WEEKLY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Create a monthly archive + user settings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a474998-7512-418e-9e9f-27d6036e57bb",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Du kommer notifieras när arkiveringen är klar.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{STANDARD_SETTING}}\",\r\n  \"url\": \"{{URL_TO_ARCHIVE}}\",\r\n  \"includeDomains\": \"{{INCLUDE_DOMAINS_TO_ARCHIVE}}\",\r\n  \"excludePaths\": \"{{EXCLUDE_PATHS_TO_ARCHIVE}}\",\r\n  \"robots\": \"{{ROBOTS_TO_ARCHIVE}}\",\r\n  \"structure\": \"{{STRUCTURE_TO_ARCHIVE}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_MONTHLY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.1 Create an advanced daily archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_DAILY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 Create an advanced weekly archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_WEEKLY}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{APP_URL}}/archives",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 Create an advanced monthly archive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "793a3d1f-5ade-4f7d-afd5-dd88f9b33824",
+								"type": "text/javascript",
+								"exec": [
+									"let stringToCheck = \"Arkiveringen är startad.\";",
+									"",
+									"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+									"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n  \"typeOfSetting\": \"{{ADVANCED_SETTING}}\",\r\n  \"advancedSetting\": \"{{RAW_DATA_INPUT}}\",\r\n  \"email\": \"{{USER_EMAIL}}\",\r\n  \"typeOfSchedule\": \"{{SCHEDULE_MONTHLY}}\"\r\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/archives",
@@ -1367,6 +1465,76 @@
 			]
 		},
 		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8adc8867-d0ca-4b7c-9e6c-a469b3efc40a",
+						"type": "text/javascript",
+						"exec": [
+							"let stringToCheck = \"Logga ut\";",
+							"let stringToCheck1 = \"Logga in\";",
+							"let stringToCheck2 = \"Registrera\";",
+							"",
+							"pm.test(\"Body matches string '\"+ stringToCheck + \"'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(stringToCheck);",
+							"});",
+							"",
+							"pm.test(\"Body does not contain string '\"+ stringToCheck1 + \"'\", function () {",
+							"    pm.expect(pm.response.text()).to.not.include(stringToCheck1);",
+							"});",
+							"",
+							"pm.test(\"Body does not contain string '\"+ stringToCheck2 + \"'\", function () {",
+							"    pm.expect(pm.response.text()).to.not.include(stringToCheck2);",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{USER_EMAIL}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{USER_PASSWORD}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APP_URL}}/account/login",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"account",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Register new user",
 			"event": [
 				{
@@ -1440,29 +1608,12 @@
 				"id": "27557311-8474-4dec-a7a3-911eae6d1d56",
 				"type": "text/javascript",
 				"exec": [
-					"pm.test('Test-collection: Necessary app variables are set', function () {",
+					"pm.test('Test-collection: Necessary collection variables are set', function () {",
 					"    pm.expect(pm.variables.get('APP_URL')).to.not.equal('');",
-					"",
-					"});",
-					"pm.test('Test-collection: Necessary user variables are set', function () {",
 					"    pm.expect(pm.variables.get('USER_EMAIL')).to.not.equal('');",
 					"    pm.expect(pm.variables.get('USER_PASSWORD')).to.not.equal('');",
-					"});",
-					"//pm.sendRequest({",
-					"//  url:  pm.variables.get(\"APP_URL\")+\"account/login\", ",
-					"//  method: 'POST',",
-					"//  header: {",
-					"//    'Accept': 'text/html',",
-					"//    'Content-Type': 'application/x-www-form-urlencoded'",
-					"//  },",
-					"//  body: {",
-					"//      mode: 'urlencoded',",
-					"//      urlencoded: [",
-					"//        {key: \"email\", value: pm.variables.get(\"USER_EMAIL\")},",
-					"//        {key: \"password\", value: pm.variables.get(\"USER_PASSWORD\")}",
-					"//    ]",
-					"//  }",
-					"//});"
+					"    ",
+					"});"
 				]
 			}
 		},
@@ -1479,116 +1630,129 @@
 	],
 	"variable": [
 		{
-			"id": "8a1ab0b8-e255-4368-babc-8fcd81bd9be0",
+			"id": "4997afd5-123a-4ec1-81d9-1d8db998a717",
+			"key": "Below are the default names, do not change",
+			"value": "Add your credentials, app url and url to archive",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "86b0f887-8f52-4af7-a91c-e0cc43c11bb5",
 			"key": "USER_EMAIL",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "f5bcdd3f-1be5-42de-aa1f-8a69423ac3ca",
+			"id": "509c58a4-285b-4640-9935-b6898eabbc0e",
 			"key": "USER_PASSWORD",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "93a22bf0-9e65-431b-9f04-d21bc7a5bc6b",
+			"id": "8db2e938-2c06-4201-a570-97433e5fe3b7",
 			"key": "USER_PASSWORD_RESET",
 			"value": "",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "f2ecf029-cd54-4717-a756-cf59751f6d4a",
+			"id": "98f0e69b-0aba-4bbc-bd3e-caafb48fb1e0",
 			"key": "APP_URL",
 			"value": "http://localhost:3000/",
 			"type": "string"
 		},
 		{
-			"id": "7912c623-43fb-4d4a-91e3-e6107c232936",
+			"id": "30602e92-4fa3-4d0e-89f8-4bdf1a257716",
 			"key": "URL_TO_ARCHIVE",
 			"value": "https://demo.cyotek.com/",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "7ae9f84e-0f82-4757-b5fa-2acdcd6ebab8",
-			"key": "INCLUDE_DOMAINS_TO_ARCHIVE",
-			"value": "",
-			"type": "string",
-			"description": ""
-		},
-		{
-			"id": "3d5a902d-4805-4810-abc1-ff2a87775c14",
-			"key": "EXCLUDE_PATHS_TO_ARCHIVE",
-			"value": "",
-			"type": "string",
-			"description": ""
-		},
-		{
-			"id": "9dbe6412-8219-4ba3-8182-95d0c85704f0",
-			"key": "ROBOTS_TO_ARCHIVE",
-			"value": "0",
-			"type": "string",
-			"description": ""
-		},
-		{
-			"id": "0a4f0e79-7edb-4c94-b77e-be5b21fa5c99",
-			"key": "STRUCTURE_TO_ARCHIVE",
-			"value": "0",
-			"type": "string",
-			"description": ""
-		},
-		{
-			"id": "fa9216ee-aa92-4685-8c6f-fba984cea963",
+			"id": "bbaca2f6-6b5a-4d44-98bb-62b962541c1f",
 			"key": "RAW_DATA_INPUT",
 			"value": "https://demo.cyotek.com/ -s0 -N0 -A100000000000 -%c10 -C0 -f2",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "329dc260-fd3a-437e-9ea4-800f239da215",
+			"id": "b9583939-129d-4945-b642-5b3cb21dc2e1",
 			"key": "RESET_PASSWORD_CODE",
 			"value": "",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "8342da24-1865-40bb-9c8f-079b10d6dcaf",
+			"id": "63084e53-6122-4f0f-bea9-4f3e9afd19ef",
+			"key": "INCLUDE_DOMAINS_TO_ARCHIVE",
+			"value": "",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "05db150f-0435-441c-a3dd-c9f0c802d215",
+			"key": "EXCLUDE_PATHS_TO_ARCHIVE",
+			"value": "/features, /css",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "afda0dcb-0fe4-49ea-a17d-68bf8a4c8a9d",
+			"value": "Below are the default values, do not change",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "7c5d7239-ccdc-461e-841d-615bdf30f591",
+			"key": "ROBOTS_TO_ARCHIVE",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "06f06500-4388-4cda-b785-2227647232f2",
+			"key": "STRUCTURE_TO_ARCHIVE",
+			"value": "0",
+			"type": "string",
+			"description": ""
+		},
+		{
+			"id": "d695e5a5-a107-4b7f-a6ff-77dd2662def2",
 			"key": "STANDARD_SETTING",
 			"value": "0",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "7bdfeb7e-f5fe-4604-8217-e80fa6883436",
+			"id": "51c4ec36-2eaf-4cc1-a47f-e7e4755cf56e",
 			"key": "ADVANCED_SETTING",
 			"value": "1",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "eb095d25-cfb0-47c1-a23f-2050a5df8372",
+			"id": "51fb18ef-b39c-4617-8d66-82b8b3fb42f6",
 			"key": "SCHEDULE_NONE",
 			"value": "0",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "f62cceac-b9d1-45eb-92ea-402380034b29",
+			"id": "ef8f4163-d0a2-4923-88da-bf547d4409dc",
 			"key": "SCHEDULE_DAILY",
 			"value": "1",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "7c7be400-7253-41aa-8154-ed022103ac00",
+			"id": "537fc7ca-5d70-4427-8fc1-04b2e26edfe9",
 			"key": "SCHEDULE_WEEKLY",
 			"value": "2",
 			"type": "string",
 			"description": ""
 		},
 		{
-			"id": "c98a5b7c-cc8c-44ca-ae8d-6e893cb6c907",
+			"id": "51c2ca1b-82a9-488c-a2ef-049a6f873965",
 			"key": "SCHEDULE_MONTHLY",
 			"value": "3",
 			"type": "string",
