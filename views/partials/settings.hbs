@@ -40,6 +40,38 @@
     </div>
 </div>
 <div class="field">
+    <label class="label">Schemaläggning
+        <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen.">
+            <i class="far fa-question-circle"></i>
+        </span>
+    </label>
+    <div class="control has-icons-left">
+        <div class="select is-fullwidth">
+            <select name="typeOfSchedule">
+                <option {{#eq schedule.typeOfSchedule 0}} selected="selected" {{/eq}} value="0">Ingen schemaläggning</option>
+                <option {{#eq schedule.typeOfSchedule 1}} selected="selected" {{/eq}} value="1">Varje dag</option>
+                <option {{#eq schedule.typeOfSchedule 2}} selected="selected" {{/eq}} value="2">Varje vecka</option>
+                <option {{#eq schedule.typeOfSchedule 3}} selected="selected" {{/eq}} value="3">Varje månad</option>
+            </select>
+            <div class="icon is-small is-left">
+                <i class="far fa-calendar-alt"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Do not show this text if we're in a schedule --}}
+{{#unless schedule }}
+    <div class="extra-settings has-text-centered">
+        <label for="_1">Extra inställningar
+            <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+        </label>
+    </div>
+    {{!-- But make the checkbox checked if we're in a schedule, to show the extra settings --}}
+    <input id="_1" type="checkbox" {{#if schedule }} checked {{/if}}>
+{{/unless}}
+<div class="field">
     <label class="label">Följ webbplatsens regler
         <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Följ robots.txt och meta-taggar.">
             <i class="far fa-question-circle"></i>
@@ -76,26 +108,6 @@
             </select>
             <div class="icon is-small is-left">
                 <i class="fas fa-folder"></i>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="field">
-    <label class="label">Schemaläggning
-        <span class="tooltip is-tooltip-right invisbleButton" data-tooltip="Arkiveringen sker automatiskt vid valda tillfällen.">
-            <i class="far fa-question-circle"></i>
-        </span>
-    </label>
-    <div class="control has-icons-left">
-        <div class="select is-fullwidth">
-            <select name="typeOfSchedule">
-                <option {{#eq schedule.typeOfSchedule 0}} selected="selected" {{/eq}} value="0">Ingen schemaläggning</option>
-                <option {{#eq schedule.typeOfSchedule 1}} selected="selected" {{/eq}} value="1">Varje dag</option>
-                <option {{#eq schedule.typeOfSchedule 2}} selected="selected" {{/eq}} value="2">Varje vecka</option>
-                <option {{#eq schedule.typeOfSchedule 3}} selected="selected" {{/eq}} value="3">Varje månad</option>
-            </select>
-            <div class="icon is-small is-left">
-                <i class="far fa-calendar-alt"></i>
             </div>
         </div>
     </div>

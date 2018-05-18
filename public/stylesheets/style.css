@@ -140,3 +140,20 @@ body {
     99% { bottom: -10px; opacity: 0; }
     100% { bottom: -200px; }
 }
+
+.extra-settings label  {
+    cursor: pointer;
+}
+.extra-settings + input {
+    display: none;
+}
+.extra-settings + input + *, .extra-settings + input + * + * {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.extra-settings + input:checked + *, .extra-settings + input:checked + * + * {
+    max-height: 5rem;
+    overflow: initial;
+    transition: max-height 0.5s;
+}
