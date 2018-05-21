@@ -259,7 +259,7 @@ exports.deleteArchive = async (req, res) => {
         // }
     } finally {
         res.status(200).json({
-            message: 'Arkiveringen är raderad.',
+            message: 'Arkiveringen har raderats.',
             success: true
         });
     }

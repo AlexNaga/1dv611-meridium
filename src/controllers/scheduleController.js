@@ -29,14 +29,14 @@ exports.deleteSchedule = async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Schemaläggningen är raderad.',
+            message: 'Schemaläggningen har raderats.',
             success: true
         });
     } catch (err) {
         if (err.code === 'ENOENT') {
             // err.code ENOENT = No such file on disk, but entry removed from db.
             res.status(200).json({
-                message: 'Schemaläggningen är raderad.',
+                message: 'Schemaläggningen har raderats.',
                 success: true
             });
         } else {

@@ -196,7 +196,7 @@ function sendSuccessEmail(settings) {
                           </td>
                       </tr>
                   </table>
-                  <p>Med vänliga hälsningar,<br>Vi på Arkivdium</p><br>`
+                  <p>Med vänliga hälsningar,<br>Arkivdium</p><br>`
     };
     EmailModel.sendMail(emailSettings);
 }
@@ -205,8 +205,9 @@ function sendErrorEmail(settings) {
     let emailSettings = {
         to: settings.email,
         subject: 'Din schemalagda arkivering kunde inte slutföras!',
-        message: `<p><b>Din schemalagda arkivering av
+        message: `<p><b>Din schemalagda arkivering av 
         <a href="${settings.url}">${settings.url}</a> kunde inte slutföras.</b></p>`
+
     };
     EmailModel.sendMail(emailSettings);
 }
