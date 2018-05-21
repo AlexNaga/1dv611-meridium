@@ -10,6 +10,51 @@
                 </li>
             </ul>
         </div>
-        {{> settings }} {{> advancedSettings }}
+        <form action="/archives" method="post" id="settings">
+            {{> settings }}
+            <div class="field">
+                <label class="label">E-post</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+                <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" name="action" class="button is-link">
+                        <span class="icon is-small">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </span>
+                        <span>Arkivera</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form action="/archives" method="post" id="advancedSettings" class="hidden">
+            {{> settingsAdvanced }}
+            <div class="field">
+                <label class="label">E-post</label>
+                <div class="control has-icons-left">
+                    <input class="input" type="email" required name="email" placeholder="E-post" value="{{ user.email }}">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                </div>
+                <p class="help">Du kommer notifieras när arkiveringen är klar.</p>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button type="submit" name="action" class="button is-link">
+                        <span class="icon is-small">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </span>
+                        <span>Arkivera</span>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

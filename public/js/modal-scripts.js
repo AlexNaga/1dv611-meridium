@@ -46,16 +46,15 @@ class Modal {
                 })
                     .then((data) => {
                         flashMessage(data.message, data);
-                        elemRow.parentNode.removeChild(elemRow);
+                        elemRow.parentNode.removeChild(elemRow); // Remove archive row
                     })
                     .catch((err) => {
                         // err.status 404 = ENOENT = No such file on disk, but entry removed from db
                         flashMessage(err.message, err);
                     })
                     .finally(() => {
-                        // Redirect if a schedule was deleted from the edit page, else remove row
+                        // Redirect if a schedule was deleted from the schedules edit page
                         if (isScheduleDeleted) {
-                            // This will also show the flash message upon reload
                             window.location = window.location.origin + '/' + this.redirectRoute;
                         } else {
                             this.closeModals();
