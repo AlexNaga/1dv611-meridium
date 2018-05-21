@@ -9,12 +9,6 @@ body {
     display: none !important;
 }
 
-.invisbleButton {
-    background: transparent;
-    border: none !important;
-    color: black;
-}
-
 .is-red {
     color: #DC3E2A;
 }
@@ -31,7 +25,6 @@ body {
 .wrapper {
     /* margin-top: 1rem; */
     flex:1;/* To make sticky footer */
-    flex:1;
 }
 
 .tooltip.is-tooltip-multiline {
@@ -52,6 +45,7 @@ body {
     -ms-transition: background-color 0.2s ease-in;
     transition: background-color 0.2s ease-in;
 }
+
 .navbar-logout-btn {
     border: 0;
     background-color: transparent;
@@ -59,6 +53,7 @@ body {
     height: 100%;
     width: 100%;
 }
+
 .navbar-logout-btn:hover {
     background-color: rgb(232,232,232);
     cursor: pointer;
@@ -67,6 +62,7 @@ body {
 .active-page {
     background-color: rgb(232, 232, 232) !important;
 }
+
 .active-page > span.icon {
     color:#DC3E2A !important;
     font-weight: 900;
@@ -83,7 +79,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 5;
+    z-index: 5; /* Need to be above Bulma .control.has.icons .icon = z-index: 4; */
 }
 
 .sticky + .section {
@@ -94,8 +90,13 @@ body {
     background-color: #e2e2e7 !important;
     cursor: pointer;
 }
+
 .table-row-paused {
     background-color:rgba(255, 221, 87, 0.4) !important;
+}
+
+.schedule-edit-btn {
+    width:140px;
 }
 
 .notification-container {
@@ -112,10 +113,6 @@ body {
     -webkit-animation: fadein 1s, fadeout 1s 4s linear forwards;
     animation: fadein 1s, fadeout 1s 4s linear forwards;
     pointer-events: auto;
-}
-
-.schedule-edit-btn {
-    width:140px;
 }
 
 /* Animations to fade the notification in and out */
@@ -141,17 +138,22 @@ body {
     100% { bottom: -200px; }
 }
 
+/* Drop down in settings */
 .extra-settings label  {
     cursor: pointer;
+    display: block;
 }
+
 .extra-settings + input {
     display: none;
 }
+
 .extra-settings + input + *, .extra-settings + input + * + * {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s;
 }
+
 .extra-settings + input:checked + *, .extra-settings + input:checked + * + * {
     max-height: 5rem;
     overflow: initial;

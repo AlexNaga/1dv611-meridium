@@ -15,7 +15,7 @@
         <tbody class="table-row-hover">
             {{#each docs}}
                 <tr title="Ändra schemaläggning" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
-                    <td>{{friendlyUrl}}</td>
+                    <td><a href="/archives/edit/{{_id}}">{{friendlyUrl}}</a></td>
                     <td class="is-hidden-touch">{{friendlyIncludeDomains}}</td>
                     <td class="is-hidden-touch">{{excludePaths}}</td>
                     <td>{{scheduleName}}</td>
@@ -24,7 +24,6 @@
                     </td>
                     <td>
                         <div class="field is-grouped is-pulled-right">
-                            <a href="/archives/edit/{{_id}}"></a>
                             <a class="button is-outlined is-rounded is-danger is-small modal-button" data-route="schedules"
                                 data-id="{{ _id }}" title="Radera schemaläggning">
                                 <span class="icon is-small">
