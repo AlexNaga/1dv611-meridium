@@ -1,10 +1,10 @@
+const { URL } = require('url');
+const validUrl = require('valid-url');
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 const mongoosePaginate = require('mongoose-paginate');
 const Schedule = require('./enums').schedule;
 const Setting = require('../models/enums').setting;
-const validUrl = require('valid-url');
-const { URL } = require('url');
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 

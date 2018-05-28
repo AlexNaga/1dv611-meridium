@@ -18,7 +18,6 @@ function getAll(selector) {
 }
 closeNotification(); // Add event listener for closing notifications
 
-
 // Code for sticky header https://www.w3schools.com/howto/howto_js_sticky_header.asp
 window.onload = () => {
     let navbar = document.querySelector('.navbar');

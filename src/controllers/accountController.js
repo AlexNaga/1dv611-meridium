@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const checkPassword = require('../utils/passwordValidator');
-
 const User = require('../models/user');
 const EmailModel = require('../models/emailModel');
 const throwError = require('../utils/error');

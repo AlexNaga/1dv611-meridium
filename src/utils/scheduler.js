@@ -1,7 +1,7 @@
+const nodeSchedule = require('node-schedule');
 const httrackWrapper = require('../models/httrackWrapper');
 const validateHttrackSettings = require('./validateHttrackSettings');
 const Schedules = require('../models/schedules');
-const nodeSchedule = require('node-schedule');
 const Schedule = require('../models/enums').schedule;
 
 /**

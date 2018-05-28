@@ -1,12 +1,11 @@
-const path = require('path');
 const fs = require('fs-extra');
+const path = require('path');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
 const httrackWrapper = require('../models/httrackWrapper');
 const Archive = require('../models/archive');
 const Schedules = require('../models/schedules');
-const Setting = require('../models/enums').setting;
 const throwError = require('../utils/error');
-
+const Setting = require('../models/enums').setting;
 
 /**
  * GET /archives/
@@ -247,15 +246,9 @@ exports.deleteArchive = async (req, res) => {
         await deleteFile(`./${process.env.ARCHIVES_FOLDER}/${archive.fileName}`);
 
     } catch (err) {
-        // TODO : Logga ev fel?
-        // console.log(err);
-        // ENOENT === No such file or directory
-        // if (err.code !== 'ENOENT') {
-        // res.status(400)
-        //     .json({
-        //         message: 'Kunde inte radera arkiveringen.',
-        //         danger: true
-        //     });
+        // TODO : Log faults
+        // if (err.code === 'ENOENT') {
+        // No such file or directory, just continue...
         // }
     } finally {
         res.status(200).json({
@@ -278,7 +271,6 @@ exports.previewArchive = async (req, res, next) => {
         let pathToFolder = path.join(__dirname + `/../../${process.env.PREVIEWS_FOLDER}/` + archive.id);
         fs.stat(pathToFolder, (err, stat) => {
             if (err) return res.sendStatus(err.code === 'ENOENT' ? 404 : 400); // ENOENT === No such file
-
             // Folder exist. Continue to static folder and let express find the folder with id as folder name
             next();
         });

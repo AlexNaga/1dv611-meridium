@@ -7,7 +7,7 @@
 @param {*} utcTime - Utc timestamp in ms (probably also works fo unix timestamp as well)
 */
 module.exports = (utcTime) => {
-    let timestamp = new Date(utcTime).getTime()/ 1000;
+    let timestamp = new Date(utcTime).getTime() / 1000;
 
     let date,
         monthNames,
@@ -15,9 +15,9 @@ module.exports = (utcTime) => {
         minutes = secs / 60,
         hours = minutes / 60,
         days = hours / 24;
-        // weeks = days / 7,
-        // months = weeks / 4.34812,
-        // years = months / 12;
+    // weeks = days / 7,
+    // months = weeks / 4.34812,
+    // years = months / 12;
 
     if (minutes < 1) {
         secs = Math.floor(secs % 60);

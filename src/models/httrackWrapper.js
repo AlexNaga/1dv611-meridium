@@ -2,13 +2,13 @@ const { exec } = require('child_process');
 const { URL } = require('url');
 const Archive = require('../models/archive');
 const dayjs = require('dayjs');
-const EmailModel = require('../models/emailModel');
 const fs = require('fs-extra');
+const prettyFileSize = require('prettysize');
 const getUrls = require('get-urls');
 const path = require('path');
-const prettyFileSize = require('prettysize');
-const Setting = require('../models/enums').setting;
+const EmailModel = require('../models/emailModel');
 const zipFolder = require('../utils/zipFolder');
+const Setting = require('../models/enums').setting;
 
 /**
  *
@@ -25,7 +25,7 @@ exports.archive = async (settings) => {
         let urls = [...getUrls(command)];
         let hostnames = urls.map(url => new URL(url).hostname);
 
-        let timestamp = getTimestamp(); // 2018-03-29_22-29-21-424
+        let timestamp = getTimestamp(); // ex 2018-03-29_22-29-21-424
         ARCHIVE_ID = `${hostnames[0]}_${timestamp}`;
 
         command = `${command} -O "${ARCHIVES_FOLDER}/${ARCHIVE_ID}"`;
@@ -34,9 +34,6 @@ exports.archive = async (settings) => {
 
         let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
         let previewCommand = `${httrack} ${urls[0]} -* +*.html +*.css +*.js "+*.jpg*[<150]" "+*.png*[<150]" -O "${PREVIEWS_FOLDER}/${ARCHIVE_ID}_original"`;
-
-        // console.log('command: ', command);
-        // console.log('previewCommand: ', previewCommand);
 
         // Preview
         await runCommand(previewCommand);
@@ -51,8 +48,6 @@ exports.archive = async (settings) => {
 
         let fileSize = await zip(`${archivedFolder}/folderToZip`, `${archivedFolder}.zip`);
         await removeFolder(`${archivedFolder}`);
-
-        console.log('Archive was successful!');
 
         // Create archive in database
         let archive = new Archive({
@@ -115,6 +110,7 @@ async function moveFolder(orig, dest) {
     try {
         await fs.move(orig, dest);
     } catch (err) {
+        // TODO : Log faults
         // if (err.code === 'ENOENT') {
         // No such file or directory, just continue...
         // }

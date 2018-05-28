@@ -8,7 +8,7 @@ const Setting = require('../models/enums').setting;
  * @param {*} a
  * @param {*} b
  */
-Number.prototype.between = function(a, b) {
+Number.prototype.between = function (a, b) {
     let min = Math.min(a, b);
     let max = Math.max(a, b);
 

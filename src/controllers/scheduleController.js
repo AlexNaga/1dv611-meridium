@@ -1,9 +1,8 @@
+const fs = require('fs-extra');
 const Schedule = require('../models/schedules');
 const Archive = require('../models/archive');
 const httrackWrapper = require('../models/httrackWrapper');
 const validateHttrackSettings = require('../utils/validateHttrackSettings');
-const fs = require('fs-extra');
-
 
 /**
  * DELETE /schedules/delete/:id
@@ -34,7 +33,8 @@ exports.deleteSchedule = async (req, res) => {
         });
     } catch (err) {
         if (err.code === 'ENOENT') {
-            // err.code ENOENT = No such file on disk, but entry removed from db.
+            // TODO : Log faults
+            //No such file on disk, but entry removed from db
             res.status(200).json({
                 message: 'Schemaläggningen har raderats.',
                 success: true
