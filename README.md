@@ -17,7 +17,7 @@ This application depends on [httrack](http://www.httrack.com), that must be inst
     SERVER_DOMAIN="http://localhost:3000"
     EMAIL_PASS="YOUR_EMAIL_PASSWORD"
     EMAIL_USER="YOUR_EMAIL"
-    IS_RUNNING_LINUX_OS="true"
+    IS_RUNNING_LINUX_OS="true / false"
     JWT_SECRET="A_RANDOM_SECRET"
     MONGODB="YOUR_MONGODB_CONNECTION_STRING"
     SESSION_SECRET="A_RANDOM_SECRET"
