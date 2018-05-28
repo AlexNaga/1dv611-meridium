@@ -90,7 +90,7 @@ exports.getSchedule = async (req, res) => {
         });
     } catch (err) {
         req.session.flash = {
-            message: 'Något gick fel vid hämtning av schemaläggningen!',
+            message: 'Något gick fel vid hämtning av arkiv.',
             danger: true
         };
         return res.redirect('/archives');
@@ -133,16 +133,15 @@ exports.updateSchedule = async (req, res) => {
                     shouldNotify: req.body.shouldNotify === 'on' // checked = 'on', else shouldNotify is omitted
                 }
             }).exec();
-            console.log('Req.body: ', req.body)
         req.session.flash = {
-            message: 'Schemaläggningen har uppdaterats!',
+            message: 'Inställningar har uppdaterats.',
             success: true
         };
         return res.redirect(`/archives/edit/${req.params.id}`);
     } catch (err) {
 
         req.session.flash = {
-            message: 'Vi kunde inte uppdatera schemainställningarna!',
+            message: 'Fel vid uppdatering av inställningar.',
             danger: true
         };
         return res.redirect('/archives');

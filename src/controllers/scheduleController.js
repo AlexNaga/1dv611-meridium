@@ -28,21 +28,21 @@ exports.deleteSchedule = async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Schemaläggningen har raderats.',
+            message: 'Arkivet har raderats.',
             success: true
         });
     } catch (err) {
         if (err.code === 'ENOENT') {
             // TODO : Log faults
-            //No such file on disk, but entry removed from db
+            // No such file on disk, but entry removed from db
             res.status(200).json({
-                message: 'Schemaläggningen har raderats.',
+                message: 'Arkivet har raderats.',
                 success: true
             });
         } else {
             res.status(400)
                 .json({
-                    message: 'Kunde inte radera Schemaläggningen.',
+                    message: 'Kunde inte radera arkiv.',
                     danger: true
                 });
         }

@@ -16,7 +16,7 @@ class Modal {
                     let typeToDeleteSpan = document.querySelector('div.modal > div.modal-content > div > p > span');
 
                     modal.classList.add('is-active');
-                    typeToDeleteSpan.innerHTML = this.route === 'archives' ? 'arkivet' : 'schemaläggningen';
+                    typeToDeleteSpan.innerHTML = this.route === 'archives' ? 'arkiv' : 'inställning';
                     deleteBtn(elem);
                 });
             });
