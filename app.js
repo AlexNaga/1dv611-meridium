@@ -1,5 +1,3 @@
-require('handlebars-helpers')(['comparison']);
-const app = express();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
@@ -10,6 +8,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const compression = require('compression');
 const paginate = require('handlebars-paginate');
+
+const app = express();
+require('handlebars-helpers')(['comparison']);
 
 const timestampHelper = require('./src/utils/timestampHelper');
 const countdownHelper = require('./src/utils/countdownHelper');
@@ -64,7 +65,6 @@ app.use('/archives/preview/', express.static('previews')); // Make previews fold
 
 app.use((err, req, res, next) => {
     console.log('err', err);
-
     res.redirect('/');
 });
 module.exports = app;
