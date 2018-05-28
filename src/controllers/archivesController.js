@@ -133,6 +133,7 @@ exports.updateSchedule = async (req, res) => {
                     shouldNotify: req.body.shouldNotify === 'on' // checked = 'on', else shouldNotify is omitted
                 }
             }).exec();
+            console.log('Req.body: ', req.body)
         req.session.flash = {
             message: 'Schemaläggningen har uppdaterats!',
             success: true

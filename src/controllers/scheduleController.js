@@ -65,17 +65,13 @@ exports.runSchedule = async (req, res) => {
         };
         httrackSettings = validateHttrackSettings(httrackSettings);
         httrackWrapper.archive(httrackSettings);
+       console.log('schedule.shouldNotify: ', schedule.shouldNotify)
         if (schedule.shouldNotify) {
             req.session.flash = {
                 message: 'Arkiveringen är startad. Du kommer notifieras via e-post när arkiveringen är klar.',
                 info: true
             };
-        } else {
-            req.session.flash = {
-                message: 'Arkiveringen är startad.',
-                info: true
-            }
-        }
+        } 
         res.redirect('/archives/edit/' + req.params.id);
     } catch (err) {
         console.log(err);
