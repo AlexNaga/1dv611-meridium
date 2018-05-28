@@ -10,8 +10,8 @@
                 </button>
             </form>
         </div>
-        <div class="level-item">
-            {{#unlessEq schedule.typeOfSchedule 0}}
+        {{#unlessEq schedule.typeOfSchedule 0}}
+            <div class="level-item">
                 <button id="pause" class="schedule-edit-btn pause-state-buttons button is-warning{{#if schedule.isPaused}} hidden{{/if}}"
                     data-id="{{schedule._id}}">
                     <span class="icon is-small">
@@ -30,8 +30,8 @@
                     </span>
                     <span>Starta</span>
                 </button>
-            {{/unlessEq}}
-        </div>
+            </div>
+        {{/unlessEq}}
         <div class="level-item">
             <a class="schedule-edit-btn button is-danger modal-button" data-id="{{schedule._id}}" data-route="schedules" data-redirect-route="archives"
                 title="Radera inställning">

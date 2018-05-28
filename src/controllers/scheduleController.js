@@ -28,7 +28,7 @@ exports.deleteSchedule = async (req, res) => {
         }
 
         res.status(200).json({
-            message: 'Arkivet har raderats.',
+            message: 'Inställningen har raderats.',
             success: true
         });
     } catch (err) {
@@ -36,13 +36,13 @@ exports.deleteSchedule = async (req, res) => {
             // TODO : Log faults
             // No such file on disk, but entry removed from db
             res.status(200).json({
-                message: 'Arkivet har raderats.',
+                message: 'Inställningen har raderats.',
                 success: true
             });
         } else {
             res.status(400)
                 .json({
-                    message: 'Kunde inte radera arkiv.',
+                    message: 'Kunde inte radera inställningen.',
                     danger: true
                 });
         }

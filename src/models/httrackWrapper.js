@@ -185,7 +185,7 @@ function sendSuccessEmail(settings) {
                                     <td align="center" style="border-radius: 3px;" bgcolor="#209cee">
                                         <a href="${settings.scheduleUrl}" target="_blank" style="font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #ffffff;
                                             text-decoration: none; text-decoration: none;border-radius: 3px; padding: 8px; border: 1px solid #209cee;display: inline-block;">
-                                            Redigera arkiv</a>
+                                            Redigera inställning</a>
                                     </td>
                                 </tr>
                             </table>  

@@ -90,7 +90,7 @@ exports.getSchedule = async (req, res) => {
         });
     } catch (err) {
         req.session.flash = {
-            message: 'Något gick fel vid hämtning av arkiv.',
+            message: 'Något gick fel vid hämtning av inställning.',
             danger: true
         };
         return res.redirect('/archives');
@@ -134,14 +134,14 @@ exports.updateSchedule = async (req, res) => {
                 }
             }).exec();
         req.session.flash = {
-            message: 'Inställningar har uppdaterats.',
+            message: 'Inställningarna har sparats.',
             success: true
         };
         return res.redirect(`/archives/edit/${req.params.id}`);
     } catch (err) {
 
         req.session.flash = {
-            message: 'Fel vid uppdatering av inställningar.',
+            message: 'Fel vid sparandet av inställningarna.',
             danger: true
         };
         return res.redirect('/archives');
