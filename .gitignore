@@ -2,7 +2,7 @@ httrack
 /archives/
 previews/
 .DS_Store
-
+undefined
 node_modules
 
 # Logs
