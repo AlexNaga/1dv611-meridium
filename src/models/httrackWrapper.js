@@ -132,7 +132,6 @@ function runCommand(command) {
 
 function createCommand(s) {
     let httrack = process.env.IS_RUNNING_LINUX_OS === 'true' ? 'httrack' : `"${process.cwd()}/httrack/httrack.exe"`;
-    let include = s.includeDomains && s.includeDomains[0] !== '' ? s.includeDomains.map(domain => `${domain}`) : '';
     let exclude = s.excludePaths && s.excludePaths[0] !== '' ? s.excludePaths.map(path => `-*${path}/*`) : '';
 
     if (s.typeOfSetting === Setting.STANDARD) {

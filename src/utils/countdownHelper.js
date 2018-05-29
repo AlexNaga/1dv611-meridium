@@ -39,25 +39,27 @@ function getDiffBetweenDates(schedule) {
     // TODO : config file?
     let hourToRun = 3; // what hour of the day.
     let weekdayToRun = 1; // Sunday = 0, Monday = 1..
-    let weekToRun = 4; // Last week in month
 
-    let base = dayjs().startOf('hour');
-    let daily = base.add(1, 'day').set('hour', hourToRun);
-    let weekly = base.startOf('week').add(1, 'week').add(weekdayToRun, 'day').set('hour', hourToRun);
-    let monthly = base.startOf('month').startOf('week').add(weekToRun, 'week').add(weekdayToRun, 'day').set('hour', hourToRun);
-    let timeUntil;
+    let base = dayjs();
+    let nextDaily = base.add(1, 'day').set('hour', hourToRun);
+    let nextWeekly = base.startOf('week').add(1, 'week').add(weekdayToRun, 'day').set('hour', hourToRun);
+    let nextMonthly = base.endOf('month').startOf('week').add(1, 'day').set('hour', hourToRun);
     let diff;
 
     if (schedule.typeOfSchedule === ScheduleSetting.DAILY) {
-        diff = daily.diff(base);
+        diff = nextDaily.diff(base);
     } else if (schedule.typeOfSchedule === ScheduleSetting.WEEKLY) {
-        diff = weekly.diff(base);
+        diff = nextWeekly.diff(base);
     } else if (schedule.typeOfSchedule === ScheduleSetting.MONTHLY) {
-        diff = monthly.diff(base);
+        diff = nextMonthly.diff(base);
+
+        // Quick bugfix https://github.com/1dv611-meridium/1dv611-meridium/issues/91
+        if (diff < 0) {
+            nextMonthly = base.add(1 , 'month').endOf('month').startOf('week').add(1, 'day').set('hour', hourToRun);
+            diff = nextMonthly.diff(base);
+        }
     }
 
     let diffHours = diff / 3600000; // 1 hour in ms
-    timeUntil = dayjs().startOf('hour').add(diffHours, 'hour');
-
-    return timeUntil.toDate();
+    return base.add(diffHours, 'hour').toDate();
 }

@@ -14,7 +14,7 @@
         </thead>
         <tbody class="table-row-hover">
             {{#each docs}}
-                <tr title="Redigera inställningar" class="{{#if isPaused}}table-row-paused{{/if}}" data-id="{{ _id }}">
+                <tr title="Redigera inställningar" {{#if isPaused}}class="table-row-paused"{{/if}} data-id="{{ _id }}">
                     <td><a href="/archives/edit/{{_id}}">{{friendlyUrl}}</a></td>
                     <td class="is-hidden-touch">{{friendlyIncludeDomains}}</td>
                     <td class="is-hidden-touch">{{excludePaths}}</td>
