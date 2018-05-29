@@ -16,7 +16,9 @@ class Modal {
                     let typeToDeleteSpan = document.querySelector('div.modal > div.modal-content > div > p > span');
 
                     modal.classList.add('is-active');
+                    this.route = elem.getAttribute('data-route');
                     typeToDeleteSpan.innerHTML = this.route === 'archives' ? 'arkiv' : 'inställning';
+
                     deleteBtn(elem);
                 });
             });
@@ -27,7 +29,6 @@ class Modal {
             let oldElem = document.querySelector('div.modal > div.modal-content > div > button.button.is-danger');
             oldElem.parentNode.replaceChild(oldElem.cloneNode(true), oldElem);
 
-            this.route = elem.getAttribute('data-route');
             this.redirectRoute = elem.getAttribute('data-redirect-route');
 
             let id = elem.getAttribute('data-id');
