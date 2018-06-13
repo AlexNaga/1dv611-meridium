@@ -1,5 +1,7 @@
 # Arkivdium
 ## About
+This repository was created for the course 1DV611: Team-based Software Development Project. Linnaeus University, Sweden.
+
 A live demo of this application can be found at [http://dv-rpi2.lnu.se](http://dv-rpi2.lnu.se:3000)
 
 ## Running the Application
