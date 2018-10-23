@@ -1,6 +1,6 @@
 # Arkivdium
 ## About
-This repository was created for the course 1DV611: Team-based Software Development Project. Linnaeus University, Sweden.
+This repository was created for the course: Team-based Software Development Project. Linnaeus University, Sweden.
 
 ## Running the Application
 This application depends on [httrack](http://www.httrack.com), that must be installed before you can actually use this application.  
